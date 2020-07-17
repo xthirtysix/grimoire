@@ -19,7 +19,8 @@
   },
   "scripts": {
     "start": "nodemon src/index.ts",
-    "seed": "ts-node temp/seed.ts"
+    "seed": "ts-node temp/seed.ts",
+    "erase": "ts-node temp/erasedb.ts"
   },
   "keywords": [
     "node",

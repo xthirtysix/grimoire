@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 import {ObjectID} from 'mongodb'
 import { connectDatabase } from "../src/database";
 import { Spell } from '../src/lib/types';
