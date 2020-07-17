@@ -1,2 +1,2 @@
 # grimoire
-Fullstack webapp for managing D&amp;D character spells
+D&amp;D spell manager
