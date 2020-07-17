@@ -1,21 +1,6 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
-  type Spell {
-    id: ID!
-    name: String!
-    level: Int!
-    school: String!
-    castingTime: Scalar!
-    duration: Scalar!
-    range: Scalar!
-    components: Components
-    materials: String
-    description: String!
-    damage: Damage
-    source: String!
-  }
-
   type Scalar {
     value: Int
     unit: String!
@@ -51,6 +36,21 @@ export const typeDefs = gql`
     level18: String
     level19: String
     level20: String
+  }
+
+  type Spell {
+    id: ID!
+    name: String!
+    level: Int!
+    school: String!
+    castingTime: Scalar!
+    duration: Scalar!
+    range: Scalar!
+    components: Components
+    materials: String
+    description: String!
+    damage: Damage
+    source: String!
   }
 
   type Query {
