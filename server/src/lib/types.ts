@@ -43,8 +43,9 @@ export interface Spell {
   level: number;
   school: string;
   castingTime: Scalar;
-  duration: Scalar;
   range: Scalar;
+  duration: Scalar;
+  isConcentration: boolean;
   components: Components;
   materials?: String;
   description: String;
