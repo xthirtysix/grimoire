@@ -23,6 +23,7 @@ const seed = async () => {
           value: 60,
           unit: "feet",
         },
+        isConcentration: false,
         components: {
           verbal: true,
           somatic: true,
@@ -59,6 +60,7 @@ const seed = async () => {
           value: 120,
           unit: "feet",
         },
+        isConcentration: false,
         components: {
           verbal: true,
           somatic: true,

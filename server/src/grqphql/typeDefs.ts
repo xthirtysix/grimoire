@@ -44,8 +44,9 @@ export const typeDefs = gql`
     level: Int!
     school: String!
     castingTime: Scalar!
-    duration: Scalar!
     range: Scalar!
+    duration: Scalar!
+    isConcentration: Boolean!
     components: Components
     materials: String
     description: String!
