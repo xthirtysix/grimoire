@@ -7,4 +7,7 @@ export const resolvers: IResolvers = {
       return await db.spells.find({}).toArray();
     },
   },
+  Spell: {
+    id: (spell: Spell): string => spell._id.toString(),
+  }
 };

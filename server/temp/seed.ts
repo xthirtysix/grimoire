@@ -1,15 +1,16 @@
-import {ObjectID} from 'mongodb'
+import { ObjectId } from "mongodb";
 import { connectDatabase } from "../src/database";
-import { Spell } from '../src/lib/types';
+import { Spell } from "../src/lib/types";
 
 const seed = async () => {
   try {
     console.log("🕑[seed]: running...");
 
     const db = await connectDatabase();
+
     const spells: Spell[] = [
       {
-        _id: new ObjectID(),
+        _id: new ObjectId(),
         name: "Acid Splash",
         level: 0,
         description:
@@ -41,12 +42,11 @@ const seed = async () => {
           level5: "2d6",
           level11: "3d6",
           level17: "4d6",
-
         },
         source: "PHB",
       },
       {
-        _id: new ObjectID(),
+        _id: new ObjectId(),
         name: "Chill Touch",
         level: 0,
         description:
@@ -87,7 +87,7 @@ const seed = async () => {
       await db.spells.insertOne(spell);
     }
 
-    console.log('✔️ [seed]: success! Press Ctrl+C to finish.')
+    console.log("✔️ [seed]: success! Press Ctrl+C to finish.");
   } catch {
     throw new Error("failed to seed database");
   }
