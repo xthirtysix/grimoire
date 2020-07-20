@@ -7,19 +7,7 @@
 // GraphQL query operation: Spells
 // ====================================================
 
-export interface Spells_spells_castingTime {
-  __typename: "Scalar";
-  value: number | null;
-  unit: string;
-}
-
-export interface Spells_spells_range {
-  __typename: "Scalar";
-  value: number | null;
-  unit: string;
-}
-
-export interface Spells_spells_duration {
+export interface Spells_scalar {
   __typename: "Scalar";
   value: number | null;
   unit: string;
@@ -65,9 +53,9 @@ export interface Spells_spells {
   name: string;
   level: number;
   school: string;
-  castingTime: Spells_spells_castingTime;
-  range: Spells_spells_range;
-  duration: Spells_spells_duration;
+  castingTime: Spells_scalar;
+  range: Spells_scalar;
+  duration: Spells_scalar;
   isConcentration: boolean;
   components: Spells_spells_components | null;
   materials: string | null;
