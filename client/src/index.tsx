@@ -2,17 +2,42 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
-import { Spells } from "./pages";
+import {
+  Home,
+  Grimoires,
+  Grimoire,
+  Spells,
+  Spell,
+  User,
+  NotFound,
+} from "./pages";
 import "./index.css";
 
 const client = new ApolloClient({
   uri: "/api",
 });
 
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/grimoires" component={Grimoires} />
+        <Route exact path="/grimoire:id" component={Grimoire} />
+        <Route exact path="/spells" component={Spells} />
+        <Route exact path="/spell:id" component={Spell} />
+        <Route exact path="/user:id" component={User} />
+        <Route component={NotFound} />
+      </Switch>
+    </Router>
+  );
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Spells />
+    <App />
   </ApolloProvider>,
   document.getElementById("root")
 );
