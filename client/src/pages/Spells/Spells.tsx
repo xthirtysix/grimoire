@@ -16,9 +16,11 @@ import {
 } from "@material-ui/core";
 import diceicon from "./assets/dice.png";
 import hands from "./assets/hands.png";
-import timer from './assets/timer.png';
-import hourglass from './assets/hourglass.png';
-import ruler from './assets/ruler.png';
+import timer from "./assets/timer.png";
+import hourglass from "./assets/hourglass.png";
+import ruler from "./assets/ruler.png";
+import feather from "./assets/feather.png";
+import shield from "./assets/shield.png";
 import s from "./styles/Spells.module.scss";
 
 const SPELLS = gql`
@@ -92,36 +94,50 @@ export const Spells = () => {
   };
 
   const schoolAndLevel = (spell: Spell) => {
+    let level: string | number;
+
+    switch (spell.level) {
+      case 0:
+        level = "cantrip";
+        break;
+      default:
+        level = spell.level;
+        break;
+    }
     return (
       <Typography className={s.__subheader}>
-        {spell.school}, {spell.level}
+        {spell.school}, {level}
       </Typography>
     );
   };
 
   const scalar = (scalar: Scalar, title: string) => {
-    let img, alt;
-  
+    let img: string | undefined, alt: string;
+
     switch (title) {
-      case 'Casting time':
-        img = timer
-        alt = 'timer'
+      case "Casting time":
+        img = timer;
+        alt = "timer";
         break;
-      case 'Duration':
-        img = hourglass
-        alt = 'hourglass'
+      case "Duration":
+        img = hourglass;
+        alt = "hourglass";
         break;
-      case 'Range':
-        img = ruler
-        alt = 'ruler'
+      case "Range":
+        img = ruler;
+        alt = "ruler";
         break;
       default:
-        img = undefined
+        img = undefined;
+        alt = "";
     }
 
     return (
       <Typography className={s.__property}>
-        <span className={s.__title}><img src={img} alt={alt}/>{title}:</span>
+        <span className={s.__title}>
+          <img src={img} alt={alt} />
+          {title}:
+        </span>
         <span className={s.__value}>
           {scalar.value ? scalar.value + " " + scalar.unit : scalar.unit}
         </span>
@@ -132,11 +148,37 @@ export const Spells = () => {
   const components = (spell: Spell) => {
     return spell.components ? (
       <Typography className={s.__property}>
-        <span className={s.__title}><img src={hands} alt="hangs"/>Components:</span>
+        <span className={s.__title}>
+          <img src={hands} alt="hands" />
+          Components:
+        </span>
         <span className={s.__value}>
           {spell.components.verbal ? " V" : null}
           {spell.components.somatic ? " S" : null}
           {spell.components.material ? " M" : null}
+        </span>
+      </Typography>
+    ) : null;
+  };
+
+  const materials = (spell: Spell) => {
+    return spell.materials ? (
+      <Typography className={s.__property}>
+        <span className={s.__title}>
+          <img src={feather} alt="feather" />
+          Materials:{" "}
+        </span>
+        <span className={s.__value}>{spell.materials}</span>
+      </Typography>
+    ) : null;
+  };
+
+  const concentration = (spell: Spell) => {
+    return spell.isConcentration ? (
+      <Typography className={s.__property}>
+        <span className={s.__title}>
+          <img src={shield} alt="shield" />
+          Concentration
         </span>
       </Typography>
     ) : null;
@@ -149,7 +191,10 @@ export const Spells = () => {
   const damage = (dmg: Damage | null) => {
     return dmg ? (
       <Typography className={s.__property}>
-        <span className={s.__title}><img src={diceicon} alt="dice"/>Damage: </span>
+        <span className={s.__title}>
+          <img src={diceicon} alt="dice" />
+          Damage:{" "}
+        </span>
         <span className={s.__value}>{dmg.basic}</span>
       </Typography>
     ) : null;
@@ -173,7 +218,10 @@ export const Spells = () => {
 
       return (
         <Typography className={s.__property}>
-          <span className={s.__title}><img src={diceicon} alt="dice"/>Damage at level {level}: </span>
+          <span className={s.__title}>
+            <img src={diceicon} alt="dice" />
+            Damage at level {level}:{" "}
+          </span>
           <span className={s.__value}>{dice}</span>
         </Typography>
       );
@@ -190,7 +238,7 @@ export const Spells = () => {
 
   const spellList = spells ? (
     <ul className={s.__list}>
-      {spells.map((spell) => {
+      {spells.map((spell: Spell) => {
         let damageInfo;
         if (spell.damage && spell.damage.isScaleLevel) {
           damageInfo = damageByLevel(spell.damage, 1);
@@ -208,9 +256,11 @@ export const Spells = () => {
               <Divider />
               <CardContent>
                 {scalar(spell.castingTime, "Casting time")}
+                {concentration(spell)}
                 {scalar(spell.duration, "Duration")}
                 {scalar(spell.range, "Range")}
                 {components(spell)}
+                {materials(spell)}
                 {damageInfo}
               </CardContent>
               <Divider />
