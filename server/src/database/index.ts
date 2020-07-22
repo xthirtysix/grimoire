@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 import { MongoClient } from "mongodb";
-import { Database } from "../lib/types";
+import { Spell, User, Database } from "../lib/types";
 
 const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
@@ -14,6 +14,7 @@ export const connectDatabase = async (): Promise<Database> => {
   const db = client.db("main");
 
   return {
-    spells: db.collection("spells"),
+    spells: db.collection<Spell>("spells"),
+    users: db.collection<User>("users")
   };
 };
