@@ -6,9 +6,18 @@ const erasedb = async () => {
 
     const db = await connectDatabase();
 
-    await db.spells.remove({});
+    const spells = await db.spells.find({}).toArray();
+    const users = await db.users.find({}).toArray();
 
-    console.log('✔️ [erase]: DB cleared! Press Ctrl+C to finish.')
+    if (spells.length > 0) {
+      await db.spells.drop();
+    } 
+
+    if (users.length > 0) {
+      await db.users.drop();
+    }
+
+    console.log("✔️ [erase]: DB cleared! Press Ctrl+C to finish.");
   } catch {
     throw new Error("failed to erase database");
   }

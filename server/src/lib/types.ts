@@ -1,5 +1,12 @@
 import { ObjectId, Collection } from "mongodb";
 
+export interface Viewer {
+  _id?: string;
+  token?: string;
+  avatar?: string;
+  didRequest: boolean;
+}
+
 export interface Scalar {
   value?: number;
   unit: string;
@@ -53,6 +60,16 @@ export interface Spell {
   source: string;
 }
 
+export interface User {
+  _id: string;
+  token: string;
+  name: string;
+  avatar: string;
+  contact: string;
+  grimoires: ObjectId[];
+}
+
 export interface Database {
-  spells: Collection<Spell>
+  users: Collection<User>;
+  spells: Collection<Spell>;
 }
