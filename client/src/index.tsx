@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
+import { AppHeader } from "./sections";
 import {
   Home,
   Grimoires,
@@ -12,16 +13,29 @@ import {
   Spell,
   User,
   NotFound,
+  LogIn,
 } from "./pages";
+import { SnackbarProvider } from "notistack";
+import { Viewer } from "./lib/types";
 import "./index.css";
 
 const client = new ApolloClient({
   uri: "/api",
 });
 
+const initialViewer: Viewer = {
+  id: null,
+  token: null,
+  avatar: null,
+  didRequest: false,
+};
+
 const App = () => {
+  const [viewer, setViewer] = useState<Viewer>(initialViewer);
+
   return (
     <Router>
+      <AppHeader viewer={viewer} setViewer={setViewer}/>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/grimoires" component={Grimoires} />
@@ -29,6 +43,11 @@ const App = () => {
         <Route exact path="/spells" component={Spells} />
         <Route exact path="/spell:id" component={Spell} />
         <Route exact path="/user:id" component={User} />
+        <Route
+          exact
+          path="/login"
+          render={(props) => <LogIn {...props} setViewer={setViewer} />}
+        />
         <Route component={NotFound} />
       </Switch>
     </Router>
@@ -37,7 +56,9 @@ const App = () => {
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );
