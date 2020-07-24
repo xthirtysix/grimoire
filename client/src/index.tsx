@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider, useMutation } from "react-apollo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
-import { AppHeader } from "./sections";
+import { AppHeader, AppHeaderSkeleton } from "./sections";
 import {
   Home,
   Grimoires,
@@ -15,12 +15,26 @@ import {
   NotFound,
   LogIn,
 } from "./pages";
-import { SnackbarProvider } from "notistack";
+import { CircularProgress } from "@material-ui/core";
+import { LOG_IN } from "./lib/graphql/mutations";
+import {
+  LogIn as LogInData,
+  LogInVariables,
+} from "./lib/graphql/mutations/LogIn/__generated__/LogIn";
+import { SnackbarProvider, useSnackbar } from "notistack";
 import { Viewer } from "./lib/types";
 import "./index.css";
 
 const client = new ApolloClient({
   uri: "/api",
+  request: async (opearation) => {
+    const token = sessionStorage.getItem("token");
+    opearation.setContext({
+      headers: {
+        "X-CSRF-TOKEN": token || "",
+      },
+    });
+  },
 });
 
 const initialViewer: Viewer = {
@@ -32,10 +46,49 @@ const initialViewer: Viewer = {
 
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>(initialViewer);
+  const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
+    onCompleted: (data) => {
+      if (data && data.logIn) {
+        setViewer(data.logIn);
+
+        if (data.logIn.token) {
+          sessionStorage.setItem("token", data.logIn.token);
+        } else {
+          sessionStorage.removeItem("token");
+        }
+      }
+    },
+  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  const logInRef = useRef(logIn);
+
+  useEffect(() => {
+    logInRef.current();
+  }, []);
+
+  if (!viewer.didRequest && !error) {
+    return (
+      <>
+        <AppHeaderSkeleton />
+        <div className="container">
+          <div className="spinnerWrapper">
+            <CircularProgress />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    enqueueSnackbar("We weren't able to log you in. Try later", {
+      variant: "error",
+    });
+  }
 
   return (
     <Router>
-      <AppHeader viewer={viewer} setViewer={setViewer}/>
+      <AppHeader viewer={viewer} setViewer={setViewer} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/grimoires" component={Grimoires} />

@@ -1,4 +1,5 @@
 body {
+  margin: 0;
   background: #e2e1e0;
 }
 
@@ -9,4 +10,16 @@ body {
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.spinnerWrapper {
+  /* width: 100px;
+  height: 100px; */
+  margin: auto;
 }
