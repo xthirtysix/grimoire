@@ -40,6 +40,7 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
   const open = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
     setAnchorEl(event.currentTarget);
   };
 
@@ -80,17 +81,18 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
 
   const subMenuLogin =
     viewer.id && viewer.avatar ? (
-      <MenuItem>
-        <Avatar
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-          src={viewer.avatar}
-        />
+      <>
+        <MenuItem onClick={handleMenu}>
+          <Avatar
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            src={viewer.avatar}
+          />
+        </MenuItem>
         {renderMenu}
-      </MenuItem>
+      </>
     ) : (
       <MenuItem component={RouterLink} to={"/login"}>
         <AccountCircle className={s.__loginIcon} />
@@ -98,15 +100,19 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
     );
 
   return (
-    <div className={s.__menu}>
-      <MenuItem component={RouterLink} to={"/"}>
-        <Home className={s.__icon} />
-        <p>Home</p>
-      </MenuItem>
-      <MenuItem component={RouterLink} to={"/spells"}>
-        <p>Spells</p>
-      </MenuItem>
+    <ul className={s.__menu}>
+      <li>
+        <MenuItem component={RouterLink} to={"/"}>
+          <Home className={s.__icon} />
+          <p>Home</p>
+        </MenuItem>
+      </li>
+      <li>
+        <MenuItem component={RouterLink} to={"/spells"}>
+          <p>Spells</p>
+        </MenuItem>
+      </li>
       {subMenuLogin}
-    </div>
+    </ul>
   );
 };
