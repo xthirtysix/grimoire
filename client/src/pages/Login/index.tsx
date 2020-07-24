@@ -26,8 +26,10 @@ export const LogIn = ({ setViewer }: Props) => {
     { data: logInData, loading: logInLoading, error: logInError },
   ] = useMutation<LogInData, LogInVariables>(LOG_IN, {
     onCompleted: (data) => {
-      if (data && data.logIn) {
+      if (data && data.logIn && data.logIn.token) {
         setViewer(data.logIn);
+        sessionStorage.setItem("token", data.logIn.token);
+        enqueueSnackbar("Successfully logged in", { variant: "success" });
       }
     },
   });
@@ -68,7 +70,6 @@ export const LogIn = ({ setViewer }: Props) => {
 
   if (logInData && logInData.logIn) {
     const { id: viewerId } = logInData.logIn;
-    enqueueSnackbar("Successfully logged in", { variant: "success" });
     return <Redirect to={`/user/${viewerId}`} />;
   }
 
