@@ -1,5 +1,6 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Link as RouterLink } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -21,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1,
+      color: "white",
+      textDecoration: "none",
     },
   })
 );
@@ -38,15 +40,20 @@ export const AppHeader = ({ viewer, setViewer }: Props) => {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.bar}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
           >
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          </IconButton> */}
+          <Typography
+            component={RouterLink}
+            to="/"
+            variant="h6"
+            className={classes.title}
+          >
             Grimoire
           </Typography>
           <MenuItems viewer={viewer} setViewer={setViewer} />
