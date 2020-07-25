@@ -60,6 +60,14 @@ export interface Spell {
   source: string;
 }
 
+export interface Grimoire {
+  _id: ObjectId;
+  ownerName: string;
+  ownerClass: string;
+  ownerLevel: string;
+  spells: Spell[];
+}
+
 export interface User {
   _id: string;
   token: string;
@@ -67,9 +75,11 @@ export interface User {
   avatar: string;
   contact: string;
   grimoires: ObjectId[];
+  authorized?: boolean;
 }
 
 export interface Database {
   users: Collection<User>;
   spells: Collection<Spell>;
+  grimoires: Collection<Grimoire>;
 }

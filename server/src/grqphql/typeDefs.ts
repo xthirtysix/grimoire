@@ -1,6 +1,27 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
+  type Grimoire {
+    id: ID!
+    ownerName: String!
+    ownerClass: String!
+    ownerLevel: Int!
+    spells: [Spell]
+  }
+
+  type Grimoires {
+    total: Int!
+    result: [Grimoire!]!
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    avatar: String!
+    contact: String!
+    grimoires(limit: Int!, page: Int!): Grimoires
+  }
+
   type Scalar {
     value: Int
     unit: String!
@@ -68,10 +89,11 @@ export const typeDefs = gql`
   type Query {
     authUrl: String!
     spells: [Spell!]!
+    user(id: ID!): User!
   }
 
   type Mutation {
-    logIn(input: LogInInput ): Viewer!
+    logIn(input: LogInInput): Viewer!
     logOut: Viewer!
   }
 `;

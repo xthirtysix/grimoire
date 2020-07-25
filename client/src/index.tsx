@@ -92,10 +92,10 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/grimoires" component={Grimoires} />
-        <Route exact path="/grimoire:id" component={Grimoire} />
+        <Route exact path="/grimoire/:id" component={Grimoire} />
         <Route exact path="/spells" component={Spells} />
-        <Route exact path="/spell:id" component={Spell} />
-        <Route exact path="/user:id" component={User} />
+        <Route exact path="/spell/:id" component={Spell} />
+        <Route exact path="/user/:id" component={User} />
         <Route
           exact
           path="/login"
