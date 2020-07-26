@@ -68,7 +68,11 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
       open={open}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem
+        onClick={handleClose}
+        component={RouterLink}
+        to={`/user/${viewer.id}`}
+      >
         <PersonOutline />
         Profile
       </MenuItem>
