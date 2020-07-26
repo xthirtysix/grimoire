@@ -5,6 +5,7 @@ body {
 
 #root {
   margin-top: 6rem;
+  padding: 0 2rem;
 }
 
 .visually-hidden {

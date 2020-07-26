@@ -80,7 +80,7 @@ export const LogIn = ({ setViewer }: Props) => {
 
   return (
     <div className={s.__container}>
-      <Paper className={s.__login} elevation={0} variant="outlined">
+      <Paper className={s.__login}>
         <div className={s.__intro}>
           <Typography>
             <span role="img" aria-label="wave">
