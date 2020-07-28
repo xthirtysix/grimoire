@@ -105,16 +105,6 @@ const spells: Spell[] = [
   },
 ];
 
-const users: User[] = [
-  {
-    _id: new ObjectId(),
-    token: 'token-12345',
-    name: 'Alex B.',
-    avatar: 'https://vignette.wikia.nocookie.net/hollowknight/images/2/27/The_Knight.png/revision/latest?cb=20170712213446',
-    grimoires: []
-  }
-]
-
 const seed = async () => {
   try {
     console.log("🕑[seed]: running...");
@@ -123,10 +113,6 @@ const seed = async () => {
 
     for (const spell of spells) {
       await db.spells.insertOne(spell);
-    }
-
-    for (const user of users) {
-      await db.users.insertOne(user);
     }
 
     console.log("✔️ [seed]: success! Press Ctrl+C to finish.");

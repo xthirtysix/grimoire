@@ -7,18 +7,19 @@
 // GraphQL query operation: User
 // ====================================================
 
-export interface User_user_grimoires_result {
-  __typename: "Grimoire";
-  id: string;
-  ownerName: string;
-  ownerClass: string;
-  ownerLevel: number;
+export interface User_user_grimoire_characterClasses {
+  __typename: "CharacterClass";
+  class: string;
+  level: number;
 }
 
-export interface User_user_grimoires {
-  __typename: "Grimoires";
-  total: number;
-  result: User_user_grimoires_result[];
+export interface User_user_grimoire {
+  __typename: "Grimoire";
+  id: string;
+  name: string;
+  characterClasses: User_user_grimoire_characterClasses[];
+  spells: (string | null)[];
+  isCurrent: boolean;
 }
 
 export interface User_user {
@@ -27,7 +28,7 @@ export interface User_user {
   name: string;
   avatar: string;
   contact: string;
-  grimoires: User_user_grimoires | null;
+  grimoires: User_user_grimoire[] | null;
 }
 
 export interface User {
@@ -36,6 +37,4 @@ export interface User {
 
 export interface UserVariables {
   id: string;
-  grimoiresPage: number;
-  limit: number;
 }
