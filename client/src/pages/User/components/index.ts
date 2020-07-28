@@ -1,2 +1,2 @@
 export * from "./UserProfile";
-export * from "./UserGrimoires";
+export * from "./UserGrimoire";

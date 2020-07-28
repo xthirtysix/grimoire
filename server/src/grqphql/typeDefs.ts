@@ -1,17 +1,17 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
-  type Grimoire {
-    id: ID!
-    ownerName: String!
-    ownerClass: String!
-    ownerLevel: Int!
-    spells: [Spell]
+  type CharacterClass {
+    class: String!
+    level: Int!
   }
 
-  type Grimoires {
-    total: Int!
-    result: [Grimoire!]!
+  type Grimoire {
+    id: ID!
+    name: String!
+    characterClasses: [CharacterClass!]!
+    spells: [String]!
+    isCurrent: Boolean!
   }
 
   type User {
@@ -19,7 +19,7 @@ export const typeDefs = gql`
     name: String!
     avatar: String!
     contact: String!
-    grimoires(limit: Int!, page: Int!): Grimoires
+    grimoires: [Grimoire]
   }
 
   type Scalar {

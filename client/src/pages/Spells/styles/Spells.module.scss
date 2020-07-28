@@ -1,12 +1,13 @@
 .__list {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 3rem;
   padding: 0;
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   align-items: stretch;
-  grid-gap: 1rem;
+  grid-column-gap: 1rem;
+  grid-row-gap: 2rem;
 }
 
 .__card {

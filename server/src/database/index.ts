@@ -16,6 +16,5 @@ export const connectDatabase = async (): Promise<Database> => {
   return {
     spells: db.collection<Spell>("spells"),
     users: db.collection<User>("users"),
-    grimoires: db.collection<Grimoire>("grimoires"),
   };
 };

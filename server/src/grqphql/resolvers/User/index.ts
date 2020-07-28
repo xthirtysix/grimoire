@@ -1,8 +1,8 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
-import { User, Database } from "../../../lib/types";
+import { User, Database, Grimoire } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { UserArgs, UserGrimoiresArgs, UserGrimoiresData } from "./types";
+import { UserArgs } from "./types";
 
 export const userResolvers: IResolvers = {
   Query: {
@@ -32,37 +32,7 @@ export const userResolvers: IResolvers = {
   },
   User: {
     id: (user: User): string => {
-      return user._id
-    },
-    grimoires: async (
-      user: User,
-      { limit, page }: UserGrimoiresArgs,
-      { db }: { db: Database }
-    ): Promise<UserGrimoiresData | null> => {
-      try {
-        if (!user.authorized) {
-          return null;
-        }
-
-        const data: UserGrimoiresData = {
-          total: 0,
-          result: [],
-        };
-
-        let cursor = db.grimoires.find({
-          _id: { $in: user.grimoires }
-        })
-
-        cursor = cursor.skip(page > 0 ? (page - 1) * limit : 0);
-        cursor = cursor.limit(limit);
-
-        data.total = await cursor.count();
-        data.result = await cursor.toArray();
-
-        return data;
-      } catch (error) {
-        throw new Error(`Failed to query user grimoires: ${error}`);
-      }
+      return user._id;
     },
   },
 };
