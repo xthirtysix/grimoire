@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { USER } from "../../lib/graphql/queries";
@@ -6,9 +6,15 @@ import {
   User as UserData,
   UserVariables,
 } from "../../lib/graphql/queries/User/__generated__/User";
-import { UserProfile, UserGrimoire } from "./components";
+import {
+  UserProfile,
+  UserGrimoire,
+  UserProfileSkeleton,
+  UserGrimoireSkeleton,
+} from "./components";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Typography, Paper, Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,10 +45,10 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   });
 
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const user = data ? data.user : null;
   const userProfileElement = user ? <UserProfile user={user} /> : null;
-
   const userGrimoires = user && user.grimoires ? user.grimoires : null;
 
   const userGrimoiresList = userGrimoires
@@ -52,6 +58,28 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
         </li>
       ))
     : null;
+
+  if (error) {
+    enqueueSnackbar("Unable to log you in :(", { variant: "error" });
+    return <h2>Error</h2>;
+  }
+
+  if (loading) {
+    return (
+      <>
+        <UserProfileSkeleton />
+        <Typography component="h2" variant="h5">
+          Your grimoires
+        </Typography>
+        <Typography component="p" color="textSecondary">
+          Here is the list of grimoires you created:
+        </Typography>
+        <div className={classes.list}>
+          <UserGrimoireSkeleton />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
