@@ -10,9 +10,43 @@ import {
   LogIn as LogInData,
   LogInVariables,
 } from "../../lib/graphql/mutations/LogIn/__generated__/LogIn";
-import s from "./styles/Login.module.scss";
 import googleLogo from "./assets/google_logo.jpg";
 import { Redirect } from "react-router-dom";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: "flex",
+      width: "100%",
+    },
+    login: {
+      boxSizing: "border-box",
+      minWidth: "320px",
+      maxWidth: "500px",
+      margin: "auto",
+      padding: "4rem 2rem",
+      textAlign: "center",
+    },
+    intro: {
+      marginBottom: "3rem",
+    },
+    title: {
+      marginBottom: "1rem !important",
+    },
+    button: {
+      marginBottom: "3rem !important",
+      padding: "2px !important",
+      paddingRight: "1rem !important",
+      borderRadius: "0 !important",
+    },
+    logo: {
+      width: "45px",
+      height: "45px",
+      marginRight: "1rem",
+    },
+  })
+);
 
 interface Props {
   setViewer: (viewer: Viewer) => void;
@@ -21,6 +55,8 @@ interface Props {
 export const LogIn = ({ setViewer }: Props) => {
   const { enqueueSnackbar } = useSnackbar();
   const client = useApolloClient();
+  const classes = useStyles();
+
   const [
     logIn,
     { data: logInData, loading: logInLoading, error: logInError },
@@ -60,8 +96,8 @@ export const LogIn = ({ setViewer }: Props) => {
   if (logInLoading) {
     enqueueSnackbar("Logging you in...");
     return (
-      <div className={s.__container}>
-        <div className={s.__login}>
+      <div className={classes.container}>
+        <div className={classes.login}>
           <CircularProgress />
         </div>
       </div>
@@ -79,15 +115,13 @@ export const LogIn = ({ setViewer }: Props) => {
   }
 
   return (
-    <div className={s.__container}>
-      <Paper className={s.__login}>
-        <div className={s.__intro}>
-          <Typography>
-            <span role="img" aria-label="wave">
-              👋
-            </span>
-          </Typography>
-          <Typography className={s.__title} variant="h5" component="h2">
+    <div className={classes.container}>
+      <Paper className={classes.login}>
+        <div className={classes.intro}>
+          <span role="img" aria-label="wave">
+            👋
+          </span>
+          <Typography className={classes.title} variant="h5" component="h2">
             Login to Grimoire
           </Typography>
           <Typography color="textSecondary">
@@ -96,12 +130,12 @@ export const LogIn = ({ setViewer }: Props) => {
         </div>
         <Button
           onClick={onAuthorize}
-          className={s.__button}
+          className={classes.button}
           variant="contained"
           color="primary"
         >
-          <img className={s.__logo} src={googleLogo} alt="Google logo" />
-          <span>Sign in with Google</span>
+          <img className={classes.logo} src={googleLogo} alt="Google logo" />
+          <Typography component="span">Sign in with Google</Typography>
         </Button>
         <Typography color="textSecondary">
           Note: By signing in, you'll be redirected to the Google consent form
