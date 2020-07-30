@@ -88,8 +88,9 @@ export const typeDefs = gql`
 
   type Query {
     authUrl: String!
-    spells: [Spell!]!
     user(id: ID!): User!
+    spell(id: ID!): Spell!
+    spells: [Spell!]!
   }
 
   type Mutation {
