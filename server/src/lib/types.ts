@@ -58,6 +58,7 @@ export interface Spell {
   description: String;
   damage?: Damage;
   source: string;
+  authorized?: boolean;
 }
 
 export interface CharacterClass {

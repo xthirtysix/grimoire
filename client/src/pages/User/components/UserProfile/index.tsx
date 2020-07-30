@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { User as UserData } from "../../../../lib/graphql/queries/User/__generated__/User";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Grid, Paper, Avatar, Divider, Typography } from "@material-ui/core";
 
 interface Props {

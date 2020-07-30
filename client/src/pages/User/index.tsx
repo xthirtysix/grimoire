@@ -74,9 +74,17 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
         <Typography component="p" color="textSecondary">
           Here is the list of grimoires you created:
         </Typography>
-        <div className={classes.list}>
-          <UserGrimoireSkeleton />
-        </div>
+        <ul className={classes.list}>
+          <li>
+            <UserGrimoireSkeleton />
+          </li>
+          <li>
+            <UserGrimoireSkeleton />
+          </li>
+          <li>
+            <UserGrimoireSkeleton />
+          </li>
+        </ul>
       </>
     );
   }

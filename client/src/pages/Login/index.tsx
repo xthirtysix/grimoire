@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import { Redirect } from "react-router-dom";
 import { useApolloClient, useMutation } from "react-apollo";
-import { Paper, Typography, Button, CircularProgress } from "@material-ui/core";
-import { useSnackbar } from "notistack";
 import { Viewer } from "../../lib/types";
 import { AUTH_URL } from "../../lib/graphql/queries";
 import { AuthUrl as AuthUrlData } from "../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl";
@@ -10,9 +9,10 @@ import {
   LogIn as LogInData,
   LogInVariables,
 } from "../../lib/graphql/mutations/LogIn/__generated__/LogIn";
-import googleLogo from "./assets/google_logo.jpg";
-import { Redirect } from "react-router-dom";
+import { Paper, Typography, Button, CircularProgress } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import googleLogo from "./assets/google_logo.jpg";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
