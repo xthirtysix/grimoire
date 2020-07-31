@@ -14,11 +14,13 @@ export const spellResolvers: IResolvers = {
     ): Promise<Spell> => {
       try {
         const spell = await db.spells.findOne({ _id: new ObjectId(id) });
-
-        const viewer = await authorize(db, req);
-
         if (!spell) {
           throw new Error("spell can't be found");
+        }
+
+        const viewer = await authorize(db, req);
+        if (viewer && viewer._id) {
+          spell.authorized = true;
         }
 
         return spell;
