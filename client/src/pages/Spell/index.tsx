@@ -5,9 +5,12 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { SPELL } from "../../lib/graphql/queries";
 import {
   Spell as SpellData,
+  Spell_spell_castingTime as Scalar,
+  Spell_spell_damage as Damage,
+  Spell_spell_components as Components,
   SpellVariables,
 } from "../../lib/graphql/queries/Spell/__generated__/Spell";
-import { Typography, Paper, Divider } from "@material-ui/core";
+import { Typography, Paper, Divider, Grid } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { SpellSkeleton } from "./components";
 
@@ -22,6 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: "bold",
     },
     block: {
+      boxSizing: "border-box",
+      height: "100%",
       display: "flex",
       flexDirection: "column",
       padding: "2rem",
@@ -32,12 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "stretch",
       gridGap: "1rem",
-    },
-    narrowContainer: {
-      minWidth: "max-content",
-      display: "flex",
-      flexDirection: "column",
-      padding: "2rem",
     },
     dividerLarge: {
       margin: "1rem 0",
@@ -50,43 +49,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface MatchParams {
   id: string;
-}
-
-interface Scalar {
-  value: number | null;
-  unit: string;
-}
-
-interface Components {
-  verbal: boolean;
-  somatic: boolean;
-  material: boolean;
-}
-
-interface Damage {
-  type: string | null;
-  isScaleLevel: boolean | null;
-  isScaleSlot: boolean | null;
-  basic: string | null;
-  level2: string | null;
-  level3: string | null;
-  level4: string | null;
-  level5: string | null;
-  level6: string | null;
-  level7: string | null;
-  level8: string | null;
-  level9: string | null;
-  level10: string | null;
-  level11: string | null;
-  level12: string | null;
-  level13: string | null;
-  level14: string | null;
-  level15: string | null;
-  level16: string | null;
-  level17: string | null;
-  level18: string | null;
-  level19: string | null;
-  level20: string | null;
 }
 
 export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
@@ -206,7 +168,7 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
   ) : null;
 
   const conditionsBlock = data ? (
-    <Paper className={classes.narrowContainer}>
+    <Paper className={classes.block}>
       {concentration(data.spell.isConcentration)}
       {components(data.spell.components)}
       {scalar(data.spell.castingTime, "Casting time")}
@@ -229,7 +191,7 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const damageBlock =
     data && data.spell.damage ? (
-      <Paper className={classes.narrowContainer}>
+      <Paper className={classes.block}>
         {damage(data.spell.damage)}
         {damageLevelScale(data.spell.damage)}
       </Paper>
@@ -238,11 +200,25 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
   const spellData = (
     <>
       {headerBlock}
-      <div className={classes.grid}>
-        {conditionsBlock}
-        {descriptionBlock}
-        {damageBlock}
-      </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6} lg={3} xl={2}>
+          {conditionsBlock}
+        </Grid>{" "}
+        {data && data.spell.damage ? (
+          <>
+            <Grid item xs={12} md={6} lg={3} xl={2}>
+              {damageBlock}
+            </Grid>
+            <Grid item xs={12} md={12} lg={6} xl={8}>
+              {descriptionBlock}
+            </Grid>
+          </>
+        ) : (
+          <Grid item xs={12} md={12} lg={9} xl={10}>
+            {descriptionBlock}
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 
