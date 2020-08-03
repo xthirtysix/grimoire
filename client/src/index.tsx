@@ -89,20 +89,22 @@ const App = () => {
   return (
     <Router>
       <AppHeader viewer={viewer} setViewer={setViewer} />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/grimoires" component={Grimoires} />
-        <Route exact path="/grimoire/:id" component={Grimoire} />
-        <Route exact path="/spells" component={Spells} />
-        <Route exact path="/spell/:id" component={Spell} />
-        <Route exact path="/user/:id" component={User} />
-        <Route
-          exact
-          path="/login"
-          render={(props) => <LogIn {...props} setViewer={setViewer} />}
-        />
-        <Route component={NotFound} />
-      </Switch>
+      <div className="container">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/grimoires" component={Grimoires} />
+          <Route exact path="/grimoire/:id" component={Grimoire} />
+          <Route exact path="/spells" component={Spells} />
+          <Route exact path="/spell/:id" component={Spell} />
+          <Route exact path="/user/:id" component={User} />
+          <Route
+            exact
+            path="/login"
+            render={(props) => <LogIn {...props} setViewer={setViewer} />}
+          />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     </Router>
   );
 };
