@@ -69,6 +69,7 @@ export interface CharacterClass {
 export interface Grimoire {
   _id: string;
   name: string;
+  owner: User;
   characterClasses: CharacterClass[];
   spells?: ObjectId[];
   isCurrent: boolean;
@@ -80,6 +81,7 @@ export interface User {
   name: string;
   avatar: string;
   contact: string;
+  currentGrimoire: string;
   grimoires: Grimoire[];
   authorized?: boolean;
 }

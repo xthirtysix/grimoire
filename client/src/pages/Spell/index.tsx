@@ -109,11 +109,11 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const spellData = (
     <Grid container alignItems={"stretch"} spacing={2}>
-      <Grid item xs={12} sm={6} lg={3}>
-        {conditionsBlock}
-      </Grid>
       {damageBlock ? (
         <>
+          <Grid item xs={12} sm={6} lg={3}>
+            {conditionsBlock}
+          </Grid>
           <Grid item xs={12} sm={6} lg={3}>
             {damageBlock}
           </Grid>
@@ -122,9 +122,14 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
           </Grid>
         </>
       ) : (
-        <Grid item xs={12} sm={12} lg={9}>
-          {descriptionBlock}
-        </Grid>
+        <>
+          <Grid item xs={12} sm={3} lg={3}>
+            {conditionsBlock}
+          </Grid>
+          <Grid item xs={12} sm={9} lg={9}>
+            {descriptionBlock}
+          </Grid>
+        </>
       )}
     </Grid>
   );

@@ -7,6 +7,7 @@ export const USER = gql`
       name
       avatar
       contact
+      currentGrimoire
       grimoires {
         id
         name
@@ -15,7 +16,6 @@ export const USER = gql`
           level
         }
         spells
-        isCurrent
       }
     }
   }
