@@ -9,9 +9,9 @@ export const typeDefs = gql`
   type Grimoire {
     id: ID!
     name: String!
+    owner: User! 
     characterClasses: [CharacterClass!]!
     spells: [String]!
-    isCurrent: Boolean!
   }
 
   type User {
@@ -19,6 +19,7 @@ export const typeDefs = gql`
     name: String!
     avatar: String!
     contact: String!
+    currentGrimoire: String
     grimoires: [Grimoire]
   }
 
@@ -82,10 +83,6 @@ export const typeDefs = gql`
     didRequest: Boolean!
   }
 
-  input LogInInput {
-    code: String!
-  }
-
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -93,8 +90,13 @@ export const typeDefs = gql`
     spells: [Spell!]!
   }
 
+  input LogInInput {
+    code: String!
+  }
+
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
+    setCurrentGrimoire(id: ID!): User!
   }
 `;
