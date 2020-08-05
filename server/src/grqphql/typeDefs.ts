@@ -6,12 +6,24 @@ export const typeDefs = gql`
     level: Int!
   }
 
+  type Grimoires {
+    total: Int!
+    result: [Grimoire!]!
+  }
+
+  type Spells {
+    toal: Int!
+    result: [Spell!]!
+  }
+
   type Grimoire {
     id: ID!
+    owner: User!
     name: String!
     owner: User! 
     characterClasses: [CharacterClass!]!
-    spells: [String]!
+    spells: Spells
+    authorized: Boolean
   }
 
   type User {
@@ -20,7 +32,7 @@ export const typeDefs = gql`
     avatar: String!
     contact: String!
     currentGrimoire: String
-    grimoires: [Grimoire]
+    grimoires: Grimoires
   }
 
   type Scalar {
@@ -86,6 +98,7 @@ export const typeDefs = gql`
   type Query {
     authUrl: String!
     user(id: ID!): User!
+    grimoire(id: ID!): Grimoire!
     spell(id: ID!): Spell!
     spells: [Spell!]!
   }

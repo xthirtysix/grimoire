@@ -9,13 +9,15 @@ export const USER = gql`
       contact
       currentGrimoire
       grimoires {
-        id
-        name
-        characterClasses {
-          class
-          level
+        total
+        result {
+          id
+          name
+          characterClasses {
+            class
+            level
+          }
         }
-        spells
       }
     }
   }

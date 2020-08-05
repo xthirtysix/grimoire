@@ -67,12 +67,13 @@ export interface CharacterClass {
 }
 
 export interface Grimoire {
-  _id: string;
+  _id: ObjectId;
+  owner: string;
   name: string;
   owner: User;
   characterClasses: CharacterClass[];
-  spells?: ObjectId[];
-  isCurrent: boolean;
+  spells: ObjectId[];
+  authorized?: boolean;
 }
 
 export interface User {
@@ -82,11 +83,13 @@ export interface User {
   avatar: string;
   contact: string;
   currentGrimoire: string;
-  grimoires: Grimoire[];
+  grimoires: ObjectId[];
+
   authorized?: boolean;
 }
 
 export interface Database {
   users: Collection<User>;
   spells: Collection<Spell>;
+  grimoires: Collection<Grimoire>;
 }

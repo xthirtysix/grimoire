@@ -1,4 +1,4 @@
-import {Grimoire} from '../../../lib/types'
+import {Grimoire, Spell} from '../../../lib/types'
 
 export interface UserArgs {
   id: string;
@@ -7,5 +7,6 @@ export interface UserArgs {
 }
 
 export interface UserGrimoiresData {
-  grimoires: Grimoire[]
+  total: number;
+  result: Grimoire[]
 }
