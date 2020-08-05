@@ -1,8 +1,8 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
-import { User, Database, Grimoire } from "../../../lib/types";
+import { User, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { UserArgs } from "./types";
+import { UserArgs, UserGrimoiresData } from "./types";
 
 export const userResolvers: IResolvers = {
   Query: {
@@ -34,5 +34,31 @@ export const userResolvers: IResolvers = {
     id: (user: User): string => {
       return user._id;
     },
+    grimoires: async (
+      user: User,
+      _args: {},
+      { db }: { db: Database }
+    ): Promise<UserGrimoiresData | null> => {
+      try {
+        // if (!user.authorized) {
+        //   return null;
+        // }
+
+        const data: UserGrimoiresData = {
+          total: 0,
+          result: [],
+        };
+
+        let cursor = await db.grimoires.find({
+          _id: { $in: user.grimoires},
+        });
+
+        data.total = await cursor.count();
+        data.result = await cursor.toArray();
+
+        return data;
+      } catch (error) {
+        throw new Error(`Failed to query grimoire spells: ${error}`);
+      }}
   },
 };

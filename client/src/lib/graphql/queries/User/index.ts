@@ -8,14 +8,15 @@ export const USER = gql`
       avatar
       contact
       grimoires {
-        id
-        name
-        characterClasses {
-          class
-          level
+        total
+        result {
+          id
+          name
+          characterClasses {
+            class
+            level
+          }
         }
-        spells
-        isCurrent
       }
     }
   }

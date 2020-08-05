@@ -49,15 +49,8 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const user = data ? data.user : null;
   const userProfileElement = user ? <UserProfile user={user} /> : null;
-  const userGrimoires = user && user.grimoires ? user.grimoires : null;
-
-  const userGrimoiresList = userGrimoires
-    ? userGrimoires.map((grimoire) => (
-        <li key={grimoire?.id}>
-          <UserGrimoire grimoire={grimoire} />
-        </li>
-      ))
-    : null;
+  const userGrimoires = user && user.grimoires ? <UserGrimoire userGrimoires={user.grimoires}/> : null;
+  console.log(userGrimoires)
 
   if (error) {
     enqueueSnackbar("Unable to log you in :(", { variant: "error" });
@@ -98,7 +91,7 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
       <Typography component="p" color="textSecondary">
         Here is the list of grimoires you created:
       </Typography>
-      <ul className={classes.list}>{userGrimoiresList}</ul>
+      {userGrimoires}
     </>
   );
 };

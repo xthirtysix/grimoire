@@ -1,10 +1,12 @@
 import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { User_user_grimoires as Grimoire } from "../../../../lib/graphql/queries/User/__generated__/User";
-import { Paper, Typography, Button } from "@material-ui/core";
+import {
+  User,
+} from "../../../../lib/graphql/queries/User/__generated__/User";
+import { Paper, Typography, Button, List } from "@material-ui/core";
 
 interface Props {
-  grimoire: Grimoire | null;
+  userGrimoires: User["user"]["grimoires"];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -17,36 +19,28 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const UserGrimoire = ({ grimoire }: Props) => {
+export const UserGrimoire = ({ userGrimoires }: Props) => {
   const classes = useStyles();
+  const total = userGrimoires ? userGrimoires.total : null;
+  const result = userGrimoires ? userGrimoires.result : null;
 
-  if (grimoire) {
-    return (
-      <Paper className={classes.grimoire}>
-        <Typography component="h3" variant="subtitle1" color="textSecondary">
-          Character name:
-        </Typography>
-        <Typography component="h3" variant="h6">
-          {grimoire.name}
-        </Typography>
-        <Typography component="h3" variant="subtitle1" color="textSecondary">
-          Class:
-        </Typography>
-        <Typography component="p">
-          {grimoire?.characterClasses[0].class}
-        </Typography>
-        <Typography component="h3" variant="subtitle1" color="textSecondary">
-          Level:
-        </Typography>
-        <Typography component="p" gutterBottom>
-          {grimoire?.characterClasses[0].level}
-        </Typography>
-        <Button variant="contained" color="primary">
-          Open
-        </Button>
-      </Paper>
-    );
-  }
+  const grimoireList =
+    total && result ? (
+      <List>
+        {result.map((grimoire) => {
+          return (
+            <li key={grimoire.id}>
+              <Typography>{grimoire.name}</Typography>
+            </li>
+          );
+        })}
+      </List>
+    ) : null;
 
-  return null;
+  return (
+    <>
+      <Typography>Grimoires created: {total}</Typography>
+      {grimoireList}
+    </>
+  );
 };
