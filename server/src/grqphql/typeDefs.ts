@@ -20,7 +20,6 @@ export const typeDefs = gql`
     id: ID!
     owner: User!
     name: String!
-    owner: User! 
     characterClasses: [CharacterClass!]!
     spells: Spells
     authorized: Boolean
