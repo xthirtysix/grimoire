@@ -68,9 +68,8 @@ export interface CharacterClass {
 
 export interface Grimoire {
   _id: ObjectId;
-  owner: string;
   name: string;
-  owner: User;
+  owner: string;
   characterClasses: CharacterClass[];
   spells: ObjectId[];
   authorized?: boolean;
