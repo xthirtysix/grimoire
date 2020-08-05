@@ -20,6 +20,7 @@ export const typeDefs = gql`
     id: ID!
     owner: User!
     name: String!
+    owner: User! 
     characterClasses: [CharacterClass!]!
     spells: Spells
     authorized: Boolean
@@ -94,10 +95,6 @@ export const typeDefs = gql`
     didRequest: Boolean!
   }
 
-  input LogInInput {
-    code: String!
-  }
-
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -106,8 +103,13 @@ export const typeDefs = gql`
     spells: [Spell!]!
   }
 
+  input LogInInput {
+    code: String!
+  }
+
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
+    setCurrentGrimoire(id: ID!): User!
   }
 `;

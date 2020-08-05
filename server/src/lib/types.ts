@@ -70,6 +70,7 @@ export interface Grimoire {
   _id: ObjectId;
   owner: string;
   name: string;
+  owner: User;
   characterClasses: CharacterClass[];
   spells: ObjectId[];
   authorized?: boolean;
@@ -83,6 +84,7 @@ export interface User {
   contact: string;
   currentGrimoire: string;
   grimoires: ObjectId[];
+
   authorized?: boolean;
 }
 

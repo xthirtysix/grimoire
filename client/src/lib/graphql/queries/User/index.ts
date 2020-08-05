@@ -7,6 +7,7 @@ export const USER = gql`
       name
       avatar
       contact
+      currentGrimoire
       grimoires {
         total
         result {
