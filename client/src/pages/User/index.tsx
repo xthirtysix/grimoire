@@ -13,22 +13,21 @@ import {
   UserGrimoireSkeleton,
 } from "./components";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, Grid, Divider } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     list: {
-      margin: "2rem 0",
+      margin: "2rem 0 4rem -8px",
       padding: 0,
       listStyle: "none",
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-      alignItems: "stretch",
-      gridGap: "1rem",
     },
     grimoire: {
       padding: "2rem",
+    },
+    divider: {
+      margin: "2rem 0",
     },
   })
 );
@@ -48,9 +47,14 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const user = data ? data.user : null;
-  const userProfileElement = user ? <UserProfile user={user} /> : null;
-  const userGrimoires = user && user.grimoires ? <UserGrimoire userGrimoires={user.grimoires}/> : null;
-  console.log(userGrimoires)
+  const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0;
+  const userProfileElement = user ? (
+    <UserProfile user={user} grimoires={grimoiresCount} />
+  ) : null;
+  const userGrimoires =
+    user && user.grimoires ? (
+      <UserGrimoire userGrimoires={user.grimoires} />
+    ) : null;
 
   if (error) {
     enqueueSnackbar("Unable to log you in :(", { variant: "error" });
@@ -58,26 +62,28 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   }
 
   if (loading) {
+    // if (true) {
     return (
       <>
         <UserProfileSkeleton />
+        <Divider className={classes.divider} />
         <Typography component="h2" variant="h5">
           Your grimoires
         </Typography>
         <Typography component="p" color="textSecondary">
           Here is the list of grimoires you created:
         </Typography>
-        <ul className={classes.list}>
-          <li>
+        <Grid container component={"ul"} className={classes.list} spacing={2}>
+          <Grid item component={"li"} xs={12} sm={6} md={3}>
             <UserGrimoireSkeleton />
-          </li>
-          <li>
+          </Grid>
+          <Grid item component={"li"} xs={12} sm={6} md={3}>
             <UserGrimoireSkeleton />
-          </li>
-          <li>
+          </Grid>
+          <Grid item component={"li"} xs={12} sm={6} md={3}>
             <UserGrimoireSkeleton />
-          </li>
-        </ul>
+          </Grid>
+        </Grid>
       </>
     );
   }
@@ -85,6 +91,7 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   return (
     <>
       {userProfileElement}
+      <Divider className={classes.divider} />
       <Typography component="h2" variant="h5">
         Your grimoires
       </Typography>
