@@ -5,45 +5,43 @@ import { Grid, Paper, Avatar, Divider, Typography } from "@material-ui/core";
 
 interface Props {
   user: UserData["user"];
+  grimoires: number | null;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     profile: {
       display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      padding: "3rem 2rem",
-      textAlign: "center",
     },
     avatar: {
-      margin: "0 auto",
+      margin: 0,
       width: theme.spacing(10),
       height: theme.spacing(10),
     },
-    divider: {
-      margin: "3rem 0 1rem",
+    detailes: {
+      display: "flex",
+      flexDirection: "column",
+      paddingLeft: "2rem",
+    },
+    count: {
+      marginTop: "auto",
     },
   })
 );
 
-export const UserProfile = ({ user }: Props) => {
+export const UserProfile = ({ user, grimoires }: Props) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={3} justify="center">
-      <Grid item xs={12} sm={6} md={4}>
-        <Paper className={classes.profile}>
-          <Avatar
-            alt={user.name}
-            src={user.avatar}
-            className={classes.avatar}
-          />
-          <Divider className={classes.divider} />
-          <Typography>{user.name}</Typography>
-          <Typography color="textSecondary">{user.contact}</Typography>
-        </Paper>
-      </Grid>
-    </Grid>
+    <div className={classes.profile}>
+      <Avatar className={classes.avatar} alt={user.name} src={user.avatar} />
+      <div className={classes.detailes}>
+        <Typography>{user.name}</Typography>
+        <Typography color="textSecondary">{user.contact}</Typography>
+        <Typography className={classes.count}>
+          Grimoires created: {grimoires}
+        </Typography>
+      </div>
+    </div>
   );
 };

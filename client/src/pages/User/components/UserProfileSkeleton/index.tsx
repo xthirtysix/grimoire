@@ -7,17 +7,19 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     profile: {
       display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      padding: "3rem 2rem",
-      alignItems: "center",
     },
     avatar: {
-      margin: "0 auto",
+      margin: 0,
+      width: theme.spacing(10),
+      height: theme.spacing(10),
     },
-    divider: {
-      width: "100%",
-      margin: "3rem 0 1rem",
+    detailes: {
+      display: "flex",
+      flexDirection: "column",
+      paddingLeft: "2rem",
+    },
+    count: {
+      marginTop: "auto",
     },
   })
 );
@@ -26,21 +28,25 @@ export const UserProfileSkeleton = () => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={3} justify="center">
-      <Grid item xs={12} sm={6} md={4}>
-        <Paper className={classes.profile}>
-          <Skeleton
-            animation="wave"
-            variant="circle"
-            width="80px"
-            height="80px"
-            className={classes.avatar}
-          />
-          <Divider className={classes.divider} />
-          <Skeleton variant="text" width="140px" height="24px" animation="wave" />
-          <Skeleton variant="text" width="170px" height="24px" animation="wave" />
-        </Paper>
-      </Grid>
-    </Grid>
+    <div className={classes.profile}>
+      <Skeleton
+        animation="wave"
+        variant="circle"
+        width="80px"
+        height="80px"
+        className={classes.avatar}
+      />
+      <div className={classes.detailes}>
+        <Skeleton variant="text" width="140px" height="24px" animation="wave" />
+        <Skeleton variant="text" width="170px" height="24px" animation="wave" />
+        <Skeleton
+          className={classes.count}
+          variant="text"
+          width="140px"
+          height="24px"
+          animation="wave"
+        />
+      </div>
+    </div>
   );
 };
