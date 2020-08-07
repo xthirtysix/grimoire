@@ -5,5 +5,6 @@ export interface GrimoireArgs {
 }
 
 export interface GrimoireSpellsData {
+  total: number;
   result: Spell[];
 }
