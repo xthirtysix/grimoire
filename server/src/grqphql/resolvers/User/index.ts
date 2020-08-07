@@ -40,10 +40,6 @@ export const userResolvers: IResolvers = {
       { db }: { db: Database }
     ): Promise<UserGrimoiresData | null> => {
       try {
-        // if (!user.authorized) {
-        //   return null;
-        // }
-
         const data: UserGrimoiresData = {
           total: 0,
           result: [],

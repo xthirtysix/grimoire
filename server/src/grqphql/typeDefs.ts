@@ -12,7 +12,7 @@ export const typeDefs = gql`
   }
 
   type Spells {
-    toal: Int!
+    total: Int!
     result: [Spell!]!
   }
 

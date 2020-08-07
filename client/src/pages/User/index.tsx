@@ -62,7 +62,6 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   }
 
   if (loading) {
-    // if (true) {
     return (
       <>
         <UserProfileSkeleton />

@@ -62,6 +62,7 @@ export const grimoireResolvers: IResolvers = {
         }
 
         const data: GrimoireSpellsData = {
+          total: 0,
           result: [],
         };
 
@@ -69,6 +70,7 @@ export const grimoireResolvers: IResolvers = {
           _id: { $in: grimoire.spells },
         });
 
+        data.total = await cursor.count();
         data.result = await cursor.toArray();
 
         return data;

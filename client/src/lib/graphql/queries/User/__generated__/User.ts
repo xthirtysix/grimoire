@@ -32,6 +32,7 @@ export interface User_user {
   name: string;
   avatar: string;
   contact: string;
+  currentGrimoire: string | null;
   grimoires: User_user_grimoires | null;
 }
 
