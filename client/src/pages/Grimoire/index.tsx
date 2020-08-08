@@ -7,7 +7,8 @@ import {
   GrimoireVariables,
 } from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 // import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { GrimoireSpells } from "./components/GrimoireSpells";
+import { Sidebar, SidebarSkeleton } from "../../components";
+import {GrimoireSpells} from './components/GrimoireSpells'
 
 // const useStyles = makeStyles((theme: Theme) => createStyles({}));
 
@@ -26,11 +27,11 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   );
 
   if (loading) {
-    return <h2>Loading</h2>
+    return <SidebarSkeleton/>;
   }
 
-  if (error ){
-    return <h2>Error</h2>
+  if (error) {
+    return <h2>Error</h2>;
   }
 
   const spellList =
@@ -38,12 +39,17 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     data.grimoire &&
     data.grimoire.spells &&
     data.grimoire.spells.total ? (
-      <GrimoireSpells grimoireSpells={data.grimoire.spells} />
+      <GrimoireSpells
+        grimoireSpells={data.grimoire.spells}
+      />
     ) : null;
 
-  return (
-    <>
-      {spellList}
-    </>
-  );
+  const header = data && data.grimoire.name ? data.grimoire.name : '';
+  const subheader = data && data.grimoire.characterClasses ? data.grimoire.characterClasses.map((item) => {
+    return `${item.class} (${item.level})`
+  }).join(', ') : null;
+
+  const sidebar = spellList ? <Sidebar header={header} subHeader={subheader} drawerItems={spellList}/> : null;
+
+  return <>{sidebar}</>;
 };

@@ -101,7 +101,7 @@ export const UserGrimoire = ({ userGrimoires }: Props) => {
                     className={classes.button}
                     variant="contained"
                     color="primary"
-                    href={`/gimoire/${grimoire.id}`}
+                    href={`/grimoire/${grimoire.id}`}
                   >
                     Open
                   </Button>

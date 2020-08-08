@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import { MenuItems } from "./components";
 import { Viewer } from "../../lib/types";
 
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -15,6 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
     bar: {
       background: "#667eea",
       backgroundImage: "linear-gradient(115deg, #667eea 0%, #764ba2 100%)",
+      [theme.breakpoints.up("sm")]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+      },
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -36,7 +42,7 @@ export const AppHeader = ({ viewer, setViewer }: Props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.bar}>
+      <AppBar className={classes.bar}>
         <Toolbar>
           {/* <IconButton
             edge="start"
