@@ -1,7 +1,18 @@
 import React from "react";
 import { Grimoire } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
-import { List, ListItem, ListItemText, ListSubheader } from "@material-ui/core";
+import { ListItem, ListItemText, ListSubheader } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    list: {
+      padding: 0,
+    },
+    listSection: {
+      backgroundColor: "white",
+    },
+  })
+);
 interface Props {
   grimoireSpells: Grimoire["grimoire"]["spells"];
 }
@@ -11,6 +22,8 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     grimoireSpells && grimoireSpells.total ? grimoireSpells.total : null;
   const result =
     grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null;
+
+  const classes = useStyles();
 
   const spellLevels = Array.from(Array(10).keys());
 
@@ -31,11 +44,11 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     total && result
       ? spellLevels.map((level) => (
           <li key={`section-${level}`}>
-            <ul>
+            <ul className={classes.list}>
               {result.some((spell) => spell.level === level) ? (
-                <ListSubheader>{`${levelNumberToString.get(
-                  level
-                )}`}</ListSubheader>
+                <ListSubheader
+                  className={classes.listSection}
+                >{`${levelNumberToString.get(level)}`}</ListSubheader>
               ) : null}
               {result
                 .filter((spell) => spell.level === level)
@@ -49,5 +62,5 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
         ))
       : null;
 
-  return <List subheader={<li />}>{spellList}</List>;
+  return <>{spellList}</>;
 };

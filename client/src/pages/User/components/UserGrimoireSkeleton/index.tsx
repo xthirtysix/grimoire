@@ -9,10 +9,18 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "relative",
       display: "flex",
       flexDirection: "column",
-      padding: "1rem 2rem",
     },
-    header: {
-      marginBottom: "1rem",
+    cardHeader: {
+      position: "relative",
+      padding: "1rem 2rem",
+      borderTopLeftRadius: "5px",
+      borderTopRightRadius: "5px",
+      background: "#667eea",
+      backgroundImage: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    },
+    cardContainer: {
+      boxSizing: "border-box",
+      padding: "1rem 2rem",
     },
     level: {
       position: "absolute",
@@ -34,29 +42,27 @@ export const UserGrimoireSkeleton = () => {
 
   return (
     <Paper className={classes.grimoire}>
-      <Skeleton
-        className={classes.header}
-        width="120px"
-        height="35px"
-        variant="text"
-        animation="wave"
-      />
-      <Skeleton
-        className={classes.level}
-        width="40px"
-        height="18px"
-        variant="text"
-        animation="wave"
-      />
-      <Skeleton width="100px" height="25px" variant="text" animation="wave" />
-      <Skeleton width="100px" height="25px" variant="text" animation="wave" />
-      <Skeleton
-        className={classes.button}
-        width="80px"
-        height="36px"
-        variant="rect"
-        animation="wave"
-      />
+      <div className={classes.cardHeader}>
+        <Skeleton width="120px" height="25px" variant="text" animation="wave" />
+      </div>
+      <div className={classes.cardContainer}>
+        <Skeleton
+          className={classes.level}
+          width="40px"
+          height="18px"
+          variant="text"
+          animation="wave"
+        />
+        <Skeleton width="100px" height="23px" variant="text" animation="wave" />
+        <Skeleton width="100px" height="23px" variant="text" animation="wave" />
+        <Skeleton
+          className={classes.button}
+          width="70px"
+          height="36px"
+          variant="rect"
+          animation="wave"
+        />
+      </div>
     </Paper>
   );
 };
