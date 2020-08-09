@@ -7,20 +7,15 @@ import Typography from "@material-ui/core/Typography";
 import { MenuItems } from "./components";
 import { Viewer } from "../../lib/types";
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
     },
     bar: {
+      zIndex: theme.zIndex.drawer + 1,
       background: "#667eea",
       backgroundImage: "linear-gradient(115deg, #667eea 0%, #764ba2 100%)",
-      [theme.breakpoints.up("sm")]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-      },
     },
     menuButton: {
       marginRight: theme.spacing(2),
