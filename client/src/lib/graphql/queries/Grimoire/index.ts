@@ -18,6 +18,7 @@ export const GRIMOIRE = gql`
           id
           name
           level
+          description
         }
       }
     }

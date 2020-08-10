@@ -7,8 +7,15 @@ import {
   GrimoireVariables,
 } from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 // import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Sidebar, SidebarSkeleton } from "../../components";
-import {GrimoireSpells} from './components/GrimoireSpells'
+import { SidebarSkeleton } from "../../components";
+import { GrimoireSpells } from "./components/GrimoireSpells";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 // const useStyles = makeStyles((theme: Theme) => createStyles({}));
 
@@ -27,7 +34,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   );
 
   if (loading) {
-    return <SidebarSkeleton/>;
+    return <SidebarSkeleton />;
   }
 
   if (error) {
@@ -35,21 +42,36 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   }
 
   const spellList =
-    data &&
-    data.grimoire &&
-    data.grimoire.spells &&
-    data.grimoire.spells.total ? (
-      <GrimoireSpells
-        grimoireSpells={data.grimoire.spells}
-      />
-    ) : null;
+    data && data.grimoire && data.grimoire.spells && data.grimoire.spells.total
+      ? data.grimoire.spells.result
+      : null;
 
-  const header = data && data.grimoire.name ? data.grimoire.name : '';
-  const subheader = data && data.grimoire.characterClasses ? data.grimoire.characterClasses.map((item) => {
-    return `${item.class} (${item.level})`
-  }).join(', ') : null;
+  const header = data && data.grimoire.name ? data.grimoire.name : "";
+  const subheader =
+    data && data.grimoire.characterClasses
+      ? data.grimoire.characterClasses
+          .map((item) => {
+            return `${item.class} (${item.level})`;
+          })
+          .join(", ")
+      : null;
 
-  const sidebar = spellList ? <Sidebar header={header} subHeader={subheader} drawerItems={spellList}/> : null;
+  const accordion = spellList ? (
+    <div>
+      {spellList.map((spell) => {
+        return (
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>{spell.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{spell.description}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </div>
+  ) : null;
 
-  return <>{sidebar}</>;
+  return <>{accordion}</>;
 };
