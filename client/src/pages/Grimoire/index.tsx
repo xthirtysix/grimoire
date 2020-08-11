@@ -9,13 +9,7 @@ import {
 // import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { SidebarSkeleton } from "../../components";
 import { GrimoireSpells } from "./components/GrimoireSpells";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Typography } from "@material-ui/core";
 
 // const useStyles = makeStyles((theme: Theme) => createStyles({}));
 
@@ -41,37 +35,27 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     return <h2>Error</h2>;
   }
 
-  const spellList =
-    data && data.grimoire && data.grimoire.spells && data.grimoire.spells.total
-      ? data.grimoire.spells.result
-      : null;
-
-  const header = data && data.grimoire.name ? data.grimoire.name : "";
-  const subheader =
-    data && data.grimoire.characterClasses
-      ? data.grimoire.characterClasses
-          .map((item) => {
-            return `${item.class} (${item.level})`;
-          })
-          .join(", ")
-      : null;
-
-  const accordion = spellList ? (
-    <div>
-      {spellList.map((spell) => {
-        return (
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{spell.name}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{spell.description}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-    </div>
+  const grimoireData = data ? (
+    <>
+      <Typography>{`${data.grimoire.name}'s grimoire`}</Typography>
+      {data.grimoire.spells?.total ? (
+        <Typography>Spells contained {data.grimoire.spells?.total}</Typography>
+      ) : null}
+    </>
   ) : null;
 
-  return <>{accordion}</>;
+  const spellList =
+    data &&
+    data.grimoire &&
+    data.grimoire.spells &&
+    data.grimoire.spells.total ? (
+      <GrimoireSpells grimoireSpells={data.grimoire.spells} />
+    ) : null;
+
+  return (
+    <>
+      {grimoireData}
+      {spellList}
+    </>
+  );
 };

@@ -74,7 +74,6 @@ export const Components = (components: ComponentsData | null) => {
           {components.material ? " M" : null}
         </span>
       </Typography>
-      <Divider className={classes.dividerSmall} />
     </>
   ) : null;
 };
@@ -86,7 +85,6 @@ export const Concentration = (isConcentration: boolean) => {
         <img src={shield} alt="shield" />
         <span className={classes.title}>Concentration</span>
       </Typography>
-      <Divider className={classes.dividerSmall} />
     </>
   ) : null;
 };
@@ -94,12 +92,11 @@ export const Concentration = (isConcentration: boolean) => {
 export const Materials = (materials: string | null) => {
   return materials ? (
     <>
-      <Divider className={classes.dividerLarge} />
       <Typography className={classes.property}>
         <img src={feather} alt="feather" />
-        <span className={classes.title}>Materials:</span>
+        <span className={classes.title}>Materials:</span>{materials}
       </Typography>
-      <Typography>{materials}</Typography>
+      {/* <Typography>{materials}</Typography> */}
     </>
   ) : null;
 };
@@ -124,7 +121,6 @@ export const DamageLevelScale = (dmg: DamageData | null) => {
   const refString = "level";
   return dmg && dmg.isScaleLevel ? (
     <>
-      <Divider className={classes.dividerSmall} />
       <Typography className={classes.title}>On higher levels</Typography>{" "}
       {Object.entries(dmg)
         .filter((key) => {
@@ -133,7 +129,7 @@ export const DamageLevelScale = (dmg: DamageData | null) => {
         .map((key) => {
           return (
             <Typography key={key[0]} className={classes.property}>
-                <img src={diceicon} alt="dice" />
+              <img src={diceicon} alt="dice" />
               <span className={classes.title}>
                 Level {key[0].slice(refString.length)}:
               </span>{" "}
