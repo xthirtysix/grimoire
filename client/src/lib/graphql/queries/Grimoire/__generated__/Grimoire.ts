@@ -23,6 +23,7 @@ export interface Grimoire_grimoire_spells_result {
   id: string;
   name: string;
   level: number;
+  description: string;
 }
 
 export interface Grimoire_grimoire_spells {
