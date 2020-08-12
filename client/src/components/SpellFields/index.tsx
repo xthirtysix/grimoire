@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Divider } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import {
   Spell_spell_damage as DamageData,
   Spell_spell_castingTime as ScalarData,

@@ -31,6 +31,16 @@ const useStyles = makeStyles((theme: Theme) =>
     spellList: {
       marginBottom: "1rem",
     },
+    spellHeader: {
+      flexBasis: "70%",
+      flexShrink: 0,
+    },
+    spellSubheader: {
+      color: theme.palette.text.secondary,
+      fontSize: theme.typography.pxToRem(10),
+      alignSelf: "center",
+      marginLeft: "auto",
+    },
     detailesContainer: {
       display: "flex",
       flexWrap: "wrap",
@@ -91,11 +101,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     ) : null;
 
   const materialsBlock = (spellMaterials: string | null) =>
-    spellMaterials ? (
-      <>
-        {Materials(spellMaterials)}
-      </>
-    ) : null;
+    spellMaterials ? <>{Materials(spellMaterials)}</> : null;
 
   const spellList =
     total && result
@@ -113,7 +119,12 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
                 .map((spell) => (
                   <Accordion key={`spell-${spell.name}`}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography>{spell.name}</Typography>
+                      <Typography className={classes.spellHeader}>
+                        {spell.name}
+                      </Typography>
+                      <Typography className={classes.spellSubheader}>
+                        {spell.school}
+                      </Typography>
                     </AccordionSummary>
                     <AccordionDetails className={classes.detailesContainer}>
                       <div className={classes.detailesBlock}>

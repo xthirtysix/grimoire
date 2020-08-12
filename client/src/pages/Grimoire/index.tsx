@@ -6,12 +6,13 @@ import {
   Grimoire as GrimoireData,
   GrimoireVariables,
 } from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
-// import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { SidebarSkeleton } from "../../components";
-import { GrimoireSpells } from "./components/GrimoireSpells";
-import { Typography } from "@material-ui/core";
-
-// const useStyles = makeStyles((theme: Theme) => createStyles({}));
+import {
+  GrimoireSpells,
+  GrimoireSpellsSkeleton,
+  GrimoireDetailes,
+  GrimoireDetailesSkeleton,
+} from "./components";
+import { Divider } from "@material-ui/core";
 
 interface MatchParams {
   id: string;
@@ -27,22 +28,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     }
   );
 
-  if (loading) {
-    return <SidebarSkeleton />;
-  }
-
-  if (error) {
-    return <h2>Error</h2>;
-  }
-
-  const grimoireData = data ? (
-    <>
-      <Typography>{`${data.grimoire.name}'s grimoire`}</Typography>
-      {data.grimoire.spells?.total ? (
-        <Typography>Spells contained {data.grimoire.spells?.total}</Typography>
-      ) : null}
-    </>
-  ) : null;
+  const grimoireDetailes = data?.grimoire ? data.grimoire : null;
 
   const spellList =
     data &&
@@ -52,9 +38,24 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
       <GrimoireSpells grimoireSpells={data.grimoire.spells} />
     ) : null;
 
+  if (error) {
+    return <h2>Error</h2>;
+  }
+
+  if (loading) {
+    return (
+      <>
+        <GrimoireDetailesSkeleton />
+        <Divider className="divider" />
+        <GrimoireSpellsSkeleton />
+      </>
+    );
+  }
+
   return (
     <>
-      {grimoireData}
+      <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
+      <Divider className="divider" />
       {spellList}
     </>
   );

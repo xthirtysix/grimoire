@@ -27,7 +27,9 @@ body {
 }
 
 .spinnerWrapper {
-  /* width: 100px;
-  height: 100px; */
   margin: auto;
+}
+
+.divider {
+  margin: 1rem 0 !important;
 }
