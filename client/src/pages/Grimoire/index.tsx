@@ -6,18 +6,13 @@ import {
   Grimoire as GrimoireData,
   GrimoireVariables,
 } from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
-// import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { SidebarSkeleton } from "../../components";
-import { GrimoireSpells } from "./components/GrimoireSpells";
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-// const useStyles = makeStyles((theme: Theme) => createStyles({}));
+  GrimoireSpells,
+  GrimoireSpellsSkeleton,
+  GrimoireDetailes,
+  GrimoireDetailesSkeleton,
+} from "./components";
+import { Divider } from "@material-ui/core";
 
 interface MatchParams {
   id: string;
@@ -33,45 +28,35 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     }
   );
 
-  if (loading) {
-    return <SidebarSkeleton />;
-  }
+  const grimoireDetailes = data?.grimoire ? data.grimoire : null;
+
+  const spellList =
+    data &&
+    data.grimoire &&
+    data.grimoire.spells &&
+    data.grimoire.spells.total ? (
+      <GrimoireSpells grimoireSpells={data.grimoire.spells} />
+    ) : null;
 
   if (error) {
     return <h2>Error</h2>;
   }
 
-  const spellList =
-    data && data.grimoire && data.grimoire.spells && data.grimoire.spells.total
-      ? data.grimoire.spells.result
-      : null;
+  if (loading) {
+    return (
+      <>
+        <GrimoireDetailesSkeleton />
+        <Divider className="divider" />
+        <GrimoireSpellsSkeleton />
+      </>
+    );
+  }
 
-  const header = data && data.grimoire.name ? data.grimoire.name : "";
-  const subheader =
-    data && data.grimoire.characterClasses
-      ? data.grimoire.characterClasses
-          .map((item) => {
-            return `${item.class} (${item.level})`;
-          })
-          .join(", ")
-      : null;
-
-  const accordion = spellList ? (
-    <div>
-      {spellList.map((spell) => {
-        return (
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{spell.name}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{spell.description}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-    </div>
-  ) : null;
-
-  return <>{accordion}</>;
+  return (
+    <>
+      <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
+      <Divider className="divider" />
+      {spellList}
+    </>
+  );
 };
