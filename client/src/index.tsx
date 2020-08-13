@@ -5,6 +5,7 @@ import { ApolloProvider, useMutation } from "react-apollo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import { AppHeader, AppHeaderSkeleton } from "./sections";
+import { Affix, Layout } from 'antd'
 import {
   Home,
   Grimoires,
@@ -24,6 +25,9 @@ import {
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { Viewer } from "./lib/types";
 import "./index.css";
+import { DatePicker, message } from 'antd';
+import 'antd/dist/antd.css';
+
 
 const client = new ApolloClient({
   uri: "/api",
@@ -88,8 +92,10 @@ const App = () => {
 
   return (
     <Router>
-      <AppHeader viewer={viewer} setViewer={setViewer} />
-      <div className="container">
+      <Layout>
+        <Affix offsetTop={0}>
+          <AppHeader viewer={viewer} setViewer={setViewer} />
+        </Affix>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/grimoires" component={Grimoires} />
@@ -104,7 +110,7 @@ const App = () => {
           />
           <Route component={NotFound} />
         </Switch>
-      </div>
+      </Layout>
     </Router>
   );
 };

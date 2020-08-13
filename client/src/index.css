@@ -3,11 +3,6 @@ body {
   background: #e2e1e0;
 }
 
-#root {
-  margin-top: 6rem;
-  padding: 0 2rem;
-}
-
 .visually-hidden {
   position: absolute;
   left: -10000px;
