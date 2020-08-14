@@ -1,0 +1,31 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
+  grid-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  svg {
+    margin-right: 0.2rem;
+  }
+}
+
+.cardRemoveButton {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: red;
+  background-color: transparent;
+}
+
+.cardCharacterClass {
+  display: block;
+}

@@ -3,6 +3,14 @@ body {
   background: #e2e1e0;
 }
 
+#root {
+  min-height: 100%;
+}
+
+#root .ant-layout {
+  min-height: 100vh;
+}
+
 .visually-hidden {
   position: absolute;
   left: -10000px;
@@ -19,6 +27,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 .spinnerWrapper {

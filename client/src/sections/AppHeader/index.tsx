@@ -1,13 +1,10 @@
 import React from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout } from "antd";
+import { BookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import { MenuItems } from "./components";
 import { Viewer } from "../../lib/types";
-import s from './styles/AppHeader.module.scss';
-import { light } from "@material-ui/core/styles/createPalette";
+import s from "./styles/AppHeader.module.scss";
 
 const { Header } = Layout;
 
@@ -19,7 +16,10 @@ interface Props {
 export const AppHeader = ({ viewer, setViewer }: Props) => {
   return (
     <Header className={s.header}>
-      <Link to="/" className={s.logo}>Grimoire</Link>
+      <Link to="/" className={s.logo}>
+        <BookOutlined />
+        Grimoire
+      </Link>
       <div className={s.list}>
         <MenuItems viewer={viewer} setViewer={setViewer} />
       </div>
