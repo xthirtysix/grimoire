@@ -1,6 +1,10 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Typography } from "antd";
+import { BookOutlined } from "@ant-design/icons";
+//Data
 import { Grimoire_grimoire as Grimoire } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+
+const { Title, Text } = Typography;
 
 interface Props {
   grimoireDetailes: Grimoire | null;
@@ -9,9 +13,12 @@ interface Props {
 export const GrimoireDetailes = ({ grimoireDetailes }: Props) => {
   return grimoireDetailes ? (
     <>
-      <Typography>{`Grimoire owner: ${grimoireDetailes.name}`}</Typography>
+      <Title level={3}>
+        <BookOutlined />
+        {grimoireDetailes.name}
+      </Title>
       {grimoireDetailes.spells?.total ? (
-        <Typography>Spells contained: {grimoireDetailes.spells?.total}</Typography>
+        <Text>Spells contained: {grimoireDetailes.spells?.total}</Text>
       ) : null}
     </>
   ) : null;

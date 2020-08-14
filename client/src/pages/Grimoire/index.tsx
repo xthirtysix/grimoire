@@ -1,18 +1,23 @@
 import React from "react";
+import { Layout, Divider } from "antd";
 import { RouteComponentProps } from "react-router-dom";
-import { useQuery } from "react-apollo";
-import { GRIMOIRE } from "../../lib/graphql/queries";
-import {
-  Grimoire as GrimoireData,
-  GrimoireVariables,
-} from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 import {
   GrimoireSpells,
   GrimoireSpellsSkeleton,
   GrimoireDetailes,
   GrimoireDetailesSkeleton,
 } from "./components";
-import { Divider } from "@material-ui/core";
+// Data
+import { useQuery } from "react-apollo";
+import { GRIMOIRE } from "../../lib/graphql/queries";
+import {
+  Grimoire as GrimoireData,
+  GrimoireVariables,
+} from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+// Styles
+import s from "./styles/Grimoire.module.scss";
+
+const { Content } = Layout;
 
 interface MatchParams {
   id: string;
@@ -44,19 +49,18 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
 
   if (loading) {
     return (
-      <>
+      <Content className="container">
         <GrimoireDetailesSkeleton />
-        <Divider className="divider" />
         <GrimoireSpellsSkeleton />
-      </>
+      </Content>
     );
   }
 
   return (
-    <>
+    <Content className="container">
       <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
       <Divider className="divider" />
       {spellList}
-    </>
+    </Content>
   );
 };

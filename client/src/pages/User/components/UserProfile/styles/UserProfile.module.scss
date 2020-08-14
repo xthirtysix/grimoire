@@ -1,0 +1,9 @@
+.userinfo {
+  display: grid;
+  grid-template-columns: 64px auto;
+  grid-gap: 1rem;
+}
+
+.userinfoData {
+  display: block;
+}
