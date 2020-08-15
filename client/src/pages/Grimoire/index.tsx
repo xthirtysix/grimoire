@@ -15,7 +15,6 @@ import {
   GrimoireVariables,
 } from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 // Styles
-import s from "./styles/Grimoire.module.scss";
 
 const { Content } = Layout;
 

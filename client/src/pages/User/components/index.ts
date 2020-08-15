@@ -1,4 +1,4 @@
 export * from "./UserProfile";
-export * from "./UserGrimoire";
+export * from "./UserGrimoires";
 export * from "./UserProfileSkeleton";
-export * from "./UserGrimoireSkeleton";
+export * from "./UserGrimoiresSkeleton";

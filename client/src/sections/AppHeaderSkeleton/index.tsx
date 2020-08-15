@@ -7,7 +7,7 @@ const { Header } = Layout;
 export const AppHeaderSkeleton = () => {
   return (
     <Header className={s.header}>
-      <a className={s.logo}>Grimoire</a>
+      <a href='/' className={s.logo}>Grimoire</a>
     </Header>
   );
 };
