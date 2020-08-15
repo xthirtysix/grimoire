@@ -1,20 +1,8 @@
 import React from "react";
-import { Collapse, Divider, Typography } from "antd";
-import {
-  Damage,
-  DamageLevelScale,
-  Scalar,
-  Components,
-  Concentration,
-  Materials,
-} from "../../../../components";
+import { Collapse, Typography, Descriptions } from "antd";
 //Data
-import {
-  Grimoire,
-  Grimoire_grimoire_spells_result_damage as SpellDamage,
-} from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+import { Grimoire } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 //Styles
-import s from "./styles/GrimoireSpells.module.scss";
 
 const { Panel } = Collapse;
 const { Title, Text } = Typography;
@@ -44,19 +32,6 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     [9, "Level 9"],
   ]);
 
-  const damageBlock = (spellDamage: SpellDamage | null) =>
-    spellDamage ? (
-      <>
-        <div className={s.detailesBlock}>{Damage(spellDamage)}</div>
-        {spellDamage.isScaleLevel ? (
-          <div className={s.detailesBlock}>{DamageLevelScale(spellDamage)}</div>
-        ) : null}
-      </>
-    ) : null;
-
-  const materialsBlock = (spellMaterials: string | null) =>
-    spellMaterials ? <>{Materials(spellMaterials)}</> : null;
-
   const spellList =
     total && result
       ? spellLevels.map((level) => (
@@ -69,21 +44,71 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
                     .filter((spell) => spell.level === level)
                     .map((spell) => (
                       <Panel key={spell.id} header={spell.name}>
-                        <p className={s.detailesContainer}>
-                          <div className={s.detailesBlock}>
-                            {Concentration(spell.isConcentration)}
-                            {Components(spell.components)}
-                            {Scalar(spell.castingTime, "Casting time")}
-                            {Scalar(spell.duration, "Duration")}
-                            {Scalar(spell.range, "Range")}
-                          </div>
-                          {damageBlock(spell.damage)}
-                          <Text>
-                            {materialsBlock(spell.materials)}
-                            <Divider className={s.divider} />
-                            {spell.description}
-                          </Text>
-                        </p>
+                        <Descriptions bordered>
+                          {spell.isConcentration ? (
+                            <Descriptions.Item label="Concentration">
+                              required
+                            </Descriptions.Item>
+                          ) : null}
+                          {spell.components ? (
+                            <Descriptions.Item label="Components">
+                              {spell.components.verbal ? "V " : null}
+                              {spell.components.somatic ? "S " : null}
+                              {spell.components.material ? "M" : null}
+                            </Descriptions.Item>
+                          ) : null}
+                          <Descriptions.Item label="Casting time">
+                            {spell.castingTime.value
+                              ? `${spell.castingTime.value} ${spell.castingTime.unit}`
+                              : spell.castingTime.unit}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="Duration">
+                            {spell.duration.value
+                              ? `${spell.duration.value} ${spell.duration.unit}`
+                              : spell.duration.unit}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="Range">
+                            {spell.range.value
+                              ? `${spell.range.value} ${spell.range.unit}`
+                              : spell.range.unit}
+                          </Descriptions.Item>
+                          {spell.damage ? (
+                            <>
+                              <Descriptions.Item label="Basic damage">
+                                {spell.damage.basic}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Damage type">
+                                {spell.damage.type}
+                              </Descriptions.Item>
+                            </>
+                          ) : null}
+                          {spell.damage && spell.damage.isScaleLevel ? (
+                            <Descriptions.Item label="On higher levels">
+                              {Object.entries(spell.damage)
+                                .filter((key) => {
+                                  return key[0].indexOf("level") > -1 && key[1];
+                                })
+                                .map((key) => {
+                                  return (
+                                    <>
+                                      <span key={key[0]}>
+                                        {`on ${key[0].slice("level".length)}: ${
+                                          key[1]
+                                        }`}
+                                      </span>
+                                      <br></br>
+                                    </>
+                                  );
+                                })}
+                            </Descriptions.Item>
+                          ) : null}
+                          {spell.materials ? (
+                            <Descriptions.Item label="Materials" span={3}>
+                              {spell.materials}
+                            </Descriptions.Item>
+                          ) : null}
+                        </Descriptions>
+                        <Text>{spell.description}</Text>
                       </Panel>
                     ))}
                 </Collapse>
