@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Avatar, Menu, Button } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import s from "./styles/MenuItems.module.scss";
+//Data
 import { useMutation } from "react-apollo";
 import { LOG_OUT } from "../../../../lib/graphql/mutations";
 import { LogOut as LogOutData } from "../../../../lib/graphql/mutations/LogOut/__generated__/LogOut";
 import { Viewer } from "../../../../lib/types";
+//Styles
 
 const { Item, SubMenu } = Menu;
 

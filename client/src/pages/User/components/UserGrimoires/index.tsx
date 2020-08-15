@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, Typography } from "antd";
 import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+//Data
 import { User } from "../../../../lib/graphql/queries/User/__generated__/User";
-
-import s from "./styles/UserGrimoire.module.scss";
+//Styles
+import s from "../../styles/UserGrimoires.module.scss";
 
 const { Title, Text } = Typography;
 
@@ -12,7 +12,7 @@ interface Props {
   userGrimoires: User["user"]["grimoires"];
 }
 
-export const UserGrimoire = ({ userGrimoires }: Props) => {
+export const UserGrimoires = ({ userGrimoires }: Props) => {
   const total = userGrimoires ? userGrimoires.total : null;
   const result = userGrimoires ? userGrimoires.result : null;
 

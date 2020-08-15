@@ -1,19 +1,20 @@
 import React from "react";
 import { Layout, Divider, Typography } from "antd";
+import {
+  UserProfile,
+  UserGrimoires,
+  UserProfileSkeleton,
+  UserGrimoiresSkeleton
+} from "./components";
 import { RouteComponentProps } from "react-router-dom";
+//Data
 import { useQuery } from "react-apollo";
 import { USER } from "../../lib/graphql/queries";
 import {
   User as UserData,
   UserVariables,
 } from "../../lib/graphql/queries/User/__generated__/User";
-import {
-  UserProfile,
-  UserGrimoire,
-  UserProfileSkeleton,
-  UserGrimoireSkeleton
-} from "./components";
-
+//Styles
 import s from "./styles/User.module.scss";
 
 const { Content } = Layout;
@@ -37,7 +38,7 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
   ) : null;
   const userGrimoires =
     user && user.grimoires ? (
-      <UserGrimoire userGrimoires={user.grimoires} />
+      <UserGrimoires userGrimoires={user.grimoires} />
     ) : null;
 
   if (error) {
@@ -50,18 +51,8 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
         <UserProfileSkeleton />
         <Divider className={s.divider} />
         <Title level={3}>Your grimoires</Title>
-        <Text>Here is the list of grimoires you created:</Text>
-        {/* <Grid container component={"ul"} className={classes.list} spacing={2}>
-          <Grid item component={"li"} xs={12} sm={6} md={3}>
-            <UserGrimoireSkeleton />
-          </Grid>
-          <Grid item component={"li"} xs={12} sm={6} md={3}>
-            <UserGrimoireSkeleton />
-          </Grid>
-          <Grid item component={"li"} xs={12} sm={6} md={3}>
-            <UserGrimoireSkeleton />
-          </Grid>
-        </Grid> */}
+        <Text className={s.grimoiresSubheader}>Here is the list of grimoires you created:</Text>
+        <UserGrimoiresSkeleton/>
       </Content>
     );
   }

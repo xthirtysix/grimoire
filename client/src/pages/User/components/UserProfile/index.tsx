@@ -2,7 +2,7 @@ import React from "react";
 import { User as UserData } from "../../../../lib/graphql/queries/User/__generated__/User";
 import { Avatar, Typography } from "antd";
 
-import s from './styles/UserProfile.module.scss'
+import s from '../../styles/UserProfile.module.scss'
 
 const { Title, Text } = Typography;
 
