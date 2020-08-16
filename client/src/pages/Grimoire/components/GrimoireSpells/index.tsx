@@ -1,8 +1,12 @@
 import React from "react";
-import { Collapse, Typography, Descriptions } from "antd";
+import { Collapse, Typography, Descriptions, Tag } from "antd";
 //Data
-import { Grimoire } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+import {
+  Grimoire,
+  Grimoire_grimoire_spells_result,
+} from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
 //Styles
+import s from "./styles/GrimoireSpells.module.scss";
 
 const { Panel } = Collapse;
 const { Title, Text } = Typography;
@@ -18,6 +22,39 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null;
 
   const spellLevels = Array.from(Array(10).keys());
+
+  const spellDetailes = (spell: Grimoire_grimoire_spells_result) => {
+    return (
+      <>
+        {spell.isConcentration ? <Tag>Concentration</Tag> : null}
+        <Tag>
+          T:{" "}
+          {spell.castingTime.value
+            ? `${spell.castingTime.value} ${spell.castingTime.unit}`
+            : spell.castingTime.unit}
+        </Tag>
+        <Tag>
+          D:{" "}
+          {spell.duration.value
+            ? `${spell.duration.value} ${spell.duration.unit}`
+            : spell.duration.unit}
+        </Tag>
+        <Tag>
+          R:{" "}
+          {spell.range.value
+            ? `${spell.range.value} ${spell.range.unit}`
+            : spell.range.unit}
+        </Tag>
+        {spell.components ? (
+          <Tag>
+            {spell.components.verbal ? "V " : null}
+            {spell.components.somatic ? "S " : null}
+            {spell.components.material ? "M" : null}
+          </Tag>
+        ) : null}
+      </>
+    );
+  };
 
   const levelNumberToString = new Map([
     [0, "Cantrips"],
@@ -43,8 +80,12 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
                   {result
                     .filter((spell) => spell.level === level)
                     .map((spell) => (
-                      <Panel key={spell.id} header={spell.name}>
-                        <Descriptions bordered>
+                      <Panel
+                        key={spell.id}
+                        header={spell.name}
+                        extra={spellDetailes(spell)}
+                      >
+                        <Descriptions bordered className={s.detailes}>
                           {spell.isConcentration ? (
                             <Descriptions.Item label="Concentration">
                               required
