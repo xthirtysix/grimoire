@@ -1,10 +1,21 @@
 import React from "react";
 import { Collapse, Typography, Descriptions, Tag } from "antd";
+import {
+  ClockCircleOutlined,
+  HourglassOutlined,
+  ArrowsAltOutlined,
+} from "@ant-design/icons";
 //Data
 import {
   Grimoire,
   Grimoire_grimoire_spells_result,
+  Grimoire_grimoire_spells_result_castingTime,
+  Grimoire_grimoire_spells_result_duration,
+  Grimoire_grimoire_spells_result_range,
+  Grimoire_grimoire_spells_result_components,
+  Grimoire_grimoire_spells_result_damage,
 } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+import { levelNumberToString, schoolToColor } from "../../../../lib/maps";
 //Styles
 import s from "./styles/GrimoireSpells.module.scss";
 
@@ -23,51 +34,117 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
 
   const spellLevels = Array.from(Array(10).keys());
 
+  const scalarData = <
+    T extends
+      | Grimoire_grimoire_spells_result_castingTime
+      | Grimoire_grimoire_spells_result_duration
+      | Grimoire_grimoire_spells_result_range
+  >(
+    type: T
+  ): string => {
+    return type.value ? `${type.value} ${type.unit}` : type.unit;
+  };
+
+  const componentsData = (
+    components: Grimoire_grimoire_spells_result_components | null
+  ) => {
+    return components
+      ? `${components.verbal ? "V" : ""} 
+          ${components.somatic ? "S" : ""} 
+          ${components.material ? "M" : ""}`
+      : null;
+  };
+
   const spellDetailes = (spell: Grimoire_grimoire_spells_result) => {
     return (
       <>
         {spell.isConcentration ? <Tag>Concentration</Tag> : null}
+        <Tag color={schoolToColor.get(spell.school)}>{spell.school}</Tag>
         <Tag>
-          T:{" "}
-          {spell.castingTime.value
-            ? `${spell.castingTime.value} ${spell.castingTime.unit}`
-            : spell.castingTime.unit}
+          <ClockCircleOutlined /> {scalarData(spell.castingTime)}
         </Tag>
         <Tag>
-          D:{" "}
-          {spell.duration.value
-            ? `${spell.duration.value} ${spell.duration.unit}`
-            : spell.duration.unit}
+          <HourglassOutlined /> {scalarData(spell.duration)}
         </Tag>
         <Tag>
-          R:{" "}
-          {spell.range.value
-            ? `${spell.range.value} ${spell.range.unit}`
-            : spell.range.unit}
+          <ArrowsAltOutlined /> {scalarData(spell.range)}
         </Tag>
         {spell.components ? (
-          <Tag>
-            {spell.components.verbal ? "V " : null}
-            {spell.components.somatic ? "S " : null}
-            {spell.components.material ? "M" : null}
-          </Tag>
+          <Tag>{componentsData(spell.components)}</Tag>
         ) : null}
       </>
     );
   };
 
-  const levelNumberToString = new Map([
-    [0, "Cantrips"],
-    [1, "Level 1"],
-    [2, "Level 2"],
-    [3, "Level 3"],
-    [4, "Level 4"],
-    [5, "Level 5"],
-    [6, "Level 6"],
-    [7, "Level 7"],
-    [8, "Level 8"],
-    [9, "Level 9"],
-  ]);
+  const spellDamage = (
+    damage: Grimoire_grimoire_spells_result_damage | null
+  ) => {
+    return (
+      <>
+        {/* Basic damage */}
+        {damage ? (
+          <>
+            <Descriptions.Item label="Basic damage">
+              {damage.basic}
+            </Descriptions.Item>
+            <Descriptions.Item label="Damage type">
+              {damage.type}
+            </Descriptions.Item>
+          </>
+        ) : null}
+        {/* Damage on higher levels */}
+        {damage && damage.isScaleLevel ? (
+          <Descriptions.Item label="On higher levels">
+            {Object.entries(damage)
+              .filter((key) => {
+                return key[0].indexOf("level") > -1 && key[1];
+              })
+              .map((key) => {
+                return (
+                  <>
+                    <span key={key[0]}>
+                      {`on ${key[0].slice("level".length)}: ${key[1]}`}
+                    </span>
+                    <br></br>
+                  </>
+                );
+              })}
+          </Descriptions.Item>
+        ) : null}
+      </>
+    );
+  };
+
+  const spellDataTable = (spell: Grimoire_grimoire_spells_result) => {
+    return (
+      <Descriptions bordered className={s.detailes}>
+        {spell.isConcentration ? (
+          <Descriptions.Item label="Concentration">required</Descriptions.Item>
+        ) : null}
+        <Descriptions.Item label="School">{spell.school}</Descriptions.Item>
+        {spell.components ? (
+          <Descriptions.Item label="Components">
+            {componentsData(spell.components)}
+          </Descriptions.Item>
+        ) : null}
+        <Descriptions.Item label="Casting time">
+          {scalarData(spell.castingTime)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Duration">
+          {scalarData(spell.duration)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Range">
+          {scalarData(spell.range)}
+        </Descriptions.Item>
+        {spellDamage(spell.damage)}
+        {spell.materials ? (
+          <Descriptions.Item label="Materials" span={3}>
+            {spell.materials}
+          </Descriptions.Item>
+        ) : null}
+      </Descriptions>
+    );
+  };
 
   const spellList =
     total && result
@@ -85,70 +162,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
                         header={spell.name}
                         extra={spellDetailes(spell)}
                       >
-                        <Descriptions bordered className={s.detailes}>
-                          {spell.isConcentration ? (
-                            <Descriptions.Item label="Concentration">
-                              required
-                            </Descriptions.Item>
-                          ) : null}
-                          {spell.components ? (
-                            <Descriptions.Item label="Components">
-                              {spell.components.verbal ? "V " : null}
-                              {spell.components.somatic ? "S " : null}
-                              {spell.components.material ? "M" : null}
-                            </Descriptions.Item>
-                          ) : null}
-                          <Descriptions.Item label="Casting time">
-                            {spell.castingTime.value
-                              ? `${spell.castingTime.value} ${spell.castingTime.unit}`
-                              : spell.castingTime.unit}
-                          </Descriptions.Item>
-                          <Descriptions.Item label="Duration">
-                            {spell.duration.value
-                              ? `${spell.duration.value} ${spell.duration.unit}`
-                              : spell.duration.unit}
-                          </Descriptions.Item>
-                          <Descriptions.Item label="Range">
-                            {spell.range.value
-                              ? `${spell.range.value} ${spell.range.unit}`
-                              : spell.range.unit}
-                          </Descriptions.Item>
-                          {spell.damage ? (
-                            <>
-                              <Descriptions.Item label="Basic damage">
-                                {spell.damage.basic}
-                              </Descriptions.Item>
-                              <Descriptions.Item label="Damage type">
-                                {spell.damage.type}
-                              </Descriptions.Item>
-                            </>
-                          ) : null}
-                          {spell.damage && spell.damage.isScaleLevel ? (
-                            <Descriptions.Item label="On higher levels">
-                              {Object.entries(spell.damage)
-                                .filter((key) => {
-                                  return key[0].indexOf("level") > -1 && key[1];
-                                })
-                                .map((key) => {
-                                  return (
-                                    <>
-                                      <span key={key[0]}>
-                                        {`on ${key[0].slice("level".length)}: ${
-                                          key[1]
-                                        }`}
-                                      </span>
-                                      <br></br>
-                                    </>
-                                  );
-                                })}
-                            </Descriptions.Item>
-                          ) : null}
-                          {spell.materials ? (
-                            <Descriptions.Item label="Materials" span={3}>
-                              {spell.materials}
-                            </Descriptions.Item>
-                          ) : null}
-                        </Descriptions>
+                        {spellDataTable(spell)}
                         <Text>{spell.description}</Text>
                       </Panel>
                     ))}
