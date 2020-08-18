@@ -1,33 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider, useMutation } from "react-apollo";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import * as serviceWorker from "./serviceWorker";
+import { Affix, Layout, Spin } from "antd";
 import { AppHeader, AppHeaderSkeleton } from "./sections";
-import { Affix, Layout } from 'antd'
 import {
   Home,
   Grimoires,
   Grimoire,
-  Spells,
   Spell,
   User,
   NotFound,
   LogIn,
 } from "./pages";
-import { CircularProgress } from "@material-ui/core";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import * as serviceWorker from "./serviceWorker";
+// import { DatePicker, message } from 'antd';
+//Data
+import ApolloClient from "apollo-boost";
+import { ApolloProvider, useMutation } from "react-apollo";
 import { LOG_IN } from "./lib/graphql/mutations";
 import {
   LogIn as LogInData,
   LogInVariables,
 } from "./lib/graphql/mutations/LogIn/__generated__/LogIn";
-import { SnackbarProvider, useSnackbar } from "notistack";
 import { Viewer } from "./lib/types";
+//Styles
 import "./index.css";
-// import { DatePicker, message } from 'antd';
-import 'antd/dist/antd.css';
-
+import "antd/dist/antd.css";
+import { displayErrorMessage } from "./lib/utils";
 
 const client = new ApolloClient({
   uri: "/api",
@@ -48,6 +47,8 @@ const initialViewer: Viewer = {
   didRequest: false,
 };
 
+const { Content } = Layout;
+
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>(initialViewer);
   const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
@@ -63,7 +64,6 @@ const App = () => {
       }
     },
   });
-  const { enqueueSnackbar } = useSnackbar();
 
   const logInRef = useRef(logIn);
 
@@ -75,19 +75,17 @@ const App = () => {
     return (
       <>
         <AppHeaderSkeleton />
-        <div className="container">
-          <div className="spinnerWrapper">
-            <CircularProgress />
-          </div>
-        </div>
+        <Content className="container">
+          <Spin className="centered" tip="Casting a spell..." />
+        </Content>
       </>
     );
   }
 
   if (error) {
-    enqueueSnackbar("We weren't able to log you in. Try later", {
-      variant: "error",
-    });
+    displayErrorMessage(
+      "Sorry! We weren't able to log you in. Please try later"
+    );
   }
 
   return (
@@ -100,7 +98,6 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/grimoires" component={Grimoires} />
           <Route exact path="/grimoire/:id" component={Grimoire} />
-          <Route exact path="/spells" component={Spells} />
           <Route exact path="/spell/:id" component={Spell} />
           <Route exact path="/user/:id" component={User} />
           <Route
@@ -117,9 +114,7 @@ const App = () => {
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <SnackbarProvider maxSnack={3}>
-      <App />
-    </SnackbarProvider>
+    <App />
   </ApolloProvider>,
   document.getElementById("root")
 );

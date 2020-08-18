@@ -7,6 +7,10 @@ import { useMutation } from "react-apollo";
 import { LOG_OUT } from "../../../../lib/graphql/mutations";
 import { LogOut as LogOutData } from "../../../../lib/graphql/mutations/LogOut/__generated__/LogOut";
 import { Viewer } from "../../../../lib/types";
+import {
+  displaySuccessMessage,
+  displayErrorMessage,
+} from "../../../../lib/utils";
 //Styles
 
 const { Item, SubMenu } = Menu;
@@ -22,7 +26,15 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
       if (data && data.logOut) {
         setViewer(data.logOut);
         sessionStorage.removeItem("token");
+        displaySuccessMessage(
+          "Please come back again soon!"
+        );
       }
+    },
+    onError: () => {
+      displayErrorMessage(
+        "Sorry! We were not able to log you out. Please try again later"
+      );
     },
   });
 

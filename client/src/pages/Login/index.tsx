@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { Card, Layout, Typography } from "antd";
+import { Card, Layout, Typography, Spin } from "antd";
 import { Redirect } from "react-router-dom";
-
+import { ErrorBanner } from "../../lib/components";
+import { displaySuccessMessage, displayErrorMessage } from "../../lib/utils";
+//Data
 import { useApolloClient, useMutation } from "react-apollo";
 import { Viewer } from "../../lib/types";
 import { AUTH_URL } from "../../lib/graphql/queries";
@@ -11,7 +13,7 @@ import {
   LogIn as LogInData,
   LogInVariables,
 } from "../../lib/graphql/mutations/LogIn/__generated__/LogIn";
-
+//Styles
 import s from "./styles/Login.module.scss";
 import googleLogo from "./assets/google_logo.png";
 
@@ -33,6 +35,7 @@ export const LogIn = ({ setViewer }: Props) => {
       if (data && data.logIn && data.logIn.token) {
         setViewer(data.logIn);
         sessionStorage.setItem("token", data.logIn.token);
+        displaySuccessMessage("You've successfuly loged in");
       }
     },
   });
@@ -55,11 +58,19 @@ export const LogIn = ({ setViewer }: Props) => {
         query: AUTH_URL,
       });
       window.location.href = data.authUrl;
-    } catch (error) {}
+    } catch (error) {
+      displayErrorMessage(
+        "Sorry! We were not able to log you in. Please try again later"
+      );
+    }
   };
 
   if (logInLoading) {
-    return <p>Loading...</p>;
+    return (
+      <Content className={s.login}>
+        <Spin size="large" />
+      </Content>
+    );
   }
 
   if (logInData && logInData.logIn) {
@@ -67,12 +78,13 @@ export const LogIn = ({ setViewer }: Props) => {
     return <Redirect to={`/user/${viewerId}`} />;
   }
 
-  if (logInError) {
-    return <Redirect to={"/"} />;
-  }
+  const logInErrorBannerElement = logInError ? (
+    <ErrorBanner description="Sorry! We were not able to log you in. Please try again later" />
+  ) : null;
 
   return (
     <Content className={s.login}>
+      {logInErrorBannerElement}
       <Card className={s.loginCard}>
         <Title level={3}>
           <span role="img" aria-label="wave">
@@ -82,7 +94,9 @@ export const LogIn = ({ setViewer }: Props) => {
         <Title level={3} className={s.loginIntroTitle}>
           Login to Grimoire!
         </Title>
-        <Text className={s.loginDescription}>Sign in with Google to fullfill your own Grimoire!</Text>
+        <Text className={s.loginDescription}>
+          Sign in with Google to fullfill your own Grimoire!
+        </Text>
         <button onClick={onAuthorize} className={s.googleButton}>
           <span className={s.googleButtonImageContainer}>
             <img src={googleLogo} alt="Google logo" />
