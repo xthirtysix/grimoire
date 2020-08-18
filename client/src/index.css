@@ -4,6 +4,8 @@ body {
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
   min-height: 100%;
 }
 
@@ -30,8 +32,8 @@ body {
   padding: 1rem;
 }
 
-.spinnerWrapper {
-  margin: auto;
+.centered {
+  margin: auto !important;
 }
 
 .divider {
