@@ -1,25 +1,25 @@
-import React from "react";
-import { Layout, Divider } from "antd";
-import { RouteComponentProps } from "react-router-dom";
+import React from 'react'
+import { Layout, Divider } from 'antd'
+import { RouteComponentProps } from 'react-router-dom'
 import {
   GrimoireSpells,
   GrimoireSpellsSkeleton,
   GrimoireDetailes,
   GrimoireDetailesSkeleton,
-} from "./components";
+} from './components'
 // Data
-import { useQuery } from "react-apollo";
-import { GRIMOIRE } from "../../lib/graphql/queries";
+import { useQuery } from 'react-apollo'
+import { GRIMOIRE } from '../../lib/graphql/queries'
 import {
   Grimoire as GrimoireData,
   GrimoireVariables,
-} from "../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+} from '../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
 // Styles
 
-const { Content } = Layout;
+const { Content } = Layout
 
 interface MatchParams {
-  id: string;
+  id: string
 }
 
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
@@ -30,9 +30,9 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
         id: match.params.id,
       },
     }
-  );
+  )
 
-  const grimoireDetailes = data?.grimoire ? data.grimoire : null;
+  const grimoireDetailes = data?.grimoire ? data.grimoire : null
 
   const spellList =
     data &&
@@ -40,10 +40,10 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     data.grimoire.spells &&
     data.grimoire.spells.total ? (
       <GrimoireSpells grimoireSpells={data.grimoire.spells} />
-    ) : null;
+    ) : null
 
   if (error) {
-    return <h2>Error</h2>;
+    return <h2>Error</h2>
   }
 
   if (loading) {
@@ -52,7 +52,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
         <GrimoireDetailesSkeleton />
         <GrimoireSpellsSkeleton />
       </Content>
-    );
+    )
   }
 
   return (
@@ -61,5 +61,5 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
       <Divider className="divider" />
       {spellList}
     </Content>
-  );
-};
+  )
+}

@@ -11,6 +11,11 @@ export const typeDefs = gql`
     result: [Grimoire!]!
   }
 
+  enum SpellsFilter {
+    LEVEL_LOW_TO_HIGH
+    LEVEL_HIGH_TO_LOW 
+  }
+
   type Spells {
     total: Int!
     result: [Spell!]!
@@ -99,7 +104,7 @@ export const typeDefs = gql`
     user(id: ID!): User!
     grimoire(id: ID!): Grimoire!
     spell(id: ID!): Spell!
-    spells: [Spell!]!
+    spells(filter: SpellsFilter, limit: Int): Spells!
   }
 
   input LogInInput {

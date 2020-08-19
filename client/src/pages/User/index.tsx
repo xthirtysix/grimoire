@@ -1,48 +1,60 @@
-import React from "react";
-import { Layout, Divider, Typography } from "antd";
+import React from 'react'
+import { Layout, Divider, Typography } from 'antd'
 import {
   UserProfile,
   UserGrimoires,
   UserProfileSkeleton,
-  UserGrimoiresSkeleton
-} from "./components";
-import { RouteComponentProps } from "react-router-dom";
+  UserGrimoiresSkeleton,
+} from './components'
+import { RouteComponentProps } from 'react-router-dom'
 //Data
-import { useQuery } from "react-apollo";
-import { USER } from "../../lib/graphql/queries";
+import { useQuery } from 'react-apollo'
+import { USER } from '../../lib/graphql/queries'
 import {
   User as UserData,
   UserVariables,
-} from "../../lib/graphql/queries/User/__generated__/User";
+} from '../../lib/graphql/queries/User/__generated__/User'
+import { Viewer } from '../../lib/types'
 //Styles
-import s from "./styles/User.module.scss";
+import s from './styles/User.module.scss'
 
-const { Content } = Layout;
-const { Title, Text } = Typography;
+const { Content } = Layout
+const { Title, Text } = Typography
 
-interface MatchParams {
-  id: string;
+interface Props {
+  viewer: Viewer
 }
 
-export const User = ({ match }: RouteComponentProps<MatchParams>) => {
+interface MatchParams {
+  id: string
+}
+
+export const User = ({
+  viewer,
+  match,
+}: Props & RouteComponentProps<MatchParams>) => {
   const { data, loading, error } = useQuery<UserData, UserVariables>(USER, {
     variables: {
       id: match.params.id,
     },
-  });
+  })
 
-  const user = data ? data.user : null;
-  const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0;
+  const user = data ? data.user : null
+  const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0
+  const viewerIsUser = viewer.id === match.params.id
   const userProfileElement = user ? (
     <UserProfile user={user} grimoires={grimoiresCount} />
-  ) : null;
+  ) : null
   const userGrimoires =
     user && user.grimoires ? (
-      <UserGrimoires userGrimoires={user.grimoires} />
-    ) : null;
+      <UserGrimoires
+        userGrimoires={user.grimoires}
+        viewerIsUser={viewerIsUser}
+      />
+    ) : null
 
   if (error) {
-    return <h2>Error</h2>;
+    return <h2>Error</h2>
   }
 
   if (loading) {
@@ -51,10 +63,12 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
         <UserProfileSkeleton />
         <Divider className={s.divider} />
         <Title level={3}>Your grimoires</Title>
-        <Text className={s.grimoiresSubheader}>Here is the list of grimoires you created:</Text>
-        <UserGrimoiresSkeleton/>
+        <Text className={s.grimoiresSubheader}>
+          Here is the list of grimoires you created:
+        </Text>
+        <UserGrimoiresSkeleton />
       </Content>
-    );
+    )
   }
 
   return (
@@ -62,8 +76,10 @@ export const User = ({ match }: RouteComponentProps<MatchParams>) => {
       {userProfileElement}
       <Divider className={s.divider} />
       <Title level={3}>Your grimoires</Title>
-      <Text className={s.grimoiresSubheader}>Here is the list of grimoires you created:</Text>
+      <Text className={s.grimoiresSubheader}>
+        Here is the list of grimoires you created:
+      </Text>
       {userGrimoires}
     </Content>
-  );
-};
+  )
+}

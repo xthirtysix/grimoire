@@ -1,10 +1,10 @@
-import React from "react";
-import { Collapse, Typography, Descriptions, Tag } from "antd";
+import React from 'react'
+import { Collapse, Typography, Descriptions, Tag } from 'antd'
 import {
   ClockCircleOutlined,
   HourglassOutlined,
   ArrowsAltOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 //Data
 import {
   Grimoire,
@@ -14,25 +14,25 @@ import {
   Grimoire_grimoire_spells_result_range,
   Grimoire_grimoire_spells_result_components,
   Grimoire_grimoire_spells_result_damage,
-} from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
-import { levelNumberToString, schoolToColor } from "../../../../lib/maps";
+} from '../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
+import { schoolToColor, levelNumberToString } from '../../../../lib/maps'
 //Styles
-import s from "./styles/GrimoireSpells.module.scss";
+import s from './styles/GrimoireSpells.module.scss'
 
-const { Panel } = Collapse;
-const { Title, Text } = Typography;
+const { Panel } = Collapse
+const { Title, Text } = Typography
 
 interface Props {
-  grimoireSpells: Grimoire["grimoire"]["spells"];
+  grimoireSpells: Grimoire['grimoire']['spells']
 }
 
 export const GrimoireSpells = ({ grimoireSpells }: Props) => {
   const total =
-    grimoireSpells && grimoireSpells.total ? grimoireSpells.total : null;
+    grimoireSpells && grimoireSpells.total ? grimoireSpells.total : null
   const result =
-    grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null;
+    grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null
 
-  const spellLevels = Array.from(Array(10).keys());
+  const spellLevels = Array.from(Array(10).keys())
 
   const scalarData = <
     T extends
@@ -42,18 +42,18 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
   >(
     type: T
   ): string => {
-    return type.value ? `${type.value} ${type.unit}` : type.unit;
-  };
+    return type.value ? `${type.value} ${type.unit}` : type.unit
+  }
 
   const componentsData = (
     components: Grimoire_grimoire_spells_result_components | null
   ) => {
     return components
-      ? `${components.verbal ? "V" : ""} 
-          ${components.somatic ? "S" : ""} 
-          ${components.material ? "M" : ""}`
-      : null;
-  };
+      ? `${components.verbal ? 'V' : ''} 
+          ${components.somatic ? 'S' : ''} 
+          ${components.material ? 'M' : ''}`
+      : null
+  }
 
   const spellDetailes = (spell: Grimoire_grimoire_spells_result) => {
     return (
@@ -73,8 +73,8 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
           <Tag>{componentsData(spell.components)}</Tag>
         ) : null}
       </>
-    );
-  };
+    )
+  }
 
   const spellDamage = (
     damage: Grimoire_grimoire_spells_result_damage | null
@@ -97,23 +97,23 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
           <Descriptions.Item label="On higher levels">
             {Object.entries(damage)
               .filter((key) => {
-                return key[0].indexOf("level") > -1 && key[1];
+                return key[0].indexOf('level') > -1 && key[1]
               })
               .map((key) => {
                 return (
                   <>
                     <span key={key[0]}>
-                      {`on ${key[0].slice("level".length)}: ${key[1]}`}
+                      {`on ${key[0].slice('level'.length)}: ${key[1]}`}
                     </span>
                     <br></br>
                   </>
-                );
+                )
               })}
           </Descriptions.Item>
         ) : null}
       </>
-    );
-  };
+    )
+  }
 
   const spellDataTable = (spell: Grimoire_grimoire_spells_result) => {
     return (
@@ -143,8 +143,8 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
           </Descriptions.Item>
         ) : null}
       </Descriptions>
-    );
-  };
+    )
+  }
 
   const spellList =
     total && result
@@ -171,7 +171,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
             ) : null}
           </div>
         ))
-      : null;
+      : null
 
-  return <>{spellList}</>;
-};
+  return <>{spellList}</>
+}
