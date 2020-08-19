@@ -1,13 +1,15 @@
-import React from "react";
-import { Layout } from "antd";
-import s from '../AppHeader/styles/AppHeader.module.scss';
+import React from 'react'
+import { Layout } from 'antd'
+import s from '../AppHeader/styles/AppHeader.module.scss'
 
-const { Header } = Layout;
+const { Header } = Layout
 
 export const AppHeaderSkeleton = () => {
   return (
     <Header className={s.header}>
-      <a href='/' className={s.logo}>Grimoire</a>
+      <a href="/" className={s.logo}>
+        Grimoire
+      </a>
     </Header>
-  );
-};
+  )
+}

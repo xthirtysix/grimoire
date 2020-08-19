@@ -1,17 +1,17 @@
-import { message, notification } from "antd";
+import { message, notification } from 'antd'
 
 export const displaySuccessMessage = (
   message: string,
   description?: string
 ) => {
-  return notification["success"]({
+  return notification['success']({
     message,
     description,
-    placement: "bottomRight",
+    placement: 'bottomRight',
     style: { marginTop: 50 },
-  });
-};
+  })
+}
 
 export const displayErrorMessage = (error: string) => {
-  return message.error(error);
-};
+  return message.error(error)
+}

@@ -83,7 +83,6 @@ export interface User {
   contact: string;
   currentGrimoire: string;
   grimoires: ObjectId[];
-
   authorized?: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost'
 
 export const USER = gql`
   query User($id: ID!) {
@@ -21,4 +21,4 @@ export const USER = gql`
       }
     }
   }
-`;
+`

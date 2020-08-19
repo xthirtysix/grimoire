@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost'
 
 export const SPELL = gql`
   query Spell($id: ID!) {
@@ -55,4 +55,4 @@ export const SPELL = gql`
       source
     }
   }
-`;
+`

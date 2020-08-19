@@ -1,20 +1,21 @@
-import React from "react";
-import { Card, Typography } from "antd";
-import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import React from 'react'
+import { Card, Typography } from 'antd'
+import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 //Data
-import { User } from "../../../../lib/graphql/queries/User/__generated__/User";
+import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
 //Styles
-import s from "../../styles/UserGrimoires.module.scss";
+import s from '../../styles/UserGrimoires.module.scss'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 interface Props {
-  userGrimoires: User["user"]["grimoires"];
+  userGrimoires: User['user']['grimoires']
+  viewerIsUser: boolean
 }
 
-export const UserGrimoires = ({ userGrimoires }: Props) => {
-  const total = userGrimoires ? userGrimoires.total : null;
-  const result = userGrimoires ? userGrimoires.result : null;
+export const UserGrimoires = ({ userGrimoires, viewerIsUser }: Props) => {
+  const total = userGrimoires ? userGrimoires.total : null
+  const result = userGrimoires ? userGrimoires.result : null
 
   const grimoireList =
     total && result ? (
@@ -36,7 +37,7 @@ export const UserGrimoires = ({ userGrimoires }: Props) => {
                         </span>
                         , level <span>{cls.level}</span>
                       </span>
-                    );
+                    )
                   })}
                 </Text>
                 <div className={s.cardButtonContainer}>
@@ -44,21 +45,25 @@ export const UserGrimoires = ({ userGrimoires }: Props) => {
                     <EyeOutlined />
                     View
                   </a>
-                  <a href={`/grimoire/${grimoire.id}`}>
-                    <EditOutlined />
-                    Edit
-                  </a>
-                  <button type="button" className={s.cardRemoveButton}>
-                    <DeleteOutlined />
-                    Remove
-                  </button>
+                  {viewerIsUser ? (
+                    <>
+                      <a href={`/grimoire/${grimoire.id}`}>
+                        <EditOutlined />
+                        Edit
+                      </a>
+                      <button type="button" className={s.cardRemoveButton}>
+                        <DeleteOutlined />
+                        Remove
+                      </button>
+                    </>
+                  ) : null}
                 </div>
               </Card>
             </li>
-          );
+          )
         })}
       </ul>
-    ) : null;
+    ) : null
 
-  return <>{grimoireList}</>;
-};
+  return <>{grimoireList}</>
+}

@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const SpellSkeleton = () => {
-  return <h2>Loading</h2>;
-};
+  return <h2>Loading</h2>
+}

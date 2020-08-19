@@ -1,13 +1,13 @@
-import React from "react";
-import { Typography } from "antd";
-import { BookOutlined } from "@ant-design/icons";
+import React from 'react'
+import { Typography } from 'antd'
+import { BookOutlined } from '@ant-design/icons'
 //Data
-import { Grimoire_grimoire as Grimoire } from "../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire";
+import { Grimoire_grimoire as Grimoire } from '../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 interface Props {
-  grimoireDetailes: Grimoire | null;
+  grimoireDetailes: Grimoire | null
 }
 
 export const GrimoireDetailes = ({ grimoireDetailes }: Props) => {
@@ -21,5 +21,5 @@ export const GrimoireDetailes = ({ grimoireDetailes }: Props) => {
         <Text>Spells contained: {grimoireDetailes.spells?.total}</Text>
       ) : null}
     </>
-  ) : null;
-};
+  ) : null
+}

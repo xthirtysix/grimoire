@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { Request } from "express";
 import { Spell, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { SpellArgs } from "./types";
+import { SpellArgs, SpellsArgs, SpellsData, SpellsFilter } from "./types";
 
 export const spellResolvers: IResolvers = {
   Query: {
@@ -26,6 +26,42 @@ export const spellResolvers: IResolvers = {
         return spell;
       } catch (error) {
         throw new Error(`Failed to query listing: ${error}`);
+      }
+    },
+    spells: async (
+      _root: undefined,
+      { filter, limit }: SpellsArgs,
+      { db }: { db: Database }
+    ): Promise<SpellsData> => {
+      try {
+        const data: SpellsData = {
+          total: 0,
+          result: [],
+        };
+
+        let cursor;
+
+        if (limit) {
+          cursor = await db.spells.aggregate([{ $sample: { size: limit } }]);
+          data.total = limit;
+        } else {
+          cursor = await db.spells.find({});
+          data.total = await cursor.count();
+        }
+
+        if (filter && filter === SpellsFilter.LEVEL_LOW_TO_HIGH) {
+          cursor = cursor.sort({ level: 1 });
+        }
+
+        if (filter && filter === SpellsFilter.LEVEL_HIGH_TO_LOW) {
+          cursor = cursor.sort({ level: -1 });
+        }
+
+        data.result = await cursor.toArray();
+
+        return data;
+      } catch (error) {
+        throw new Error(`Failed to query Spells: ${error}`);
       }
     },
   },

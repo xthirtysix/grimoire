@@ -1,31 +1,31 @@
-import React, { useEffect, useRef } from "react";
-import { Card, Layout, Typography, Spin } from "antd";
-import { Redirect } from "react-router-dom";
-import { ErrorBanner } from "../../lib/components";
-import { displaySuccessMessage, displayErrorMessage } from "../../lib/utils";
+import React, { useEffect, useRef } from 'react'
+import { Card, Layout, Typography, Spin } from 'antd'
+import { Redirect } from 'react-router-dom'
+import { ErrorBanner } from '../../lib/components'
+import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
 //Data
-import { useApolloClient, useMutation } from "react-apollo";
-import { Viewer } from "../../lib/types";
-import { AUTH_URL } from "../../lib/graphql/queries";
-import { AuthUrl as AuthUrlData } from "../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl";
-import { LOG_IN } from "../../lib/graphql/mutations";
+import { useApolloClient, useMutation } from 'react-apollo'
+import { Viewer } from '../../lib/types'
+import { AUTH_URL } from '../../lib/graphql/queries'
+import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl'
+import { LOG_IN } from '../../lib/graphql/mutations'
 import {
   LogIn as LogInData,
   LogInVariables,
-} from "../../lib/graphql/mutations/LogIn/__generated__/LogIn";
+} from '../../lib/graphql/mutations/LogIn/__generated__/LogIn'
 //Styles
-import s from "./styles/Login.module.scss";
-import googleLogo from "./assets/google_logo.png";
+import s from './styles/Login.module.scss'
+import googleLogo from './assets/google_logo.png'
 
-const { Content } = Layout;
-const { Text, Title } = Typography;
+const { Content } = Layout
+const { Text, Title } = Typography
 
 interface Props {
-  setViewer: (viewer: Viewer) => void;
+  setViewer: (viewer: Viewer) => void
 }
 
 export const LogIn = ({ setViewer }: Props) => {
-  const client = useApolloClient();
+  const client = useApolloClient()
 
   const [
     logIn,
@@ -33,54 +33,54 @@ export const LogIn = ({ setViewer }: Props) => {
   ] = useMutation<LogInData, LogInVariables>(LOG_IN, {
     onCompleted: (data) => {
       if (data && data.logIn && data.logIn.token) {
-        setViewer(data.logIn);
-        sessionStorage.setItem("token", data.logIn.token);
-        displaySuccessMessage("You've successfuly loged in");
+        setViewer(data.logIn)
+        sessionStorage.setItem('token', data.logIn.token)
+        displaySuccessMessage("You've successfuly loged in")
       }
     },
-  });
-  const logInRef = useRef(logIn);
+  })
+  const logInRef = useRef(logIn)
 
   useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get("code");
+    const code = new URL(window.location.href).searchParams.get('code')
     if (code) {
       logInRef.current({
         variables: {
           input: { code },
         },
-      });
+      })
     }
-  }, []);
+  }, [])
 
   const onAuthorize = async () => {
     try {
       const { data } = await client.query<AuthUrlData>({
         query: AUTH_URL,
-      });
-      window.location.href = data.authUrl;
+      })
+      window.location.href = data.authUrl
     } catch (error) {
       displayErrorMessage(
-        "Sorry! We were not able to log you in. Please try again later"
-      );
+        'Sorry! We were not able to log you in. Please try again later'
+      )
     }
-  };
+  }
 
   if (logInLoading) {
     return (
       <Content className={s.login}>
         <Spin size="large" />
       </Content>
-    );
+    )
   }
 
   if (logInData && logInData.logIn) {
-    const { id: viewerId } = logInData.logIn;
-    return <Redirect to={`/user/${viewerId}`} />;
+    const { id: viewerId } = logInData.logIn
+    return <Redirect to={`/user/${viewerId}`} />
   }
 
   const logInErrorBannerElement = logInError ? (
     <ErrorBanner description="Sorry! We were not able to log you in. Please try again later" />
-  ) : null;
+  ) : null
 
   return (
     <Content className={s.login}>
@@ -109,5 +109,5 @@ export const LogIn = ({ setViewer }: Props) => {
         </Text>
       </Card>
     </Content>
-  );
-};
+  )
+}
