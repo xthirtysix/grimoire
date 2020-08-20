@@ -18,12 +18,13 @@ import {
 import { schoolToColor, levelNumberToString } from '../../../../lib/maps'
 //Styles
 import s from './styles/GrimoireSpells.module.scss'
+import { Spells_spells, Spells_spells_result } from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
 
 const { Panel } = Collapse
 const { Title, Text } = Typography
 
 interface Props {
-  grimoireSpells: Grimoire['grimoire']['spells']
+  grimoireSpells: Grimoire['grimoire']['spells'] | Spells_spells
 }
 
 export const GrimoireSpells = ({ grimoireSpells }: Props) => {
@@ -55,7 +56,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
       : null
   }
 
-  const spellDetailes = (spell: Grimoire_grimoire_spells_result) => {
+  const spellDetailes = (spell: Grimoire_grimoire_spells_result | Spells_spells_result) => {
     return (
       <>
         {spell.isConcentration ? <Tag>Concentration</Tag> : null}
@@ -101,12 +102,12 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
               })
               .map((key) => {
                 return (
-                  <>
-                    <span key={key[0]}>
+                  <React.Fragment key={key[0]}>
+                    <span>
                       {`on ${key[0].slice('level'.length)}: ${key[1]}`}
                     </span>
                     <br></br>
-                  </>
+                  </React.Fragment>
                 )
               })}
           </Descriptions.Item>

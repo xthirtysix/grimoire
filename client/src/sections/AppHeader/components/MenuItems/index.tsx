@@ -12,6 +12,7 @@ import {
   displayErrorMessage,
 } from '../../../../lib/utils'
 //Styles
+import s from '../../styles/MenuItems.module.scss'
 
 const { Item, SubMenu } = Menu
 
@@ -42,7 +43,7 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
 
   const submenuLogin =
     viewer.id && viewer.avatar ? (
-      <SubMenu title={<Avatar src={viewer.avatar} />}>
+      <SubMenu title={<Avatar src={viewer.avatar} />} className={s.avatar}>
         <Item key="/user">
           <Link to={`/user/${viewer.id}`}>
             <UserOutlined />

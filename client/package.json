@@ -21,6 +21,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-scroll": "^1.8.1",
     "typescript": "^3.7.5"
   },
   "scripts": {
@@ -49,6 +50,7 @@
   "proxy": "http://localhost:9000",
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-scroll": "^1.5.5",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.0.5"

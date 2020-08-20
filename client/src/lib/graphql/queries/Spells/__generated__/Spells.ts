@@ -3,36 +3,38 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { SpellsFilter } from "./../../../globalTypes";
+
 // ====================================================
-// GraphQL query operation: Spell
+// GraphQL query operation: Spells
 // ====================================================
 
-export interface Spell_spell_castingTime {
+export interface Spells_spells_result_castingTime {
   __typename: "Scalar";
   value: number | null;
   unit: string;
 }
 
-export interface Spell_spell_range {
+export interface Spells_spells_result_range {
   __typename: "Scalar";
   value: number | null;
   unit: string;
 }
 
-export interface Spell_spell_duration {
+export interface Spells_spells_result_duration {
   __typename: "Scalar";
   value: number | null;
   unit: string;
 }
 
-export interface Spell_spell_components {
+export interface Spells_spells_result_components {
   __typename: "Components";
   verbal: boolean;
   somatic: boolean;
   material: boolean;
 }
 
-export interface Spell_spell_damage {
+export interface Spells_spells_result_damage {
   __typename: "Damage";
   type: string | null;
   isScaleLevel: boolean | null;
@@ -59,27 +61,34 @@ export interface Spell_spell_damage {
   level20: string | null;
 }
 
-export interface Spell_spell {
+export interface Spells_spells_result {
   __typename: "Spell";
   id: string;
   name: string;
   level: number;
   school: string;
-  castingTime: Spell_spell_castingTime;
-  range: Spell_spell_range;
-  duration: Spell_spell_duration;
+  castingTime: Spells_spells_result_castingTime;
+  range: Spells_spells_result_range;
+  duration: Spells_spells_result_duration;
   isConcentration: boolean;
-  components: Spell_spell_components | null;
+  components: Spells_spells_result_components | null;
   materials: string | null;
   description: string;
-  damage: Spell_spell_damage | null;
+  damage: Spells_spells_result_damage | null;
   source: string;
 }
 
-export interface Spell {
-  spell: Spell_spell;
+export interface Spells_spells {
+  __typename: "Spells";
+  total: number;
+  result: Spells_spells_result[] | null;
 }
 
-export interface SpellVariables {
-  id: string;
+export interface Spells {
+  spells: Spells_spells;
+}
+
+export interface SpellsVariables {
+  filter?: SpellsFilter | null;
+  limit?: number | null;
 }
