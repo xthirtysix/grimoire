@@ -18,7 +18,7 @@ export const typeDefs = gql`
 
   type Spells {
     total: Int!
-    result: [Spell!]!
+    result: [Spell!]
   }
 
   type Grimoire {

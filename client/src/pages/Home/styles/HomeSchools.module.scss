@@ -1,0 +1,139 @@
+.search {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 2rem;
+
+  input {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.15);
+  }
+
+  button {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 4rem;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 1rem;
+  text-align: center;
+}
+
+.schools {
+  @media (max-width: 719px) {
+    li:nth-child(2n) {
+      display: none;
+    }
+  }
+  .abjuration {
+    color: #2f54eb;
+    background-color: #f0f5ff;
+    border-color: #2f54eb;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #2f54eb;
+    }
+  }
+
+  .conjuration {
+    color: #13c2c2;
+    background-color: #e6fffb;
+    border-color: #13c2c2;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #13c2c2;
+    }
+  }
+
+  .necromancy {
+    color: #fa541c;
+    background-color: #fff2e8;
+    border-color: #fa541c;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #fa541c;
+    }
+  }
+
+  .transmutation {
+    color: #eb2f96;
+    background-color: #fff0f6;
+    border-color: #eb2f96;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #eb2f96;
+    }
+  }
+
+  .illusion {
+    color: #faad14;
+    background-color: #fffbe6;
+    border-color: #faad14;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #faad14;
+    }
+  }
+
+  .divination {
+    color: #722ed1;
+    background-color: #f9f0ff;
+    border-color: #722ed1;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #722ed1;
+    }
+  }
+
+  .evocation {
+    color: #52c41a;
+    background-color: #f6ffed;
+    border-color: #52c41a;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #52c41a;
+    }
+  }
+
+  .enchantment {
+    color: #fa8c16;
+    background-color: #fff7e6;
+    border-color: #fa8c16;
+    transition: 0.3s ease-out;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: #fa8c16;
+    }
+  }
+}

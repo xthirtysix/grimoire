@@ -1,0 +1,84 @@
+//Mixins
+@mixin line {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@mixin wave {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background-repeat: repeat no-repeat;
+  background-position: 0 bottom;
+  transform-origin: center bottom;
+}
+
+//Animations
+@keyframes animate {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.5);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+}
+
+//Styles
+.container {
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  height: 100px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  overflow: hidden;
+}
+
+.line1 {
+  @include line;
+
+  z-index: 15;
+  opacity: 0.5;
+}
+
+.line2 {
+  @include line;
+
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.line3 {
+  @include line;
+
+  z-index: 5;
+}
+
+.wave1 {
+  @include wave;
+
+  background-size: 50% 80px;
+}
+
+.wave2 {
+  @include wave;
+
+  background-size: 50% 100px;
+  animation: animate 12s linear infinite;
+}
+
+.wave3 {
+  @include wave;
+
+  background-size: 50% 80px;
+  animation: animate 18s linear infinite;
+}

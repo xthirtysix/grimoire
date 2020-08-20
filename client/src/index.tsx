@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Affix, Layout, Spin } from 'antd'
-import { AppHeader, AppHeaderSkeleton } from './sections'
+import { AppHeader, AppHeaderSkeleton, AppFooter } from './sections'
 import {
   Home,
   Grimoires,
@@ -91,7 +91,7 @@ const App = () => {
   return (
     <Router>
       <Layout>
-        <Affix offsetTop={0}>
+        <Affix offsetTop={0} style={{ zIndex: 100 }}>
           <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>
         <Switch>
@@ -111,6 +111,7 @@ const App = () => {
           />
           <Route component={NotFound} />
         </Switch>
+        <AppFooter />
       </Layout>
     </Router>
   )

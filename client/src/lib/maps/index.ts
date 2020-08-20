@@ -1,5 +1,5 @@
 export const schoolToColor = new Map([
-  ['Abjuration', 'geekvlue'],
+  ['Abjuration', 'geekblue'],
   ['Conjuration', 'cyan'],
   ['Evocation', 'green'],
   ['Divination', 'purple'],

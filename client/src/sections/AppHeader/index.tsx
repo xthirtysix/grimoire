@@ -18,7 +18,7 @@ export const AppHeader = ({ viewer, setViewer }: Props) => {
     <Header className={s.header}>
       <Link to="/" className={s.logo}>
         <BookOutlined />
-        Grimoire
+        <span>Grimoire</span>
       </Link>
       <div className={s.list}>
         <MenuItems viewer={viewer} setViewer={setViewer} />
