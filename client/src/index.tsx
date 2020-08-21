@@ -24,7 +24,7 @@ import {
 } from './lib/graphql/mutations/LogIn/__generated__/LogIn'
 import { Viewer } from './lib/types'
 //Styles
-import './index.css'
+import './index.scss'
 import 'antd/dist/antd.css'
 import { displayErrorMessage } from './lib/utils'
 
@@ -94,6 +94,7 @@ const App = () => {
         <Affix offsetTop={0} style={{ zIndex: 100 }}>
           <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>
+        <div className="main-content">
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/grimoires" component={Grimoires} />
@@ -111,7 +112,8 @@ const App = () => {
           />
           <Route component={NotFound} />
         </Switch>
-        <AppFooter />
+        </div>
+        <AppFooter/>
       </Layout>
     </Router>
   )

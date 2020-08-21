@@ -9,7 +9,7 @@ import wave3 from './assets/3.png'
 export const HomeWave = () => {
   return (
     <>
-      <div className={s.container}>
+      <div className={s.container} id="wave">
         <div className={s.wave}></div>
         <div className={s.line1}>
           <div

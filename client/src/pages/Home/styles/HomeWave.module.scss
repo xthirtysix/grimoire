@@ -14,6 +14,10 @@
   background-repeat: repeat no-repeat;
   background-position: 0 bottom;
   transform-origin: center bottom;
+
+  @media (max-width: 719px) {
+    width: 500%;
+  }
 }
 
 //Animations
