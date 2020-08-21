@@ -1,6 +1,9 @@
 import React from 'react'
-import { GrimoireSpells } from '../../../Grimoire/components'
-import { Layout } from 'antd'
+import {
+  GrimoireSpells,
+  GrimoireSpellsSkeleton,
+} from '../../../Grimoire/components'
+import { Layout, Typography } from 'antd'
 //Data
 import { useQuery } from 'react-apollo'
 import {
@@ -14,6 +17,7 @@ import s from '../../styles/HomeSpells.module.scss'
 
 const SPELLS_NUMBER = 4
 const { Content } = Layout
+const { Title } = Typography
 
 export const HomeSpells = () => {
   const { loading, data } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
@@ -23,19 +27,22 @@ export const HomeSpells = () => {
     },
   })
 
+  let spellList
+
   if (loading) {
-    return <h3>Loading...</h3>
+    spellList = <GrimoireSpellsSkeleton />
   }
 
   if (data) {
-    return (
-      <Content className={s.container}>
-        <div className="container">
-          <GrimoireSpells grimoireSpells={data.spells} />
-        </div>
-      </Content>
-    )
+    spellList = <GrimoireSpells grimoireSpells={data.spells} />
   }
 
-  return null
+  return (
+    <Content className={s.container}>
+      <Title level={3} className={s.title}>
+        Sample Grimoire
+      </Title>
+      <div className="container">{spellList}</div>
+    </Content>
+  )
 }

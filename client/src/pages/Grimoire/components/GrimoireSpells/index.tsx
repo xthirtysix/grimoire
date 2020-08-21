@@ -154,7 +154,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
             {result.some((spell) => spell.level === level) ? (
               <>
                 <Title level={4}>{`${levelNumberToString.get(level)}`}</Title>
-                <Collapse>
+                <Collapse className={s.collapse}>
                   {result
                     .filter((spell) => spell.level === level)
                     .map((spell) => (

@@ -7,7 +7,8 @@ const { Text } = Typography
 
 export const AppFooter = () => {
   return (
-    <>
+    <section className="main-footer">
+      <h2 className="visually-hidden">Main footer</h2>
       <Divider className={s.divider} />
       <div className={s.container}>
         <Text type="secondary">
@@ -15,6 +16,6 @@ export const AppFooter = () => {
           2020
         </Text>
       </div>
-    </>
+    </section>
   )
 }
