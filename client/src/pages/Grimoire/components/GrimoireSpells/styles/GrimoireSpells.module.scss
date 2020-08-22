@@ -2,3 +2,17 @@
 .collapse {
   margin-bottom: 1rem !important;
 }
+
+@media (max-width: 719px) {
+  .fastDetailes {
+    span {
+      margin-right: 0 !important;
+    }
+  }
+
+  .collapseItem {
+    div {
+      float: none !important;
+    }
+  }
+}

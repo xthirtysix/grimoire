@@ -29,7 +29,7 @@
 
 .schools {
   @media (max-width: 719px) {
-    li:nth-child(2n) {
+    li:not(:nth-child(1)):not(:nth-child(2)) {
       display: none;
     }
   }

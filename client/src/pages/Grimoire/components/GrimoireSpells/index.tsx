@@ -4,7 +4,10 @@ import {
   ClockCircleOutlined,
   HourglassOutlined,
   ArrowsAltOutlined,
+  SafetyOutlined,
 } from '@ant-design/icons'
+import {shortenSpellSchool, shortenScalar} from '../../../../lib/utils'
+import DOMPurify from 'dompurify'
 //Data
 import {
   Grimoire,
@@ -15,13 +18,18 @@ import {
   Grimoire_grimoire_spells_result_components,
   Grimoire_grimoire_spells_result_damage,
 } from '../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
+import {
+  Spells_spells,
+  Spells_spells_result,
+} from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
 import { schoolToColor, levelNumberToString } from '../../../../lib/maps'
 //Styles
 import s from './styles/GrimoireSpells.module.scss'
-import { Spells_spells, Spells_spells_result } from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
+
+const MAX_SPELL_LEVEL = 10
 
 const { Panel } = Collapse
-const { Title, Text } = Typography
+const { Title } = Typography
 
 interface Props {
   grimoireSpells: Grimoire['grimoire']['spells'] | Spells_spells
@@ -33,7 +41,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
   const result =
     grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null
 
-  const spellLevels = Array.from(Array(10).keys())
+  const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
 
   const scalarData = <
     T extends
@@ -56,24 +64,35 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
       : null
   }
 
-  const spellDetailes = (spell: Grimoire_grimoire_spells_result | Spells_spells_result) => {
+  const spellDetailes = (
+    spell: Grimoire_grimoire_spells_result | Spells_spells_result
+  ) => {
     return (
-      <>
-        {spell.isConcentration ? <Tag>Concentration</Tag> : null}
-        <Tag color={schoolToColor.get(spell.school)}>{spell.school}</Tag>
-        <Tag>
-          <ClockCircleOutlined /> {scalarData(spell.castingTime)}
+      <div className={s.fastDetailes}>
+        {spell.isConcentration ? (
+          <Tag>
+            <SafetyOutlined />
+          </Tag>
+        ) : null}
+        <Tag color={schoolToColor.get(spell.school)}>
+          {shortenSpellSchool(spell.school)}
         </Tag>
         <Tag>
-          <HourglassOutlined /> {scalarData(spell.duration)}
+          <ClockCircleOutlined />
+          {shortenScalar(scalarData(spell.castingTime))}
         </Tag>
         <Tag>
-          <ArrowsAltOutlined /> {scalarData(spell.range)}
+          <HourglassOutlined />
+          {shortenScalar(scalarData(spell.duration))}
+        </Tag>
+        <Tag>
+          <ArrowsAltOutlined />
+          {shortenScalar(scalarData(spell.range))}
         </Tag>
         {spell.components ? (
           <Tag>{componentsData(spell.components)}</Tag>
         ) : null}
-      </>
+      </div>
     )
   }
 
@@ -139,7 +158,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
         </Descriptions.Item>
         {spellDamage(spell.damage)}
         {spell.materials ? (
-          <Descriptions.Item label="Materials" span={3}>
+          <Descriptions.Item label="Materials">
             {spell.materials}
           </Descriptions.Item>
         ) : null}
@@ -154,17 +173,22 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
             {result.some((spell) => spell.level === level) ? (
               <>
                 <Title level={4}>{`${levelNumberToString.get(level)}`}</Title>
-                <Collapse className={s.collapse}>
+                <Collapse>
                   {result
                     .filter((spell) => spell.level === level)
                     .map((spell) => (
                       <Panel
+                        className={s.collapseItem}
                         key={spell.id}
                         header={spell.name}
                         extra={spellDetailes(spell)}
                       >
                         {spellDataTable(spell)}
-                        <Text>{spell.description}</Text>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(spell.description),
+                          }}
+                        ></div>
                       </Panel>
                     ))}
                 </Collapse>
