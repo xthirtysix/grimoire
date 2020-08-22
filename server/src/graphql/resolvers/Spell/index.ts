@@ -57,6 +57,38 @@ export const spellResolvers: IResolvers = {
           cursor = cursor.sort({ level: -1 });
         }
 
+        if (filter && filter === SpellsFilter.ABJURATION) {
+          cursor = await db.spells.find({ school: "Abjuration" });
+        }
+
+        if (filter && filter === SpellsFilter.DIVINATION) {
+          cursor = await db.spells.find({ school: "Divination" });
+        }
+
+        if (filter && filter === SpellsFilter.CONJURATION) {
+          cursor = await db.spells.find({ school: "Conjuration" });
+        }
+
+        if (filter && filter === SpellsFilter.ENCHANTMENT) {
+          cursor = await db.spells.find({ school: "Enchantment" });
+        }
+
+        if (filter && filter === SpellsFilter.EVOCATION) {
+          cursor = await db.spells.find({ school: "Evocation" });
+        }
+
+        if (filter && filter === SpellsFilter.ILLUSION) {
+          cursor = await db.spells.find({ school: "Illusion" });
+        }
+
+        if (filter && filter === SpellsFilter.NECROMANCY) {
+          cursor = await db.spells.find({ school: "Necromancy" });
+        }
+
+        if (filter && filter === SpellsFilter.TRANSMUTATION) {
+          cursor = await db.spells.find({ school: "Transmutation" });
+        }
+
         data.result = await cursor.toArray();
 
         return data;

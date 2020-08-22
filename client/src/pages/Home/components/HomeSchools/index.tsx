@@ -63,7 +63,7 @@ export const HomeSchools = ({ onSearch }: Props) => {
           </Link>
         </li>
         <li>
-          <Link to="/spells/necromancy ">
+          <Link to="/spells/necromancy">
             <Card
               className={s.necromancy}
               cover={
@@ -91,7 +91,7 @@ export const HomeSchools = ({ onSearch }: Props) => {
           </Link>
         </li>
         <li>
-          <Link to="/spells/evocatin">
+          <Link to="/spells/evocation">
             <Card
               className={s.evocation}
               cover={
@@ -133,7 +133,7 @@ export const HomeSchools = ({ onSearch }: Props) => {
           </Link>
         </li>
         <li>
-          <Link to="/spells/transmutation ">
+          <Link to="/spells/transmutation">
             <Card
               className={s.transmutation}
               cover={

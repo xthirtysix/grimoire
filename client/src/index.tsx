@@ -6,6 +6,7 @@ import {
   Grimoires,
   Grimoire,
   Spell,
+  Spells,
   User,
   NotFound,
   LogIn,
@@ -100,6 +101,8 @@ const App = () => {
           <Route exact path="/grimoires" component={Grimoires} />
           <Route exact path="/grimoire/:id" component={Grimoire} />
           <Route exact path="/spell/:id" component={Spell} />
+          <Route exact path="/spells" component={Spells} />
+          <Route exact path="/spells/:filter" component={Spells} />
           <Route
             exact
             path="/user/:id"

@@ -13,7 +13,15 @@ export const typeDefs = gql`
 
   enum SpellsFilter {
     LEVEL_LOW_TO_HIGH
-    LEVEL_HIGH_TO_LOW 
+    LEVEL_HIGH_TO_LOW
+    ABJURATION
+    CONJURATION
+    DIVINATION
+    ENCHANTMENT
+    EVOCATION
+    ILLUSION
+    NECROMANCY
+    TRANSMUTATION
   }
 
   type Spells {
