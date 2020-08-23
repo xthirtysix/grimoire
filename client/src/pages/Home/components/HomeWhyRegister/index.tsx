@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography } from 'antd'
 import { Link } from 'react-scroll'
 //Styles
-import s from '../../styles/HomeWhyRegister.module.scss'
+import s from './styles/HomeWhyRegister.module.scss'
 
 const { Title, Text } = Typography
 

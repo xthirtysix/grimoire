@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
-import s from '../AppHeader/styles/AppHeader.module.scss'
+//Styles
+import s from './styles/AppHeaderSkeleton.module.scss'
 
 const { Header } = Layout
 

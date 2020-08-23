@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
+  grid-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.cardTitleSkeleton {
+  display: block;
+  width: 140px;
+  height: 20px;
+  margin-bottom: 20px;
+}
+
+.cardCharacterClassSkeleton {
+  margin-bottom: 7px;
+}
