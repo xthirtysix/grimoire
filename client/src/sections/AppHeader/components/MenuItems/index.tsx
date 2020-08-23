@@ -12,7 +12,7 @@ import {
   displayErrorMessage,
 } from '../../../../lib/utils'
 //Styles
-import s from '../../styles/MenuItems.module.scss'
+import s from './styles/MenuItems.module.scss'
 
 const { Item, SubMenu } = Menu
 

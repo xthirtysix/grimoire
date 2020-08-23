@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 //Styles
-import s from '../../styles/HomeSchools.module.scss'
+import s from './styles/HomeSchools.module.scss'
 
 const { Title } = Typography
 const { Search } = Input

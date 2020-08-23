@@ -1,6 +1,6 @@
 import React from 'react'
 //Style
-import s from '../../styles/HomeWave.module.scss'
+import s from './styles/HomeWave.module.scss'
 //Assets
 import wave1 from './assets/1.png'
 import wave2 from './assets/2.png'

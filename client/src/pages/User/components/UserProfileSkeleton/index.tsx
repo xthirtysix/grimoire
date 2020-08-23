@@ -1,7 +1,7 @@
 import React from 'react'
 import { Skeleton } from 'antd'
 //Styles
-import s from '../../styles/UserProfile.module.scss'
+import s from './styles/UserProfileSkeleton.module.scss'
 
 const { Avatar, Input } = Skeleton
 

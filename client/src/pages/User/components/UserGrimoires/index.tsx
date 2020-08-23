@@ -4,7 +4,7 @@ import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 //Data
 import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
 //Styles
-import s from '../../styles/UserGrimoires.module.scss'
+import s from './styles/UserGrimoires.module.scss'
 
 const { Title, Text } = Typography
 

@@ -13,7 +13,7 @@ import {
 import { SpellsFilter } from '../../../../lib/graphql/globalTypes'
 import { SPELLS } from '../../../../lib/graphql/queries/Spells'
 //Style
-import s from '../../styles/HomeSpells.module.scss'
+import s from './styles/HomeSpells.module.scss'
 
 const SPELLS_NUMBER = 4
 const { Content } = Layout

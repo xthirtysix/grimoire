@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Skeleton } from 'antd'
 //Styles
-import s from '../../styles/UserGrimoires.module.scss'
+import s from './styles/UserGrimoiresSkeleton.module.scss'
 
 const { Input, Button } = Skeleton
 

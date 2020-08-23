@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography, Button } from 'antd'
 import { Link } from 'react-router-dom'
 //Styles
-import s from '../../styles/HomeAllSpells.module.scss'
+import s from './styles/HomeAllSpells.module.scss'
 
 const { Title, Text } = Typography
 
