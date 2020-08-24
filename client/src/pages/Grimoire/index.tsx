@@ -1,12 +1,8 @@
 import React from 'react'
 import { Layout, Divider } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
-import {
-  GrimoireSpells,
-  GrimoireSpellsSkeleton,
-  GrimoireDetailes,
-  GrimoireDetailesSkeleton,
-} from './components'
+import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
+import { SpellList, SpellListSkeleton } from '../../lib/components'
 // Data
 import { useQuery } from 'react-apollo'
 import { GRIMOIRE } from '../../lib/graphql/queries'
@@ -39,7 +35,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     data.grimoire &&
     data.grimoire.spells &&
     data.grimoire.spells.total ? (
-      <GrimoireSpells grimoireSpells={data.grimoire.spells} />
+      <SpellList spells={data.grimoire.spells} />
     ) : null
 
   if (error) {
@@ -50,7 +46,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     return (
       <Content className="container">
         <GrimoireDetailesSkeleton />
-        <GrimoireSpellsSkeleton />
+        <SpellListSkeleton />
       </Content>
     )
   }

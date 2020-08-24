@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-  GrimoireSpells,
-  GrimoireSpellsSkeleton,
-} from '../../../Grimoire/components'
+  SpellList,
+  SpellListSkeleton,
+} from '../../../../lib/components'
 import { Layout, Typography } from 'antd'
 //Data
 import { useQuery } from 'react-apollo'
@@ -30,11 +30,11 @@ export const HomeSpells = () => {
   let spellList
 
   if (loading) {
-    spellList = <GrimoireSpellsSkeleton />
+    spellList = <SpellListSkeleton />
   }
 
   if (data) {
-    spellList = <GrimoireSpells grimoireSpells={data.spells} />
+    spellList = <SpellList spells={data.spells} />
   }
 
   return (

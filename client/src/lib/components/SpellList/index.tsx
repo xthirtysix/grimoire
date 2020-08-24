@@ -6,25 +6,21 @@ import {
   ArrowsAltOutlined,
   SafetyOutlined,
 } from '@ant-design/icons'
-import {shortenSpellSchool, shortenScalar} from '../../../../lib/utils'
+import { shortenSpellSchool, shortenScalar } from '../../utils'
 import DOMPurify from 'dompurify'
 //Data
 import {
-  Grimoire,
-  Grimoire_grimoire_spells_result,
-  Grimoire_grimoire_spells_result_castingTime,
-  Grimoire_grimoire_spells_result_duration,
-  Grimoire_grimoire_spells_result_range,
-  Grimoire_grimoire_spells_result_components,
-  Grimoire_grimoire_spells_result_damage,
-} from '../../../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
-import {
   Spells_spells,
   Spells_spells_result,
-} from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
-import { schoolToColor, levelNumberToString } from '../../../../lib/maps'
+  Spells_spells_result_castingTime,
+  Spells_spells_result_duration,
+  Spells_spells_result_range,
+  Spells_spells_result_components,
+  Spells_spells_result_damage,
+} from '../../graphql/queries/Spells/__generated__/Spells'
+import { schoolToColor, levelNumberToString } from '../../maps'
 //Styles
-import s from './styles/GrimoireSpells.module.scss'
+import s from './styles/SpellList.module.scss'
 
 const MAX_SPELL_LEVEL = 10
 
@@ -32,22 +28,20 @@ const { Panel } = Collapse
 const { Title } = Typography
 
 interface Props {
-  grimoireSpells: Grimoire['grimoire']['spells'] | Spells_spells
+  spells: Spells_spells
 }
 
-export const GrimoireSpells = ({ grimoireSpells }: Props) => {
-  const total =
-    grimoireSpells && grimoireSpells.total ? grimoireSpells.total : null
-  const result =
-    grimoireSpells && grimoireSpells.result ? grimoireSpells.result : null
+export const SpellList = ({ spells }: Props) => {
+  const total = spells && spells.total ? spells.total : null
+  const result = spells && spells.result ? spells.result : null
 
   const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
 
   const scalarData = <
     T extends
-      | Grimoire_grimoire_spells_result_castingTime
-      | Grimoire_grimoire_spells_result_duration
-      | Grimoire_grimoire_spells_result_range
+      | Spells_spells_result_castingTime
+      | Spells_spells_result_duration
+      | Spells_spells_result_range
   >(
     type: T
   ): string => {
@@ -55,7 +49,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
   }
 
   const componentsData = (
-    components: Grimoire_grimoire_spells_result_components | null
+    components: Spells_spells_result_components | null
   ) => {
     return components
       ? `${components.verbal ? 'V' : ''} 
@@ -64,9 +58,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
       : null
   }
 
-  const spellDetailes = (
-    spell: Grimoire_grimoire_spells_result | Spells_spells_result
-  ) => {
+  const spellDetailes = (spell: Spells_spells_result) => {
     return (
       <div className={s.fastDetailes}>
         {spell.isConcentration ? (
@@ -96,9 +88,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     )
   }
 
-  const spellDamage = (
-    damage: Grimoire_grimoire_spells_result_damage | null
-  ) => {
+  const spellDamage = (damage: Spells_spells_result_damage | null) => {
     return (
       <>
         {/* Basic damage */}
@@ -135,7 +125,7 @@ export const GrimoireSpells = ({ grimoireSpells }: Props) => {
     )
   }
 
-  const spellDataTable = (spell: Grimoire_grimoire_spells_result) => {
+  const spellDataTable = (spell: Spells_spells_result) => {
     return (
       <Descriptions bordered className={s.detailes}>
         {spell.isConcentration ? (
