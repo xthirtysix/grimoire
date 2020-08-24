@@ -3,7 +3,7 @@ import { Skeleton } from 'antd'
 
 const { Input } = Skeleton
 
-export const GrimoireSpellsSkeleton = () => {
+export const SpellListSkeleton = () => {
   return (
     <>
       <Input

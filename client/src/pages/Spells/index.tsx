@@ -1,5 +1,5 @@
 import React from 'react'
-import { GrimoireSpells, GrimoireSpellsSkeleton } from '../Grimoire/components'
+import { SpellList, SpellListSkeleton } from '../../lib/components'
 import { Layout } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 //Data
@@ -62,11 +62,11 @@ export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
   let spellList
 
   if (loading) {
-    spellList = <GrimoireSpellsSkeleton />
+    spellList = <SpellListSkeleton />
   }
 
   if (data) {
-    spellList = <GrimoireSpells grimoireSpells={data.spells} />
+    spellList = <SpellList spells={data.spells} />
   }
 
   return (
