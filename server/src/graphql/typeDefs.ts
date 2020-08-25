@@ -111,7 +111,7 @@ export const typeDefs = gql`
     authUrl: String!
     user(id: ID!): User!
     grimoire(id: ID!): Grimoire!
-    spell(id: ID!): Spell!
+    spell(name: String!): Spell!
     spells(filter: SpellsFilter, limit: Int): Spells!
   }
 

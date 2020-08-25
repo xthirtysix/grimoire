@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const SPELL = gql`
-  query Spell($id: ID!) {
-    spell(id: $id) {
+  query Spell($name: String!) {
+    spell(name: $name) {
       id
       name
       level
