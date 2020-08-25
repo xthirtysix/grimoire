@@ -81,5 +81,5 @@ export interface Spell {
 }
 
 export interface SpellVariables {
-  id: string;
+  name: string;
 }

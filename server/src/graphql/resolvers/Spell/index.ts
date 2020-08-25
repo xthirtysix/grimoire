@@ -9,11 +9,11 @@ export const spellResolvers: IResolvers = {
   Query: {
     spell: async (
       _root: undefined,
-      { id }: SpellArgs,
+      { name }: SpellArgs,
       { db, req }: { db: Database; req: Request }
     ): Promise<Spell> => {
       try {
-        const spell = await db.spells.findOne({ _id: new ObjectId(id) });
+        const spell = await db.spells.findOne({ name });
         if (!spell) {
           throw new Error("spell can't be found");
         }

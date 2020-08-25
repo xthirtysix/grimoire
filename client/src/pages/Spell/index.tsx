@@ -1,147 +1,142 @@
 import React from 'react'
+import { Descriptions, Card, Empty } from 'antd'
+import DOMPurify from 'dompurify'
+import { RouteComponentProps } from 'react-router-dom'
+//Data
+import { useQuery } from 'react-apollo'
+import {
+  Spell as SpellData,
+  SpellVariables,
+  Spell_spell,
+  Spell_spell_castingTime,
+  Spell_spell_duration,
+  Spell_spell_range,
+  Spell_spell_components,
+  Spell_spell_damage,
+} from '../../lib/graphql/queries/Spell/__generated__/Spell'
+import { SPELL } from '../../lib/graphql/queries/Spell'
 
-export const Spell = () => {
-  return <h2>Spell page</h2>
+interface MatchParams {
+  name: string
 }
-// import { RouteComponentProps } from "react-router-dom";
-// import { useQuery } from "react-apollo";
-// import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-// import { SPELL } from "../../lib/graphql/queries";
-// import {
-//   Spell as SpellData,
-//   SpellVariables,
-// } from "../../lib/graphql/queries/Spell/__generated__/Spell";
-// import { Grid, Typography, Paper, Divider } from "@material-ui/core";
-// import { useSnackbar } from "notistack";
-// import { SpellSkeleton } from "./components";
-// import {
-//   Level,
-//   Scalar,
-//   Components,
-//   Concentration,
-//   Damage,
-//   DamageLevelScale,
-//   Materials,
-// } from "../../components";
 
-// interface MatchParams {
-//   id: string;
-// }
+export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
+  const name = match.params.name
+  const { loading, data } = useQuery<SpellData, SpellVariables>(SPELL, {
+    variables: {
+      name,
+    },
+  })
 
-// const useStyles = makeStyles((theme: Theme) =>
-//   createStyles({
-//     header: {
-//       fontSize: "1.7rem",
-//       textTransform: "uppercase",
-//       marginBottom: "1rem",
-//     },
-//     title: {
-//       fontWeight: "bold",
-//     },
-//     block: {
-//       boxSizing: "border-box",
-//       display: "flex",
-//       flexDirection: "column",
-//       padding: "2rem",
-//       height: "100%",
-//     },
-//     grid: {
-//       flexWrap: "nowrap",
-//       margin: "2rem 0",
-//       display: "flex",
-//       alignItems: "stretch",
-//       gridGap: "1rem",
-//     },
-//     dividerLarge: {
-//       margin: "1rem 0",
-//     },
-//   })
-// );
+  const spell = data?.spell ? data.spell : null
 
-// export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
-//   const { loading, data, error } = useQuery<SpellData, SpellVariables>(SPELL, {
-//     variables: {
-//       id: match.params.id,
-//     },
-//   });
+  const scalarData = <
+    T extends Spell_spell_castingTime | Spell_spell_duration | Spell_spell_range
+  >(
+    type: T
+  ): string => {
+    return type.value ? `${type.value} ${type.unit}` : type.unit
+  }
 
-//   const classes = useStyles();
-//   const { enqueueSnackbar } = useSnackbar();
+  const componentsData = (components: Spell_spell_components | null) => {
+    return components
+      ? `${components.verbal ? 'V' : ''} 
+          ${components.somatic ? 'S' : ''} 
+          ${components.material ? 'M' : ''}`
+      : null
+  }
 
-//   const headerBlock = data ? (
-//     <Typography className={classes.header}>{data.spell.name}</Typography>
-//   ) : null;
+  const spellDamage = (damage: Spell_spell_damage | null) => {
+    return (
+      <>
+        {/* Basic damage */}
+        {damage ? (
+          <>
+            <Descriptions.Item label="Basic damage">
+              {damage.basic}
+            </Descriptions.Item>
+            <Descriptions.Item label="Damage type">
+              {damage.type}
+            </Descriptions.Item>
+          </>
+        ) : null}
+        {/* Damage on higher levels */}
+        {damage && damage.isScaleLevel ? (
+          <Descriptions.Item label="On higher levels">
+            {Object.entries(damage)
+              .filter((key) => {
+                return key[0].indexOf('level') > -1 && key[1]
+              })
+              .map((key) => {
+                return (
+                  <React.Fragment key={key[0]}>
+                    <span>
+                      {`on ${key[0].slice('level'.length)}: ${key[1]}`}
+                    </span>
+                    <br></br>
+                  </React.Fragment>
+                )
+              })}
+          </Descriptions.Item>
+        ) : null}
+      </>
+    )
+  }
 
-//   const conditionsBlock = data ? (
-//     <Paper className={classes.block}>
-//       {Concentration(data.spell.isConcentration)}
-//       {Components(data.spell.components)}
-//       {Scalar(data.spell.castingTime, "Casting time")}
-//       {Scalar(data.spell.duration, "Duration")}
-//       {Scalar(data.spell.range, "Range")}
-//     </Paper>
-//   ) : null;
+  const spellDataTable = (spell: Spell_spell) => {
+    return (
+      <Descriptions bordered style={{ marginBottom: '1rem' }}>
+        {spell.isConcentration ? (
+          <Descriptions.Item label="Concentration">required</Descriptions.Item>
+        ) : null}
+        <Descriptions.Item label="School">{spell.school}</Descriptions.Item>
+        {spell.components ? (
+          <Descriptions.Item label="Components">
+            {componentsData(spell.components)}
+          </Descriptions.Item>
+        ) : null}
+        <Descriptions.Item label="Casting time">
+          {scalarData(spell.castingTime)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Duration">
+          {scalarData(spell.duration)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Range">
+          {scalarData(spell.range)}
+        </Descriptions.Item>
+        {spellDamage(spell.damage)}
+        {spell.materials ? (
+          <Descriptions.Item label="Materials">
+            {spell.materials}
+          </Descriptions.Item>
+        ) : null}
+      </Descriptions>
+    )
+  }
 
-//   const descriptionBlock = data ? (
-//     <Paper className={classes.block}>
-//       <Typography className={classes.title}>
-//         {data.spell.school}, {Level(data.spell.level)}
-//       </Typography>
-//       <Divider className={classes.dividerLarge} />
-//       <Typography>{data.spell.description}</Typography>
-//       {Materials(data.spell.materials)}
-//     </Paper>
-//   ) : null;
+  if (loading) {
+    return <h1>Loading</h1>
+  }
 
-//   const damageBlock =
-//     data && data.spell.damage ? (
-//       <Paper className={classes.block}>
-//         {Damage(data.spell.damage)}
-//         {DamageLevelScale(data.spell.damage)}
-//       </Paper>
-//     ) : null;
-
-//   if (loading) {
-//     return <SpellSkeleton />;
-//   }
-
-//   if (error) {
-//     enqueueSnackbar(`Unable to find spell with ${data?.spell.id}`, {
-//       variant: "error",
-//     });
-//   }
-
-//   const spellData = (
-//     <Grid container alignItems={"stretch"} spacing={2}>
-//       {damageBlock ? (
-//         <>
-//           <Grid item xs={12} sm={6} lg={3}>
-//             {conditionsBlock}
-//           </Grid>
-//           <Grid item xs={12} sm={6} lg={3}>
-//             {damageBlock}
-//           </Grid>
-//           <Grid item xs={12} sm={12} lg={6}>
-//             {descriptionBlock}
-//           </Grid>
-//         </>
-//       ) : (
-//         <>
-//           <Grid item xs={12} sm={3} lg={3}>
-//             {conditionsBlock}
-//           </Grid>
-//           <Grid item xs={12} sm={9} lg={9}>
-//             {descriptionBlock}
-//           </Grid>
-//         </>
-//       )}
-//     </Grid>
-//   );
-
-//   return (
-//     <>
-//       {headerBlock}
-//       {spellData}
-//     </>
-//   );
-// };
+  return spell ? (
+    <div className="container">
+      <Card title={spell.name}>
+        {spellDataTable(spell)}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(spell.description),
+          }}
+        ></div>
+      </Card>
+    </div>
+  ) : (
+    <div className="container">
+      <div className="centered">
+        <Empty
+          description={`There's no spell called ${name}. Mabe one day you'll write
+        it!?`}
+        />
+      </div>
+    </div>
+  )
+}

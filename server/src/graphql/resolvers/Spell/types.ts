@@ -1,7 +1,7 @@
 import { Spell  } from "../../../lib/types";
 
 export interface SpellArgs {
-  id: string;
+  name: string;
 }
 
 export enum SpellsFilter {
