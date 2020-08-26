@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Layout, Input } from 'antd'
 import { BookOutlined } from '@ant-design/icons'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
@@ -18,7 +18,24 @@ interface Props {
 }
 
 export const AppHeader = withRouter(
-  ({ viewer, setViewer, history }: Props & RouteComponentProps) => {
+  ({ viewer, setViewer, history, location }: Props & RouteComponentProps) => {
+    const [search, setSearch] = useState('')
+
+    useEffect(() => {
+      const { pathname } = location
+      const pathnameSubStrings = pathname.split('/')
+
+      if (!pathname.includes('/spell')) {
+        setSearch('')
+        return
+      }
+
+      if (pathnameSubStrings[1] === 'spell' && pathnameSubStrings.length === 3) {
+        setSearch(pathnameSubStrings[2])
+        return
+      }
+    }, [location])
+
     const onSearch = (value: string) => {
       const trimmedValue = value
         .trim()
@@ -47,6 +64,8 @@ export const AppHeader = withRouter(
           placeholder="Search 'Fireball'"
           size="middle"
           enterButton
+          onChange={(evt) => setSearch(evt.target.value)}
+          value={search}
           onSearch={onSearch}
           className={s.search}
         />
