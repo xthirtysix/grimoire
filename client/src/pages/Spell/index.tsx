@@ -1,5 +1,6 @@
 import React from 'react'
 import { Descriptions, Card, Empty } from 'antd'
+import { SpellSkeleton } from './components'
 import DOMPurify from 'dompurify'
 import { RouteComponentProps } from 'react-router-dom'
 //Data
@@ -7,7 +8,6 @@ import { useQuery } from 'react-apollo'
 import {
   Spell as SpellData,
   SpellVariables,
-  Spell_spell,
   Spell_spell_castingTime,
   Spell_spell_duration,
   Spell_spell_range,
@@ -21,14 +21,13 @@ interface MatchParams {
 }
 
 export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
-  const name = match.params.name
-  const { loading, data } = useQuery<SpellData, SpellVariables>(SPELL, {
+  const { loading, data, error } = useQuery<SpellData, SpellVariables>(SPELL, {
     variables: {
-      name,
+      name: match.params.name,
     },
   })
 
-  const spell = data?.spell ? data.spell : null
+  const spell = data && data.spell ? data.spell : null
 
   const scalarData = <
     T extends Spell_spell_castingTime | Spell_spell_duration | Spell_spell_range
@@ -46,7 +45,7 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
       : null
   }
 
-  const spellDamage = (damage: Spell_spell_damage | null) => {
+  const spellDamageTableCellElement = (damage: Spell_spell_damage | null) => {
     return (
       <>
         {/* Basic damage */}
@@ -83,60 +82,69 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
     )
   }
 
-  const spellDataTable = (spell: Spell_spell) => {
+  const spellDataTableElement = spell ? (
+    <Descriptions bordered style={{ marginBottom: '1rem' }}>
+      {spell.isConcentration ? (
+        <Descriptions.Item label="Concentration">required</Descriptions.Item>
+      ) : null}
+      <Descriptions.Item label="School">{spell.school}</Descriptions.Item>
+      {spell.components ? (
+        <Descriptions.Item label="Components">
+          {componentsData(spell.components)}
+        </Descriptions.Item>
+      ) : null}
+      <Descriptions.Item label="Casting time">
+        {scalarData(spell.castingTime)}
+      </Descriptions.Item>
+      <Descriptions.Item label="Duration">
+        {scalarData(spell.duration)}
+      </Descriptions.Item>
+      <Descriptions.Item label="Range">
+        {scalarData(spell.range)}
+      </Descriptions.Item>
+      {spellDamageTableCellElement(spell.damage)}
+      {spell.materials ? (
+        <Descriptions.Item label="Materials">
+          {spell.materials}
+        </Descriptions.Item>
+      ) : null}
+    </Descriptions>
+  ) : null
+
+  const spellDescriptionElement = spell ? (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: DOMPurify.sanitize(spell.description),
+      }}
+    ></div>
+  ) : null
+
+  const noDataSectionElement = (
+    <Empty
+      description={`There's no spell called ${match.params.name}. Maybe one day you'll write it!?`}
+    />
+  )
+
+  if (loading) {
     return (
-      <Descriptions bordered style={{ marginBottom: '1rem' }}>
-        {spell.isConcentration ? (
-          <Descriptions.Item label="Concentration">required</Descriptions.Item>
-        ) : null}
-        <Descriptions.Item label="School">{spell.school}</Descriptions.Item>
-        {spell.components ? (
-          <Descriptions.Item label="Components">
-            {componentsData(spell.components)}
-          </Descriptions.Item>
-        ) : null}
-        <Descriptions.Item label="Casting time">
-          {scalarData(spell.castingTime)}
-        </Descriptions.Item>
-        <Descriptions.Item label="Duration">
-          {scalarData(spell.duration)}
-        </Descriptions.Item>
-        <Descriptions.Item label="Range">
-          {scalarData(spell.range)}
-        </Descriptions.Item>
-        {spellDamage(spell.damage)}
-        {spell.materials ? (
-          <Descriptions.Item label="Materials">
-            {spell.materials}
-          </Descriptions.Item>
-        ) : null}
-      </Descriptions>
+      <div className="container">
+        <SpellSkeleton />
+      </div>
     )
   }
 
-  if (loading) {
-    return <h1>Loading</h1>
+  if (error) {
+    return <div className="container">{noDataSectionElement}</div>
   }
 
-  return spell ? (
-    <div className="container">
-      <Card title={spell.name}>
-        {spellDataTable(spell)}
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(spell.description),
-          }}
-        ></div>
-      </Card>
-    </div>
+  const spellSectionElement = spell ? (
+    <Card title={spell.name}>
+      {spellDataTableElement}
+      {spellDescriptionElement}
+    </Card>
   ) : (
-    <div className="container">
-      <div className="centered">
-        <Empty
-          description={`There's no spell called ${name}. Mabe one day you'll write
-        it!?`}
-        />
-      </div>
-    </div>
+    { noDataSectionElement }
   )
+
+  return <div className="container">{spellSectionElement}</div>
 }
