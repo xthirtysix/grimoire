@@ -3,13 +3,15 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ClassType } from "./../../../globalTypes";
+
 // ====================================================
 // GraphQL query operation: User
 // ====================================================
 
 export interface User_user_grimoires_result_characterClasses {
   __typename: "CharacterClass";
-  class: string;
+  class: ClassType;
   level: number;
 }
 

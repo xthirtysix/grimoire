@@ -1,6 +1,6 @@
 import React from 'react'
-import { Layout, Divider } from 'antd'
-import { RouteComponentProps } from 'react-router-dom'
+import { Layout, Divider, Empty, Button } from 'antd'
+import { RouteComponentProps, Link } from 'react-router-dom'
 import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
 import { SpellList, SpellListSkeleton } from '../../lib/components'
 // Data
@@ -11,6 +11,7 @@ import {
   GrimoireVariables,
 } from '../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
 // Styles
+import s from './styles/Grimoire.module.scss'
 
 const { Content } = Layout
 
@@ -36,7 +37,19 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     data.grimoire.spells &&
     data.grimoire.spells.total ? (
       <SpellList spells={data.grimoire.spells} />
-    ) : null
+    ) : (
+      <>
+        <Empty className={s.empty}
+          description="There are no Spells in your Grimoire yet..."
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+        <Link to="/spells" className="centered">
+          <Button type="primary" size="large">
+            Add Spells
+          </Button>
+        </Link>
+      </>
+    )
 
   if (error) {
     return <h2>Error</h2>

@@ -1,6 +1,6 @@
 export * from './Home'
 export * from './Grimoire'
-export * from './Grimoires'
+export * from './CreateGrimoire'
 export * from './Spell'
 export * from './Spells'
 export * from './NotFound'

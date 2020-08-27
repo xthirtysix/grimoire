@@ -1,16 +1,33 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
-  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 2rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card,
+.card div:first-child {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardClasses {
+  margin-bottom: 1rem;
+}
+
 .cardButtonContainer {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin-top: auto;
 
   svg {
     margin-right: 0.2rem;
@@ -30,15 +47,6 @@
   display: block;
 }
 
-//Skeleton
-
-.cardTitleSkeleton {
-  display: block;
-  width: 140px;
-  height: 20px;
-  margin-bottom: 20px;
-}
-
-.cardCharacterClassSkeleton {
-  margin-bottom: 7px;
+.empty {
+  margin-bottom: 1rem !important;
 }

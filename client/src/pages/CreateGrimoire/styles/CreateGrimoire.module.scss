@@ -1,0 +1,38 @@
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.classSelect {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1rem;
+}
+
+@media (max-width: 719px) {
+  .classSelect {
+    grid-template-columns: 1fr;
+  }
+}
+
+.title {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto !important;
+  padding: 2rem 0 0 !important;
+}
+
+.submitContainer {
+  margin-bottom: 0 !important;
+
+  div:first-child {
+    display: flex !important;
+    justify-content: center;
+  }
+}
+
+.submitButton {
+  margin: 1rem auto 0 !important;
+}

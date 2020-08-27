@@ -1,10 +1,36 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
-import { Grimoire, User, Database } from "../../../lib/types";
+import {
+  Grimoire,
+  User,
+  Database,
+} from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { GrimoireArgs } from "./types";
-import { GrimoireSpellsData } from "../Grimoire/types";
+import { GrimoireArgs, CreateGrimoireInput } from "./types";
+import { CreateGrimoireArgs } from "../Grimoire/types";
 import { ObjectId } from "mongodb";
+import { SpellsData } from "../Spell/types";
+
+const verifyCreateGrimoireInput = ({
+  name,
+  characterClasses,
+}: CreateGrimoireInput) => {
+  if (!name) {
+    throw new Error("name must contain letters, numbers or symbols");
+  }
+
+  if (name.length > 20) {
+    throw new Error("name must be under 20 characters");
+  }
+
+  if (characterClasses.length === 0) {
+    throw new Error("grimoire owner should have at least 1 class");
+  }
+
+  if (!(characterClasses.length % 2)) {
+    throw new Error("grimoire owner should have at least 1 level in each class")
+  }
+};
 
 export const grimoireResolvers: IResolvers = {
   Query: {
@@ -32,6 +58,37 @@ export const grimoireResolvers: IResolvers = {
       }
     },
   },
+  Mutation: {
+    createGrimoire: async (
+      _root: undefined,
+      { input }: CreateGrimoireArgs,
+      { db, req }: { db: Database; req: Request }
+    ): Promise<Grimoire> => {
+      verifyCreateGrimoireInput(input);
+
+      let viewer = await authorize(db, req);
+
+      if (!viewer) {
+        throw new Error("viewer can not be found");
+      }
+
+      const insertResult = await db.grimoires.insertOne({
+        _id: new ObjectId(),
+        ...input,
+        spells: [],
+        owner: viewer._id,
+      });
+
+      const insertedGrimoire: Grimoire = insertResult.ops[0];
+
+      await db.users.updateOne(
+        { _id: viewer._id },
+        { $push: { grimoires: insertedGrimoire._id } }
+      );
+
+      return insertedGrimoire;
+    },
+  },
   Grimoire: {
     id: (grimoire: Grimoire): string => {
       return grimoire._id.toString();
@@ -55,13 +112,13 @@ export const grimoireResolvers: IResolvers = {
       grimoire: Grimoire,
       _args: {},
       { db }: { db: Database }
-    ): Promise<GrimoireSpellsData | null> => {
+    ): Promise<SpellsData | null> => {
       try {
         if (!grimoire.spells) {
           return null;
         }
 
-        const data: GrimoireSpellsData = {
+        const data: SpellsData = {
           total: 0,
           result: [],
         };
