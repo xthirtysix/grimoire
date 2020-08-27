@@ -18,9 +18,9 @@ export const SpellSkeleton = () => {
   return (
     <Card title={skeletonTitle}>
       <Descriptions bordered style={{ marginBottom: '1rem' }}>
-        {tableCells.map(() => {
+        {tableCells.map((_item, idx) => {
           return (
-            <Descriptions.Item label={skeletonHeader}>
+            <Descriptions.Item label={skeletonHeader} key={idx}>
               {skeletonValue}
             </Descriptions.Item>
           )

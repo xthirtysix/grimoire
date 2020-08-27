@@ -3,7 +3,7 @@ import { Affix, Layout, Spin } from 'antd'
 import { AppHeader, AppHeaderSkeleton, AppFooter } from './sections'
 import {
   Home,
-  Grimoires,
+  CreateGrimoire,
   Grimoire,
   Spell,
   Spells,
@@ -96,28 +96,32 @@ const App = () => {
           <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>
         <div className="main-content">
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/grimoires" component={Grimoires} />
-          <Route exact path="/grimoire/:id" component={Grimoire} />
-          <Route exact path="/spell/:name" component={Spell} />
-          <Route exact path="/spells" component={Spells} />
-          <Route exact path="/spells/:filter" component={Spells} />
-          <Route exact path="/404" component={Home}/>
-          <Route
-            exact
-            path="/user/:id"
-            render={(props) => <User {...props} viewer={viewer} />}
-          />
-          <Route
-            exact
-            path="/login"
-            render={(props) => <LogIn {...props} setViewer={setViewer} />}
-          />
-          <Route component={NotFound} />
-        </Switch>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route
+              exact
+              path="/create_grimoire"
+              render={(props) => <CreateGrimoire {...props} viewer={viewer} />}
+            />
+            <Route exact path="/grimoire/:id" component={Grimoire} />
+            <Route exact path="/spell/:name" component={Spell} />
+            <Route exact path="/spells" component={Spells} />
+            <Route exact path="/spells/:filter" component={Spells} />
+            <Route exact path="/404" component={Home} />
+            <Route
+              exact
+              path="/user/:id"
+              render={(props) => <User {...props} viewer={viewer} />}
+            />
+            <Route
+              exact
+              path="/login"
+              render={(props) => <LogIn {...props} setViewer={setViewer} />}
+            />
+            <Route component={NotFound} />
+          </Switch>
         </div>
-        <AppFooter/>
+        <AppFooter />
       </Layout>
     </Router>
   )

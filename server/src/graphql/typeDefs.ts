@@ -1,42 +1,7 @@
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
-  type CharacterClass {
-    class: String!
-    level: Int!
-  }
-
-  type Grimoires {
-    total: Int!
-    result: [Grimoire!]!
-  }
-
-  enum SpellsFilter {
-    LEVEL_LOW_TO_HIGH
-    LEVEL_HIGH_TO_LOW
-    ABJURATION
-    CONJURATION
-    DIVINATION
-    ENCHANTMENT
-    EVOCATION
-    ILLUSION
-    NECROMANCY
-    TRANSMUTATION
-  }
-
-  type Spells {
-    total: Int!
-    result: [Spell!]
-  }
-
-  type Grimoire {
-    id: ID!
-    owner: User!
-    name: String!
-    characterClasses: [CharacterClass!]!
-    spells: Spells
-    authorized: Boolean
-  }
+  # User
 
   type User {
     id: ID!
@@ -45,6 +10,77 @@ export const typeDefs = gql`
     contact: String!
     currentGrimoire: String
     grimoires: Grimoires
+  }
+
+  type Viewer {
+    id: ID
+    token: String
+    avatar: String
+    didRequest: Boolean!
+  }
+
+  # Grimoires
+
+  type Grimoires {
+    total: Int!
+    result: [Grimoire!]!
+  }
+
+  type Grimoire {
+    id: ID!
+    owner: User!
+    name: String!
+    characterClasses: [CharacterClass!]!
+    spells: Spells!
+    authorized: Boolean
+  }
+
+  type CharacterClass {
+    class: ClassType!
+    level: Int!
+  }
+
+  enum ClassType {
+    BARBARIAN
+    BARD
+    CLERIC
+    DRUID
+    FIGHTER
+    MONK
+    PALADIN
+    RANGER
+    ROGUE
+    SORCERER
+    WARLOCK
+    WIZARD
+  }
+
+  type GrimoireSpells {
+    total: Int!
+    result: [Spell]!
+  }
+
+  # Spells
+
+  type Spells {
+    total: Int!
+    result: [Spell!]
+  }
+
+  type Spell {
+    id: ID!
+    name: String!
+    level: Int!
+    school: String!
+    castingTime: Scalar!
+    range: Scalar!
+    duration: Scalar!
+    isConcentration: Boolean!
+    components: Components
+    materials: String
+    description: String!
+    damage: Damage
+    source: String!
   }
 
   type Scalar {
@@ -84,28 +120,7 @@ export const typeDefs = gql`
     level20: String
   }
 
-  type Spell {
-    id: ID!
-    name: String!
-    level: Int!
-    school: String!
-    castingTime: Scalar!
-    range: Scalar!
-    duration: Scalar!
-    isConcentration: Boolean!
-    components: Components
-    materials: String
-    description: String!
-    damage: Damage
-    source: String!
-  }
-
-  type Viewer {
-    id: ID
-    token: String
-    avatar: String
-    didRequest: Boolean!
-  }
+  # Query
 
   type Query {
     authUrl: String!
@@ -115,13 +130,39 @@ export const typeDefs = gql`
     spells(filter: SpellsFilter, limit: Int): Spells!
   }
 
-  input LogInInput {
-    code: String!
+  enum SpellsFilter {
+    LEVEL_LOW_TO_HIGH
+    LEVEL_HIGH_TO_LOW
+    ABJURATION
+    CONJURATION
+    DIVINATION
+    ENCHANTMENT
+    EVOCATION
+    ILLUSION
+    NECROMANCY
+    TRANSMUTATION
   }
+
+  # Mutation
 
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
     setCurrentGrimoire(id: ID!): User!
+    createGrimoire(input: CreateGrimoireInput!): Grimoire!
+  }
+
+  input LogInInput {
+    code: String!
+  }
+
+  input CreateGrimoireInput {
+    name: String!
+    characterClasses: [CharacterClassesInput]!
+  }
+
+  input CharacterClassesInput {
+    class: String
+    level: Int
   }
 `;

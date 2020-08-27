@@ -1,10 +1,62 @@
 import { ObjectId, Collection } from "mongodb";
 
+// DB
+export interface Database {
+  users: Collection<User>;
+  spells: Collection<Spell>;
+  grimoires: Collection<Grimoire>;
+}
+
+// User
+export interface User {
+  _id: string;
+  token: string;
+  name: string;
+  avatar: string;
+  contact: string;
+  currentGrimoire: string;
+  grimoires: ObjectId[];
+  authorized?: boolean;
+}
+
 export interface Viewer {
   _id?: string;
   token?: string;
   avatar?: string;
   didRequest: boolean;
+}
+
+// Grimoire
+export interface Grimoire {
+  _id: ObjectId;
+  name: string;
+  owner: string;
+  characterClasses: CharacterClass[];
+  spells: ObjectId[];
+  authorized?: boolean;
+}
+
+export interface CharacterClass {
+  class: string;
+  level: number;
+}
+
+// Spell
+export interface Spell {
+  _id: ObjectId;
+  name: string;
+  level: number;
+  school: string;
+  castingTime: Scalar;
+  range: Scalar;
+  duration: Scalar;
+  isConcentration: boolean;
+  components: Components;
+  materials?: String;
+  description: String;
+  damage?: Damage;
+  source: string;
+  authorized?: boolean;
 }
 
 export interface Scalar {
@@ -42,52 +94,4 @@ export interface Damage {
   level18?: string;
   level19?: string;
   level20?: string;
-}
-
-export interface Spell {
-  _id: ObjectId;
-  name: string;
-  level: number;
-  school: string;
-  castingTime: Scalar;
-  range: Scalar;
-  duration: Scalar;
-  isConcentration: boolean;
-  components: Components;
-  materials?: String;
-  description: String;
-  damage?: Damage;
-  source: string;
-  authorized?: boolean;
-}
-
-export interface CharacterClass {
-  class: string;
-  level: number;
-}
-
-export interface Grimoire {
-  _id: ObjectId;
-  name: string;
-  owner: string;
-  characterClasses: CharacterClass[];
-  spells: ObjectId[];
-  authorized?: boolean;
-}
-
-export interface User {
-  _id: string;
-  token: string;
-  name: string;
-  avatar: string;
-  contact: string;
-  currentGrimoire: string;
-  grimoires: ObjectId[];
-  authorized?: boolean;
-}
-
-export interface Database {
-  users: Collection<User>;
-  spells: Collection<Spell>;
-  grimoires: Collection<Grimoire>;
 }

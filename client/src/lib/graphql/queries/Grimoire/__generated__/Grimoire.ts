@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ClassType } from "./../../../globalTypes";
+
 // ====================================================
 // GraphQL query operation: Grimoire
 // ====================================================
@@ -14,7 +16,7 @@ export interface Grimoire_grimoire_owner {
 
 export interface Grimoire_grimoire_characterClasses {
   __typename: "CharacterClass";
-  class: string;
+  class: ClassType;
   level: number;
 }
 
@@ -99,7 +101,7 @@ export interface Grimoire_grimoire {
   owner: Grimoire_grimoire_owner;
   name: string;
   characterClasses: Grimoire_grimoire_characterClasses[];
-  spells: Grimoire_grimoire_spells | null;
+  spells: Grimoire_grimoire_spells;
 }
 
 export interface Grimoire {
