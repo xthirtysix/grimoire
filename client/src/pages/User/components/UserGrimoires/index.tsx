@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom'
 import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 //Data
 import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
+import { useMutation } from '@apollo/react-hooks'
+import { DELETE_GRIMOIRE } from '../../../../lib/graphql/mutations'
+import {
+  DeleteGrimoire as DeleteGrimoireData,
+  DeleteGrimoireVariables,
+} from '../../../../lib/graphql/mutations/DeleteGrimoire/__generated__/DeleteGrimoire'
 //Styles
 import s from './styles/UserGrimoires.module.scss'
 
@@ -17,6 +23,15 @@ interface Props {
 export const UserGrimoires = ({ userGrimoires, viewerIsUser }: Props) => {
   const total = userGrimoires ? userGrimoires.total : null
   const result = userGrimoires ? userGrimoires.result : null
+
+  const [deleteGrimoire] = useMutation<
+    DeleteGrimoireData,
+    DeleteGrimoireVariables
+  >(DELETE_GRIMOIRE)
+
+  const handleDeleteGrimoire = (id: string) => {
+    deleteGrimoire({ variables: { id }, refetchQueries: ['User']})
+  }
 
   const grimoireList =
     total && result ? (
@@ -53,7 +68,11 @@ export const UserGrimoires = ({ userGrimoires, viewerIsUser }: Props) => {
                         <EditOutlined />
                         Edit
                       </a>
-                      <button type="button" className={s.cardRemoveButton}>
+                      <button
+                        type="button"
+                        className={s.cardRemoveButton}
+                        onClick={() => handleDeleteGrimoire(grimoire.id)}
+                      >
                         <DeleteOutlined />
                         Remove
                       </button>

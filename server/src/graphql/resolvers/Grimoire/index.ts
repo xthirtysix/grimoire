@@ -1,10 +1,6 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
-import {
-  Grimoire,
-  User,
-  Database,
-} from "../../../lib/types";
+import { Grimoire, User, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
 import { GrimoireArgs, CreateGrimoireInput } from "./types";
 import { CreateGrimoireArgs } from "../Grimoire/types";
@@ -28,7 +24,9 @@ const verifyCreateGrimoireInput = ({
   }
 
   if (!(characterClasses.length % 2)) {
-    throw new Error("grimoire owner should have at least 1 level in each class")
+    throw new Error(
+      "grimoire owner should have at least 1 level in each class"
+    );
   }
 };
 
@@ -87,6 +85,33 @@ export const grimoireResolvers: IResolvers = {
       );
 
       return insertedGrimoire;
+    },
+    deleteGrimoire: async (
+      _root: undefined,
+      { id }: GrimoireArgs,
+      { db, req }: { db: Database; req: Request }
+    ): Promise<void> => {
+      let viewer = await authorize(db, req);
+
+      if (!viewer) {
+        throw new Error("viewer can not be found");
+      }
+
+      const grimoire = await db.grimoires.findOne({ _id: new ObjectId(id) });
+
+      if (!grimoire) {
+        throw new Error(`grimoire with ${id} can not be found`);
+      }
+
+      if (grimoire && viewer._id !== grimoire.owner) {
+        throw new Error("grimoire can only be removed by it's creator");
+      }
+
+      await db.grimoires.deleteOne({
+        _id: new ObjectId(id),
+      });
+
+      return;
     },
   },
   Grimoire: {
