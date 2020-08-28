@@ -38,6 +38,7 @@ export const User = ({
       id: match.params.id,
     },
   })
+  
 
   const user = data ? data.user : null
   const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0

@@ -67,7 +67,7 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   }
 
   if (data && data.createGrimoire) {
-    return <Redirect to={`/user`} />
+    return <Redirect to={`/user/${viewer.id}`} />
   }
 
   if (!viewer.id) {

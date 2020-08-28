@@ -148,8 +148,8 @@ export const typeDefs = gql`
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
-    setCurrentGrimoire(id: ID!): User!
     createGrimoire(input: CreateGrimoireInput!): Grimoire!
+    deleteGrimoire(id: ID!): ID
   }
 
   input LogInInput {
