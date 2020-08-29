@@ -1,25 +1,28 @@
 import React from 'react'
-import { Layout, Divider, Typography } from 'antd'
+import { Divider, Layout, Typography } from 'antd'
 import {
-  UserProfile,
   UserGrimoires,
-  UserProfileSkeleton,
   UserGrimoiresSkeleton,
+  UserProfile,
+  UserProfileSkeleton,
 } from './components'
-import { RouteComponentProps } from 'react-router-dom'
+import { PlusOutlined } from '@ant-design/icons'
+import { RouteComponentProps, Link } from 'react-router-dom'
 //Data
-import { useQuery } from 'react-apollo'
 import { USER } from '../../lib/graphql/queries'
 import {
   User as UserData,
   UserVariables,
 } from '../../lib/graphql/queries/User/__generated__/User'
+import { useQuery } from 'react-apollo'
 import { Viewer } from '../../lib/types'
 //Styles
 import s from './styles/User.module.scss'
+//Constants
+const MAX_GRIMOIRE_COUNT = 6
 
 const { Content } = Layout
-const { Title, Text } = Typography
+const { Text, Title } = Typography
 
 interface Props {
   viewer: Viewer
@@ -38,19 +41,19 @@ export const User = ({
       id: match.params.id,
     },
   })
-  
 
   const user = data ? data.user : null
   const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0
   const viewerIsUser = viewer.id === match.params.id
   const userProfileElement = user ? (
-    <UserProfile user={user} grimoires={grimoiresCount} />
+    <UserProfile user={user} grimoires={grimoiresCount} maxGrimoires={MAX_GRIMOIRE_COUNT} />
   ) : null
   const userGrimoires =
     user && user.grimoires ? (
       <UserGrimoires
         userGrimoires={user.grimoires}
         viewerIsUser={viewerIsUser}
+        userId={viewer.id}
       />
     ) : null
 
@@ -76,7 +79,17 @@ export const User = ({
     <Content className={s.userContainer}>
       {userProfileElement}
       <Divider className={s.divider} />
-      <Title level={3}>Your grimoires</Title>
+      <div className={s.titleContainer}>
+        <Title level={3}>Your grimoires</Title>
+        {grimoiresCount < MAX_GRIMOIRE_COUNT ? (
+          <Link
+            to="/create_grimoire"
+            className="ant-btn ant-btn-primary ant-btn-sm"
+          >
+            <PlusOutlined /> New Grimoire
+          </Link>
+        ) : null}
+      </div>
       <Text className={s.grimoiresSubheader}>
         Here is the list of grimoires you created:
       </Text>

@@ -1,27 +1,26 @@
 import React from 'react'
-import { Collapse, Typography, Descriptions, Tag } from 'antd'
+import { Collapse, Tag, Typography } from 'antd'
 import {
+  ArrowsAltOutlined,
   ClockCircleOutlined,
   HourglassOutlined,
-  ArrowsAltOutlined,
   SafetyOutlined,
 } from '@ant-design/icons'
+import { Spell as SpellComponent } from '../'
 import { shortenSpellSchool, shortenScalar } from '../../utils'
-import DOMPurify from 'dompurify'
 //Data
 import {
   Spells_spells,
   Spells_spells_result,
   Spells_spells_result_castingTime,
+  Spells_spells_result_components,
   Spells_spells_result_duration,
   Spells_spells_result_range,
-  Spells_spells_result_components,
-  Spells_spells_result_damage,
 } from '../../graphql/queries/Spells/__generated__/Spells'
-import { schoolToColor, levelNumberToString } from '../../maps'
+import { levelNumberToString, schoolToColor } from '../../maps'
 //Styles
 import s from './styles/SpellList.module.scss'
-
+//Constants
 const MAX_SPELL_LEVEL = 10
 
 const { Panel } = Collapse
@@ -37,6 +36,19 @@ export const SpellList = ({ spells }: Props) => {
 
   const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
 
+  //Panel Tags *START*
+  const concentrationTag = (isConcentration: boolean) => {
+    return isConcentration ? (
+      <Tag>
+        <SafetyOutlined />
+      </Tag>
+    ) : null
+  }
+
+  const schoolTag = (school: string) => (
+    <Tag color={schoolToColor.get(school)}>{shortenSpellSchool(school)}</Tag>
+  )
+
   const scalarData = <
     T extends
       | Spells_spells_result_castingTime
@@ -48,111 +60,57 @@ export const SpellList = ({ spells }: Props) => {
     return type.value ? `${type.value} ${type.unit}` : type.unit
   }
 
-  const componentsData = (
+  const castingTimeTag = (castingTime: Spells_spells_result_castingTime) => (
+    <Tag>
+      <ClockCircleOutlined />
+      {shortenScalar(scalarData(castingTime))}
+    </Tag>
+  )
+
+  const durationTag = (duration: Spells_spells_result_duration) => (
+    <Tag>
+      <HourglassOutlined />
+      {shortenScalar(scalarData(duration))}
+    </Tag>
+  )
+
+  const rangeTag = (range: Spells_spells_result_range) => (
+    <Tag>
+      <ArrowsAltOutlined />
+      {shortenScalar(scalarData(range))}
+    </Tag>
+  )
+
+  const componentsTag = (
     components: Spells_spells_result_components | null
   ) => {
-    return components
-      ? `${components.verbal ? 'V' : ''} 
+    return components ? (
+      <Tag>
+        {`${components.verbal ? 'V' : ''} 
           ${components.somatic ? 'S' : ''} 
-          ${components.material ? 'M' : ''}`
-      : null
+          ${components.material ? 'M' : ''}`}
+      </Tag>
+    ) : null
   }
+  //Panel Tags *END*
 
-  const spellDetailes = (spell: Spells_spells_result) => {
+  const spellDetailes = ({
+    isConcentration,
+    school,
+    castingTime,
+    duration,
+    range,
+    components,
+  }: Spells_spells_result) => {
     return (
-      <div className={s.fastDetailes}>
-        {spell.isConcentration ? (
-          <Tag>
-            <SafetyOutlined />
-          </Tag>
-        ) : null}
-        <Tag color={schoolToColor.get(spell.school)}>
-          {shortenSpellSchool(spell.school)}
-        </Tag>
-        <Tag>
-          <ClockCircleOutlined />
-          {shortenScalar(scalarData(spell.castingTime))}
-        </Tag>
-        <Tag>
-          <HourglassOutlined />
-          {shortenScalar(scalarData(spell.duration))}
-        </Tag>
-        <Tag>
-          <ArrowsAltOutlined />
-          {shortenScalar(scalarData(spell.range))}
-        </Tag>
-        {spell.components ? (
-          <Tag>{componentsData(spell.components)}</Tag>
-        ) : null}
+      <div className={s.tagList}>
+        {concentrationTag(isConcentration)}
+        {schoolTag(school)}
+        {castingTimeTag(castingTime)}
+        {durationTag(duration)}
+        {rangeTag(range)}
+        {componentsTag(components)}
       </div>
-    )
-  }
-
-  const spellDamage = (damage: Spells_spells_result_damage | null) => {
-    return (
-      <>
-        {/* Basic damage */}
-        {damage ? (
-          <>
-            <Descriptions.Item label="Basic damage">
-              {damage.basic}
-            </Descriptions.Item>
-            <Descriptions.Item label="Damage type">
-              {damage.type}
-            </Descriptions.Item>
-          </>
-        ) : null}
-        {/* Damage on higher levels */}
-        {damage && damage.isScaleLevel ? (
-          <Descriptions.Item label="On higher levels">
-            {Object.entries(damage)
-              .filter((key) => {
-                return key[0].indexOf('level') > -1 && key[1]
-              })
-              .map((key) => {
-                return (
-                  <React.Fragment key={key[0]}>
-                    <span>
-                      {`on ${key[0].slice('level'.length)}: ${key[1]}`}
-                    </span>
-                    <br></br>
-                  </React.Fragment>
-                )
-              })}
-          </Descriptions.Item>
-        ) : null}
-      </>
-    )
-  }
-
-  const spellDataTable = (spell: Spells_spells_result) => {
-    return (
-      <Descriptions bordered className={s.detailes}>
-        {spell.isConcentration ? (
-          <Descriptions.Item label="Concentration">required</Descriptions.Item>
-        ) : null}
-        <Descriptions.Item label="School">{spell.school}</Descriptions.Item>
-        {spell.components ? (
-          <Descriptions.Item label="Components">
-            {componentsData(spell.components)}
-          </Descriptions.Item>
-        ) : null}
-        <Descriptions.Item label="Casting time">
-          {scalarData(spell.castingTime)}
-        </Descriptions.Item>
-        <Descriptions.Item label="Duration">
-          {scalarData(spell.duration)}
-        </Descriptions.Item>
-        <Descriptions.Item label="Range">
-          {scalarData(spell.range)}
-        </Descriptions.Item>
-        {spellDamage(spell.damage)}
-        {spell.materials ? (
-          <Descriptions.Item label="Materials">
-            {spell.materials}
-          </Descriptions.Item>
-        ) : null}
-      </Descriptions>
     )
   }
 
@@ -163,7 +121,7 @@ export const SpellList = ({ spells }: Props) => {
             {result.some((spell) => spell.level === level) ? (
               <>
                 <Title level={4}>{`${levelNumberToString.get(level)}`}</Title>
-                <Collapse>
+                <Collapse className="">
                   {result
                     .filter((spell) => spell.level === level)
                     .map((spell) => (
@@ -173,12 +131,7 @@ export const SpellList = ({ spells }: Props) => {
                         header={spell.name}
                         extra={spellDetailes(spell)}
                       >
-                        {spellDataTable(spell)}
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(spell.description),
-                          }}
-                        ></div>
+                        <SpellComponent spell={spell} />
                       </Panel>
                     ))}
                 </Collapse>

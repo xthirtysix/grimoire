@@ -14,8 +14,8 @@ import { Link } from 'react-router-dom'
 //Styles
 import s from './styles/HomeSchools.module.scss'
 
-const { Title } = Typography
 const { Search } = Input
+const { Title } = Typography
 
 interface Props {
   onSearch: (value: string) => void

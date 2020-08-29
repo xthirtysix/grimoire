@@ -1,36 +1,45 @@
 import React from 'react'
-import { Card, Typography, Empty, Button } from 'antd'
+import { Card, Button, Empty, Typography } from 'antd'
+import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 //Data
-import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
-import { useMutation } from '@apollo/react-hooks'
 import { DELETE_GRIMOIRE } from '../../../../lib/graphql/mutations'
 import {
   DeleteGrimoire as DeleteGrimoireData,
   DeleteGrimoireVariables,
 } from '../../../../lib/graphql/mutations/DeleteGrimoire/__generated__/DeleteGrimoire'
+import { USER } from '../../../../lib/graphql/queries'
+import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
+import { useMutation } from '@apollo/react-hooks'
 //Styles
 import s from './styles/UserGrimoires.module.scss'
+import { displaySuccessMessage } from '../../../../lib/utils'
 
-const { Title, Text } = Typography
+const { Text, Title } = Typography
 
 interface Props {
   userGrimoires: User['user']['grimoires']
   viewerIsUser: boolean
+  userId: string | null
 }
 
-export const UserGrimoires = ({ userGrimoires, viewerIsUser }: Props) => {
+export const UserGrimoires = ({ userGrimoires, viewerIsUser, userId }: Props) => {
   const total = userGrimoires ? userGrimoires.total : null
   const result = userGrimoires ? userGrimoires.result : null
 
   const [deleteGrimoire] = useMutation<
     DeleteGrimoireData,
     DeleteGrimoireVariables
-  >(DELETE_GRIMOIRE)
+  >(DELETE_GRIMOIRE, {
+    onCompleted: () => {
+      displaySuccessMessage('Grimoire successfully removed')
+    },
+    refetchQueries: [{ query: USER, variables: { id: userId } }],
+    awaitRefetchQueries: true
+  })
 
   const handleDeleteGrimoire = (id: string) => {
-    deleteGrimoire({ variables: { id }, refetchQueries: ['User']})
+    deleteGrimoire({ variables: { id }})
   }
 
   const grimoireList =

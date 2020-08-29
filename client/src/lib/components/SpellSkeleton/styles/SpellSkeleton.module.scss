@@ -1,0 +1,21 @@
+.card {
+  .title {
+    width: 120px;
+    height: 20px !important;
+    vertical-align: middle;
+  }
+
+  .table {
+    margin-bottom: 1rem;
+
+    .header {
+      width: 85px;
+      height: 14px;
+    }
+
+    .value {
+      width: 75px;
+      height: 14px;
+    }
+  }
+}

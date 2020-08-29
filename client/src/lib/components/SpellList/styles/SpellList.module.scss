@@ -1,18 +1,15 @@
-.detailes,
-.collapse {
-  margin-bottom: 1rem !important;
-}
-
 @media (max-width: 719px) {
   .fastDetailes {
     span {
-      margin-right: 0 !important;
+      margin-right: 0;
     }
   }
 
-  .collapseItem {
-    div {
-      float: none !important;
+  .collapse {
+    .collapseItem {
+      div {
+        float: none;
+      }
     }
   }
 }

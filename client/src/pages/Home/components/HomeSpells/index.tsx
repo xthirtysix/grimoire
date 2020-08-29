@@ -1,21 +1,22 @@
 import React from 'react'
+import { Layout, Typography } from 'antd'
 import {
   SpellList,
   SpellListSkeleton,
 } from '../../../../lib/components'
-import { Layout, Typography } from 'antd'
 //Data
-import { useQuery } from 'react-apollo'
+import { SPELLS } from '../../../../lib/graphql/queries/Spells'
 import {
   Spells as SpellsData,
   SpellsVariables,
 } from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
 import { SpellsFilter } from '../../../../lib/graphql/globalTypes'
-import { SPELLS } from '../../../../lib/graphql/queries/Spells'
+import { useQuery } from 'react-apollo'
 //Style
 import s from './styles/HomeSpells.module.scss'
-
+//Constants
 const SPELLS_NUMBER = 4
+
 const { Content } = Layout
 const { Title } = Typography
 

@@ -17,9 +17,7 @@ export const GrimoireDetailes = ({ grimoireDetailes }: Props) => {
         <BookOutlined />
         {grimoireDetailes.name}
       </Title>
-      {grimoireDetailes.spells?.total ? (
-        <Text>Spells contained: {grimoireDetailes.spells?.total}</Text>
-      ) : null}
+      <Text>Spells contained: {grimoireDetailes.spells?.total}</Text>
     </>
   ) : null
 }

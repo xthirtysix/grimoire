@@ -1,3 +1,5 @@
 export * from './ErrorBanner'
+export * from './Spell'
+export * from './SpellSkeleton'
 export * from './SpellList'
 export * from './SpellListSkeleton'

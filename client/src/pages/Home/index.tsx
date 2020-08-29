@@ -1,14 +1,14 @@
 import React from 'react'
 import { Layout } from 'antd'
 import {
+  HomeAllSpells,
   HomeSchools,
+  HomeSpells,
   HomeWave,
   HomeWhyRegister,
-  HomeAllSpells,
-  HomeSpells,
 } from './components'
-import { RouteComponentProps } from 'react-router-dom'
 import { displayErrorMessage } from '../../lib/utils'
+import { RouteComponentProps } from 'react-router-dom'
 
 const { Content } = Layout
 

@@ -1,30 +1,32 @@
 import React from 'react'
 import {
-  Typography,
-  Form,
   Button,
-  Input,
-  Select,
-  InputNumber,
   Card,
   Divider,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Typography,
 } from 'antd'
 import { Link, Redirect } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
 //Data
-import { Viewer } from '../../lib/types'
 import { ClassType } from '../../lib/graphql/globalTypes'
 import { CREATE_GRIMOIRE } from '../../lib/graphql/mutations'
 import {
   CreateGrimoire as CreateGrimoireData,
   CreateGrimoireVariables,
 } from '../../lib/graphql/mutations/CreateGrimoire/__generated__/CreateGrimoire'
+import { USER } from '../../lib/graphql/queries'
+import { useMutation } from '@apollo/react-hooks'
+import { Viewer } from '../../lib/types'
 //Styles
 import s from './styles/CreateGrimoire.module.scss'
 
-const { Title, Text } = Typography
 const { Item } = Form
 const { Option } = Select
+const { Title, Text } = Typography
 
 interface Props {
   viewer: Viewer
@@ -36,7 +38,20 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   const [createGrimoire, { loading, data }] = useMutation<
     CreateGrimoireData,
     CreateGrimoireVariables
-  >(CREATE_GRIMOIRE)
+  >(CREATE_GRIMOIRE, {
+    onCompleted: (data) => {
+      displaySuccessMessage(
+        `Grimoire ${data.createGrimoire.name} successfully created`
+      )
+    },
+    onError: () => {
+      displayErrorMessage(
+        `Grimoire was not created. Check your internet connection or try again later`
+      )
+    },
+    refetchQueries: [{ query: USER, variables: { id: viewer.id } }],
+    awaitRefetchQueries: true,
+  })
 
   const onFinish = (values: any) => {
     const characterClasses = [
@@ -104,15 +119,15 @@ export const CreateGrimoire = ({ viewer }: Props) => {
           <Item
             name="name"
             label="Name"
-            extra="Max length of 20 characters"
+            extra="Max length of 30 characters"
             rules={[
               {
                 required: true,
-                message: 'Please enter valid name under 20 characters',
+                message: 'Please enter valid name under 30 characters',
               },
             ]}
           >
-            <Input maxLength={20} placeholder="Type 'Elminster Aumar'" />
+            <Input maxLength={30} placeholder="Type 'Elminster Aumar'" />
           </Item>
           <Divider />
           <div className={s.classSelect}>

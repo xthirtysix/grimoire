@@ -15,8 +15,8 @@ const verifyCreateGrimoireInput = ({
     throw new Error("name must contain letters, numbers or symbols");
   }
 
-  if (name.length > 20) {
-    throw new Error("name must be under 20 characters");
+  if (name.length > 30) {
+    throw new Error("name must be under 30 characters");
   }
 
   if (characterClasses.length === 0) {
@@ -68,6 +68,12 @@ export const grimoireResolvers: IResolvers = {
 
       if (!viewer) {
         throw new Error("viewer can not be found");
+      }
+
+      let user = await db.users.findOne({_id: viewer._id})
+
+      if (user?.grimoires && user.grimoires.length > 5) {
+        throw new Error("maximum grimoires created")
       }
 
       const insertResult = await db.grimoires.insertOne({
