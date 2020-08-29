@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ErrorBanner = ({
-  message = 'Oh dear! Something went wrong =(',
+  message = 'Ooops! Something went wrong =(',
   description = 'Seems like something went wrong, please check your connection and/or try again later',
 }: Props) => {
   return (

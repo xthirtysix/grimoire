@@ -1,15 +1,15 @@
 import React from 'react'
-import { Layout, Divider, Empty, Button } from 'antd'
-import { RouteComponentProps, Link } from 'react-router-dom'
+import { Divider, Empty, Layout } from 'antd'
 import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
 import { SpellList, SpellListSkeleton } from '../../lib/components'
+import { Link, RouteComponentProps } from 'react-router-dom'
 // Data
-import { useQuery } from 'react-apollo'
 import { GRIMOIRE } from '../../lib/graphql/queries'
 import {
   Grimoire as GrimoireData,
   GrimoireVariables,
 } from '../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
+import { useQuery } from 'react-apollo'
 // Styles
 import s from './styles/Grimoire.module.scss'
 
@@ -39,14 +39,16 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
       <SpellList spells={data.grimoire.spells} />
     ) : (
       <>
-        <Empty className={s.empty}
+        <Empty
+          className={s.empty}
           description="There are no Spells in your Grimoire yet..."
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
-        <Link to="/spells" className="centered">
-          <Button type="primary" size="large">
-            Add Spells
-          </Button>
+        <Link
+          to="/spells"
+          className="centered ant-btn ant-btn-primary ant-btn-lg"
+        >
+          Add Spells
         </Link>
       </>
     )

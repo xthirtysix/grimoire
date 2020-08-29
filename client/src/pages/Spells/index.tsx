@@ -1,22 +1,18 @@
 import React from 'react'
 import { SpellList, SpellListSkeleton } from '../../lib/components'
-import { Layout } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 //Data
-import { useQuery } from 'react-apollo'
+import { SPELLS } from '../../lib/graphql/queries/Spells'
 import {
   Spells as SpellsData,
   SpellsVariables,
 } from '../../lib/graphql/queries/Spells/__generated__/Spells'
 import { SpellsFilter } from '../../lib/graphql/globalTypes'
-import { SPELLS } from '../../lib/graphql/queries/Spells'
-//Style
+import { useQuery } from 'react-apollo'
 
 interface MatchParams {
   filter: string
 }
-
-const { Content } = Layout
 
 export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
   let filter
@@ -59,19 +55,17 @@ export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
     },
   })
 
-  let spellList
+  const spells = data ? data.spells : null
 
   if (loading) {
-    spellList = <SpellListSkeleton />
+    return (
+      <div className="container" >
+        <SpellListSkeleton />
+      </div>
+    )
   }
 
-  if (data) {
-    spellList = <SpellList spells={data.spells} />
-  }
+  const spellList = spells ? <SpellList spells={spells} /> : null
 
-  return (
-    <Content>
-      <div className="container">{spellList}</div>
-    </Content>
-  )
+  return <div className="container">{spellList}</div>
 }

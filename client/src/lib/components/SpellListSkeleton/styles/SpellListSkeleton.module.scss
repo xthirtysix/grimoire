@@ -1,0 +1,23 @@
+.title {
+  width: 150px !important;
+  margin-bottom: 12px !important;
+  height: 26px !important;
+}
+.collapse {
+  .panel {
+    .header {
+      width: 100px;
+      height: 20px;
+      margin-left: 0.85rem;
+      line-height: 0;
+      vertical-align: middle;
+    }
+    .tag {
+      width: 45px;
+      height: 20px;
+      line-height: 0;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+  }
+}

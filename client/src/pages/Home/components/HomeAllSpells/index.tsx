@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Button } from 'antd'
+import { Button, Typography} from 'antd'
 import { Link } from 'react-router-dom'
 //Styles
 import s from './styles/HomeAllSpells.module.scss'

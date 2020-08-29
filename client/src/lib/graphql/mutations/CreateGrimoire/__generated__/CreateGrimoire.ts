@@ -12,6 +12,7 @@ import { CreateGrimoireInput } from "./../../../globalTypes";
 export interface CreateGrimoire_createGrimoire {
   __typename: "Grimoire";
   id: string;
+  name: string;
 }
 
 export interface CreateGrimoire {

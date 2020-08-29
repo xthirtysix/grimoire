@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-import { Card, Layout, Typography, Spin } from 'antd'
-import { Redirect } from 'react-router-dom'
+import { Card, Layout, Spin, Typography } from 'antd'
 import { ErrorBanner } from '../../lib/components'
-import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
+import { displayErrorMessage, displaySuccessMessage } from '../../lib/utils'
+import { Redirect } from 'react-router-dom'
 //Data
-import { useApolloClient, useMutation } from 'react-apollo'
-import { Viewer } from '../../lib/types'
 import { AUTH_URL } from '../../lib/graphql/queries'
 import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl'
 import { LOG_IN } from '../../lib/graphql/mutations'
@@ -13,8 +11,11 @@ import {
   LogIn as LogInData,
   LogInVariables,
 } from '../../lib/graphql/mutations/LogIn/__generated__/LogIn'
+import { useApolloClient, useMutation } from 'react-apollo'
+import { Viewer } from '../../lib/types'
 //Styles
 import s from './styles/Login.module.scss'
+//Assets
 import googleLogo from './assets/google_logo.png'
 
 const { Content } = Layout
