@@ -7,6 +7,8 @@ import { CreateGrimoireArgs } from "../Grimoire/types";
 import { ObjectId } from "mongodb";
 import { SpellsData } from "../Spell/types";
 
+const MAX_GRIMOIRE_COUNT = 6;
+
 const verifyCreateGrimoireInput = ({
   name,
   characterClasses,
@@ -70,10 +72,12 @@ export const grimoireResolvers: IResolvers = {
         throw new Error("viewer can not be found");
       }
 
-      let user = await db.users.findOne({_id: viewer._id})
+      const user = await db.users.findOne({ _id: viewer._id });
 
-      if (user?.grimoires && user.grimoires.length > 5) {
-        throw new Error("maximum grimoires created")
+      if (user?.grimoires && user.grimoires.length >= MAX_GRIMOIRE_COUNT) {
+        throw new Error(
+          `grimoires created ${user.grimoires.length} out of ${MAX_GRIMOIRE_COUNT}`
+        );
       }
 
       const insertResult = await db.grimoires.insertOne({
@@ -116,6 +120,13 @@ export const grimoireResolvers: IResolvers = {
       await db.grimoires.deleteOne({
         _id: new ObjectId(id),
       });
+
+      await db.users.findOneAndUpdate(
+        {
+          _id: grimoire.owner,
+        },
+        { $pull: { grimoires: new ObjectId(id) } }
+      );
 
       return;
     },
