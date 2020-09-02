@@ -30,7 +30,7 @@ export const spellResolvers: IResolvers = {
     },
     spells: async (
       _root: undefined,
-      { filter, limit }: SpellsArgs,
+      { filter, grimoire, limit }: SpellsArgs,
       { db }: { db: Database }
     ): Promise<SpellsData> => {
       try {
@@ -46,6 +46,13 @@ export const spellResolvers: IResolvers = {
           data.total = limit;
         } else {
           cursor = await db.spells.find({});
+          data.total = await cursor.count();
+        }
+
+        if (grimoire) {
+          const grimoireDoc = await db.grimoires.findOne({_id: new ObjectId(grimoire)});
+
+          cursor = await db.spells.find({_id: {$in: grimoireDoc?.spells}})
           data.total = await cursor.count();
         }
 

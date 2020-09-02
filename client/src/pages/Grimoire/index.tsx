@@ -9,6 +9,11 @@ import {
   Grimoire as GrimoireData,
   GrimoireVariables,
 } from '../../lib/graphql/queries/Grimoire/__generated__/Grimoire'
+import { SPELLS } from '../../lib/graphql/queries'
+import {
+  Spells as SpellsData,
+  SpellsVariables,
+} from '../../lib/graphql/queries/Spells/__generated__/Spells'
 import { useQuery } from 'react-apollo'
 // Styles
 import s from './styles/Grimoire.module.scss'
@@ -17,26 +22,32 @@ const { Content } = Layout
 
 interface MatchParams {
   id: string
+  edit: string
 }
 
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
-  const { data, loading, error } = useQuery<GrimoireData, GrimoireVariables>(
-    GRIMOIRE,
+  const grimoire = useQuery<GrimoireData, GrimoireVariables>(GRIMOIRE, {
+    variables: {
+      id: match.params.id,
+    },
+  })
+
+  const { data, loading, error } = useQuery<SpellsData, SpellsVariables>(
+    SPELLS,
     {
       variables: {
-        id: match.params.id,
+        grimoire: !match.params.edit ? match.params.id : null,
       },
     }
   )
 
-  const grimoireDetailes = data?.grimoire ? data.grimoire : null
+  const grimoireSpells = grimoire?.data ? grimoire.data.grimoire.spells : null
+
+  const grimoireDetailes = grimoire?.data ? grimoire.data.grimoire : null
 
   const spellList =
-    data &&
-    data.grimoire &&
-    data.grimoire.spells &&
-    data.grimoire.spells.total ? (
-      <SpellList spells={data.grimoire.spells} />
+    data && data.spells && data.spells.result ? (
+      <SpellList spells={data.spells} grimoireSpells={grimoireSpells} editable={match.params.edit === 'edit'}/>
     ) : (
       <>
         <Empty

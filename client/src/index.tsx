@@ -104,6 +104,7 @@ const App = () => {
               render={(props) => <CreateGrimoire {...props} viewer={viewer} />}
             />
             <Route exact path="/grimoire/:id" component={Grimoire} />
+            <Route exact path="/grimoire/:id/:edit" component={Grimoire} />
             <Route exact path="/spell/:name" component={Spell} />
             <Route exact path="/spells" component={Spells} />
             <Route exact path="/spells/:filter" component={Spells} />
