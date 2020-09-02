@@ -4,6 +4,11 @@ export interface GrimoireArgs {
   id: string;
 }
 
+export interface AddSpellArgs {
+  grimoireID: string;
+  spellID: string;
+}
+
 export interface CharacterClassesInput {
   class: string;
   level: number;

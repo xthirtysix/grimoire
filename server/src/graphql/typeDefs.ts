@@ -145,6 +145,8 @@ export const typeDefs = gql`
     logOut: Viewer!
     createGrimoire(input: CreateGrimoireInput!): Grimoire!
     deleteGrimoire(id: ID!): ID
+    addSpellToGrimoire(grimoireID: ID!, spellID: ID!): ID
+    removeSpellFromGrimoire(grimoireID: ID!, spellID: ID!): ID
   }
 
   input LogInInput {
