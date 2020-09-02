@@ -13,3 +13,28 @@
     }
   }
 }
+
+.collapseItem {
+  div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap;
+  }
+
+  div:last-child {
+    margin-left: auto;
+  }
+}
+
+.editableContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 719px) {
+  .editableContainer {
+    div:first-child {
+      display: none !important;
+    }
+  }
+}

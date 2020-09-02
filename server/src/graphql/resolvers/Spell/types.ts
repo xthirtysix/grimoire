@@ -18,7 +18,8 @@ export enum SpellsFilter {
 }
 
 export interface SpellsArgs {
-  filter: SpellsFilter;
+  filter?: SpellsFilter 
+  grimoire?: string
   limit?: number;
 }
 

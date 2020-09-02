@@ -1,9 +1,11 @@
-import React from 'react'
-import { Collapse, Tag, Typography } from 'antd'
+import React, { MouseEvent } from 'react'
+import { Button, Collapse, Tag, Typography } from 'antd'
 import {
   ArrowsAltOutlined,
   ClockCircleOutlined,
   HourglassOutlined,
+  MinusOutlined,
+  PlusOutlined,
   SafetyOutlined,
 } from '@ant-design/icons'
 import { Spell as SpellComponent } from '../'
@@ -28,13 +30,25 @@ const { Title } = Typography
 
 interface Props {
   spells: Spells_spells
+  grimoireSpells?: string[] | null
+  editable?: boolean
 }
 
-export const SpellList = ({ spells }: Props) => {
-  const total = spells && spells.total ? spells.total : null
+export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
+  const total = grimoireSpells ? grimoireSpells.length : spells.total
   const result = spells && spells.result ? spells.result : null
 
   const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
+
+  const onAddClick = (e: MouseEvent, id: string) => {
+    e.stopPropagation()
+    console.log(`Add ${id} to Grimoire`)
+  }
+
+  const onRemoveClick = (e: MouseEvent, id: string) => {
+    e.stopPropagation()
+    console.log(`Remove ${id} from Grimoire`)
+  }
 
   //Panel Tags *START*
   const concentrationTag = (isConcentration: boolean) => {
@@ -124,12 +138,68 @@ export const SpellList = ({ spells }: Props) => {
                 <Collapse className="">
                   {result
                     .filter((spell) => spell.level === level)
+                    .sort((a, b) => {
+                      if (
+                        grimoireSpells &&
+                        grimoireSpells.indexOf(a.id) >
+                          grimoireSpells.indexOf(b.id)
+                      ) {
+                        return -1
+                      }
+                      if (
+                        grimoireSpells &&
+                        grimoireSpells.indexOf(a.id) <
+                          grimoireSpells.indexOf(b.id)
+                      ) {
+                        return 1
+                      }
+                      return 0
+                    })
                     .map((spell) => (
                       <Panel
                         className={s.collapseItem}
                         key={spell.id}
                         header={spell.name}
-                        extra={spellDetailes(spell)}
+                        extra={
+                          grimoireSpells && editable ? (
+                            grimoireSpells.indexOf(spell.id) >= 0 ? (
+                              <div className={s.editableContainer}>
+                                {spellDetailes(spell)}{' '}
+                                <Button
+                                  size="small"
+                                  danger
+                                  type="primary"
+                                  onClick={(e) => onRemoveClick(e, spell.name)}
+                                >
+                                  <MinusOutlined />
+                                  Del
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className={s.editableContainer}>
+                                {spellDetailes(spell)}{' '}
+                                <Button
+                                  size="small"
+                                  type="primary"
+                                  onClick={(e) => onAddClick(e, spell.name)}
+                                >
+                                  <PlusOutlined />
+                                  Add
+                                </Button>
+                              </div>
+                            )
+                          ) : (
+                            spellDetailes(spell)
+                          )
+                        }
+                        style={
+                          grimoireSpells && grimoireSpells.indexOf(spell.id) < 0
+                            ? {
+                                opacity: 0.95,
+                                backgroundColor: 'whitesmoke',
+                              }
+                            : {}
+                        }
                       >
                         <SpellComponent spell={spell} />
                       </Panel>

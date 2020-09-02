@@ -31,7 +31,7 @@ export const typeDefs = gql`
     owner: User!
     name: String!
     characterClasses: [CharacterClass!]!
-    spells: Spells!
+    spells: [ID!]
     authorized: Boolean
   }
 
@@ -53,11 +53,6 @@ export const typeDefs = gql`
     SORCERER
     WARLOCK
     WIZARD
-  }
-
-  type GrimoireSpells {
-    total: Int!
-    result: [Spell]!
   }
 
   # Spells
@@ -127,7 +122,7 @@ export const typeDefs = gql`
     user(id: ID!): User!
     grimoire(id: ID!): Grimoire!
     spell(name: String!): Spell!
-    spells(filter: SpellsFilter, limit: Int): Spells!
+    spells(filter: SpellsFilter, grimoire: String, limit: Int): Spells!
   }
 
   enum SpellsFilter {

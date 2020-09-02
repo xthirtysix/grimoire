@@ -150,32 +150,8 @@ export const grimoireResolvers: IResolvers = {
 
       return owner;
     },
-    spells: async (
-      grimoire: Grimoire,
-      _args: {},
-      { db }: { db: Database }
-    ): Promise<SpellsData | null> => {
-      try {
-        if (!grimoire.spells) {
-          return null;
-        }
-
-        const data: SpellsData = {
-          total: 0,
-          result: [],
-        };
-
-        const cursor = await db.spells.find({
-          _id: { $in: grimoire.spells },
-        });
-
-        data.total = await cursor.count();
-        data.result = await cursor.toArray();
-
-        return data;
-      } catch (error) {
-        throw new Error(`Failed to query grimoire spells: ${error}`);
-      }
+    spells: (grimoire: Grimoire): string[] => {
+      return grimoire.spells.map((spellID) => spellID.toString());
     },
   },
 };

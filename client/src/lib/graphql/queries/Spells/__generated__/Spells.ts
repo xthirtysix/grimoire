@@ -90,5 +90,6 @@ export interface Spells {
 
 export interface SpellsVariables {
   filter?: SpellsFilter | null;
+  grimoire?: string | null;
   limit?: number | null;
 }
