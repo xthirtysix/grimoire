@@ -2,7 +2,7 @@ import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
 import { Grimoire, User, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { GrimoireArgs, CreateGrimoireInput } from "./types";
+import { GrimoireArgs, AddSpellArgs, CreateGrimoireInput } from "./types";
 import { CreateGrimoireArgs } from "../Grimoire/types";
 import { ObjectId } from "mongodb";
 import { SpellsData } from "../Spell/types";
@@ -44,12 +44,6 @@ export const grimoireResolvers: IResolvers = {
 
         if (!grimoire) {
           throw new Error(`grimoire with ${id} can not be found`);
-        }
-
-        const viewer = await authorize(db, req);
-
-        if (viewer && viewer._id === grimoire.owner) {
-          grimoire.authorized = true;
         }
 
         return grimoire;
@@ -121,11 +115,79 @@ export const grimoireResolvers: IResolvers = {
         _id: new ObjectId(id),
       });
 
-      await db.users.findOneAndUpdate(
+      await db.users.update(
         {
           _id: grimoire.owner,
         },
         { $pull: { grimoires: new ObjectId(id) } }
+      );
+
+      return;
+    },
+    addSpellToGrimoire: async (
+      _root: undefined,
+      { grimoireID, spellID }: AddSpellArgs,
+      { db, req }: { db: Database; req: Request }
+    ): Promise<void> => {
+      let viewer = await authorize(db, req);
+
+      if (!viewer) {
+        throw new Error("viewer can not be found");
+      }
+
+      const grimoire = await db.grimoires.findOne({
+        _id: new ObjectId(grimoireID),
+      });
+
+      if (!grimoire) {
+        throw new Error("grimoire can not be found");
+      }
+
+      if (grimoire && viewer._id !== grimoire.owner) {
+        throw new Error("grimoire can only be edited by it's creator");
+      }
+
+      await db.grimoires.update(
+        {
+          _id: new ObjectId(grimoireID),
+        },
+        {
+          $push: { spells: new ObjectId(spellID) },
+        }
+      );
+
+      return;
+    },
+    removeSpellFromGrimoire: async (
+      _root: undefined,
+      { grimoireID, spellID }: AddSpellArgs,
+      { db, req }: { db: Database; req: Request }
+    ): Promise<void> => {
+      // let viewer = await authorize(db, req);
+
+      // if (!viewer) {
+      //   throw new Error("viewer can not be found");
+      // }
+
+      // const grimoire = await db.grimoires.findOne({
+      //   _id: new ObjectId(grimoireID),
+      // });
+
+      // if (!grimoire) {
+      //   throw new Error("grimoire can not be found");
+      // }
+
+      // if (grimoire && viewer._id !== grimoire.owner) {
+      //   throw new Error("grimoire can only be edited by it's creator");
+      // }
+
+      await db.grimoires.update(
+        {
+          _id: new ObjectId(grimoireID),
+        },
+        {
+          $pull: { spells: new ObjectId(spellID) },
+        }
       );
 
       return;
