@@ -73,7 +73,7 @@ export const UserGrimoires = ({ userGrimoires, viewerIsUser, userId }: Props) =>
                   </a>
                   {viewerIsUser ? (
                     <>
-                      <a href={`/grimoire/${grimoire.id}`}>
+                      <a href={`/grimoire/${grimoire.id}/edit`}>
                         <EditOutlined />
                         Edit
                       </a>

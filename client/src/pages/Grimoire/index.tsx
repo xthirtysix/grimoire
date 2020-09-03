@@ -1,9 +1,22 @@
-import React from 'react'
-import { Divider, Empty, Layout } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Affix, Divider, Empty, Layout } from 'antd'
+import { EditOutlined, SaveOutlined } from '@ant-design/icons'
 import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
 import { SpellList, SpellListSkeleton } from '../../lib/components'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps, useLocation, Redirect } from 'react-router-dom'
 // Data
+import {
+  ADD_SPELL_TO_GRIMOIRE,
+  REMOVE_SPELL_FROM_GRIMOIRE,
+} from '../../lib/graphql/mutations'
+import {
+  AddSpellToGrimoire as AddSpellToGrimoireData,
+  AddSpellToGrimoireVariables,
+} from '../../lib/graphql/mutations/AddSpellToGrimoire/__generated__/AddSpellToGrimoire'
+import {
+  RemoveSpellFromGrimoire as RemoveSpellFromGrimoireData,
+  RemoveSpellFromGrimoireVariables,
+} from '../../lib/graphql/mutations/RemoveSpellFromGrimoire/__generated__/RemoveSpellFromGrimoire'
 import { GRIMOIRE } from '../../lib/graphql/queries'
 import {
   Grimoire as GrimoireData,
@@ -15,6 +28,7 @@ import {
   SpellsVariables,
 } from '../../lib/graphql/queries/Spells/__generated__/Spells'
 import { useQuery } from 'react-apollo'
+import { useMutation } from '@apollo/react-hooks'
 // Styles
 import s from './styles/Grimoire.module.scss'
 
@@ -26,49 +40,67 @@ interface MatchParams {
 }
 
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
-  const grimoire = useQuery<GrimoireData, GrimoireVariables>(GRIMOIRE, {
-    variables: {
-      id: match.params.id,
-    },
-  })
+  const [editable, setEditable] = useState<boolean>(false)
+  const [bottom, setBottom] = useState(10)
 
-  const { data, loading, error } = useQuery<SpellsData, SpellsVariables>(
-    SPELLS,
+  useEffect(() => {
+    return match.params.edit === 'edit' ? setEditable(true) : undefined
+  }, [match.params.edit])
+
+  const currentLocation = useLocation()
+
+  const { data: grimoireData } = useQuery<GrimoireData, GrimoireVariables>(
+    GRIMOIRE,
     {
       variables: {
-        grimoire: !match.params.edit ? match.params.id : null,
+        id: match.params.id,
       },
     }
   )
 
-  const grimoireSpells = grimoire?.data ? grimoire.data.grimoire.spells : null
+  const [addSpellToGrimoire] = useMutation<
+    AddSpellToGrimoireData,
+    AddSpellToGrimoireVariables
+  >(ADD_SPELL_TO_GRIMOIRE, {
+    refetchQueries: [{ query: GRIMOIRE, variables: { id: match.params.id } }],
+  })
 
-  const grimoireDetailes = grimoire?.data ? grimoire.data.grimoire : null
+  const [removeSpellFromGrimoire] = useMutation<
+    RemoveSpellFromGrimoireData,
+    RemoveSpellFromGrimoireVariables
+  >(REMOVE_SPELL_FROM_GRIMOIRE, {
+    refetchQueries: [{ query: GRIMOIRE, variables: { id: match.params.id } }],
+  })
 
-  const spellList =
-    data && data.spells && data.spells.result ? (
-      <SpellList spells={data.spells} grimoireSpells={grimoireSpells} editable={match.params.edit === 'edit'}/>
-    ) : (
-      <>
-        <Empty
-          className={s.empty}
-          description="There are no Spells in your Grimoire yet..."
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-        />
-        <Link
-          to="/spells"
-          className="centered ant-btn ant-btn-primary ant-btn-lg"
-        >
-          Add Spells
-        </Link>
-      </>
-    )
+  const {
+    data: spellData,
+    loading: spellLoading,
+    error: spellError,
+    refetch: spellRefetch,
+  } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
+    variables: {
+      grimoire: !editable ? match.params.id : null,
+    },
+    fetchPolicy: 'network-only',
+  })
 
-  if (error) {
-    return <h2>Error</h2>
+  const handleEditEmptyGrimoire = () => {
+    setEditable(!editable)
+    setBottom(10)
+    spellRefetch()
   }
 
-  if (loading) {
+  const handleAddSpellToGrimoire = (spellID: string) => {
+    addSpellToGrimoire({ variables: { grimoireID: match.params.id, spellID } })
+  }
+
+  const handleRemoveSpellFromGrimoire = (spellID: string) => {
+    removeSpellFromGrimoire({
+      variables: { grimoireID: match.params.id, spellID },
+    })
+  }
+
+  if (spellLoading || !spellData || !grimoireData) {
     return (
       <Content className="container">
         <GrimoireDetailesSkeleton />
@@ -77,11 +109,68 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     )
   }
 
+  if (match.params.edit && match.params.edit !== 'edit') {
+    return <Redirect to="/404"/>
+  }
+
+  const allSpells = spellData.spells
+
+  const grimoireDetailes = grimoireData.grimoire
+  const grimoireSpells = grimoireDetailes.spells
+
+  const spellList = (
+    <SpellList
+      spells={allSpells}
+      grimoireSpells={grimoireSpells}
+      editable={editable}
+      onAddSpell={handleAddSpellToGrimoire}
+      onRemoveSpell={handleRemoveSpellFromGrimoire}
+    />
+  )
+
+  const emptyList = (
+    <>
+      <Empty
+        className={s.empty}
+        description="There are no Spells in your Grimoire yet..."
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+      />
+      <Link
+        onClick={handleEditEmptyGrimoire}
+        to={`${currentLocation.pathname}/edit`}
+        className="centered ant-btn ant-btn-primary ant-btn-lg"
+      >
+        Add Spells
+      </Link>
+    </>
+  )
+
+  if (spellError) {
+    return <h2>Error</h2>
+  }
+
+  const editSaveButton = (
+    <Affix offsetBottom={bottom} className={s.saveContainer}>
+      <Link
+        onClick={handleEditEmptyGrimoire}
+        to={
+          editable
+            ? `/grimoire/${grimoireDetailes.id}`
+            : `/grimoire/${grimoireDetailes.id}/edit`
+        }
+        className={`ant-avatar ant-btn-primary fixed-widgets-avatar ant-avatar-circle ant-avatar-icon ${s.save}`}
+      >
+        {editable ? <SaveOutlined /> : <EditOutlined />}
+      </Link>
+    </Affix>
+  )
+
   return (
     <Content className="container">
       <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
       <Divider className="divider" />
-      {spellList}
+      {grimoireSpells?.length ? spellList : !editable ? emptyList : spellList}
+      {editSaveButton}
     </Content>
   )
 }

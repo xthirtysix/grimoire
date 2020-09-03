@@ -15,14 +15,14 @@
 }
 
 .collapseItem {
-  div:first-child {
+  &> div:first-child {
     display: flex !important;
     align-items: center !important;
     flex-wrap: wrap;
-  }
 
-  div:last-child {
-    margin-left: auto;
+    div:last-child {
+      margin-left: auto;
+    }
   }
 }
 
@@ -35,6 +35,19 @@
   .editableContainer {
     div:first-child {
       display: none !important;
+    }
+  }
+
+  .tagSchool,
+  .tagComponents {
+    display: none !important;
+  }
+
+  .tagScalar {
+    margin-right: 0 !important;
+
+    span:first-child {
+      display: none;
     }
   }
 }

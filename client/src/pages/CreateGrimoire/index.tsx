@@ -98,7 +98,7 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   }
 
   return (
-    <div className={s.container}>
+    <>
       <div className={s.title}>
         <Title level={3}>
           Welcome, spellcaster! Let's create your own Grimoire!
@@ -183,6 +183,6 @@ export const CreateGrimoire = ({ viewer }: Props) => {
           </Item>
         </Form>
       </Card>
-    </div>
+    </>
   )
 }
