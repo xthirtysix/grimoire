@@ -95,7 +95,7 @@ const App = () => {
         <Affix offsetTop={0} style={{ zIndex: 100 }}>
           <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>
-        <div className="main-content">
+        <main className="main-content">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route
@@ -108,7 +108,6 @@ const App = () => {
             <Route exact path="/spell/:name" component={Spell} />
             <Route exact path="/spells" component={Spells} />
             <Route exact path="/spells/:filter" component={Spells} />
-            <Route exact path="/404" component={Home} />
             <Route
               exact
               path="/user/:id"
@@ -121,7 +120,7 @@ const App = () => {
             />
             <Route component={NotFound} />
           </Switch>
-        </div>
+        </main>
         <AppFooter />
       </Layout>
     </Router>

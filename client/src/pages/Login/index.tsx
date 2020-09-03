@@ -68,8 +68,8 @@ export const LogIn = ({ setViewer }: Props) => {
 
   if (logInLoading) {
     return (
-      <Content className={s.login}>
-        <Spin size="large" />
+      <Content className="container">
+        <Spin className="centered" />
       </Content>
     )
   }
@@ -84,7 +84,7 @@ export const LogIn = ({ setViewer }: Props) => {
   ) : null
 
   return (
-    <Content className={s.login}>
+    <>
       {logInErrorBannerElement}
       <Card className={s.loginCard}>
         <Title level={3}>
@@ -109,6 +109,6 @@ export const LogIn = ({ setViewer }: Props) => {
           to sign in with your Google account.
         </Text>
       </Card>
-    </Content>
+    </>
   )
 }

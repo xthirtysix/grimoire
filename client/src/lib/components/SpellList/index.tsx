@@ -32,23 +32,34 @@ interface Props {
   spells: Spells_spells
   grimoireSpells?: string[] | null
   editable?: boolean
+  onAddSpell?: (spellID: string) => void
+  onRemoveSpell?: (spellID: string) => void
 }
 
-export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
-  const total = grimoireSpells ? grimoireSpells.length : spells.total
+export const SpellList = ({
+  spells,
+  grimoireSpells,
+  editable,
+  onAddSpell,
+  onRemoveSpell,
+}: Props) => {
   const result = spells && spells.result ? spells.result : null
 
   const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
 
-  const onAddClick = (e: MouseEvent, id: string) => {
-    e.stopPropagation()
-    console.log(`Add ${id} to Grimoire`)
-  }
+  const handleAddClick = onAddSpell
+    ? (e: MouseEvent, spellID: string) => {
+        e.stopPropagation()
+        onAddSpell(spellID)
+      }
+    : () => {}
 
-  const onRemoveClick = (e: MouseEvent, id: string) => {
-    e.stopPropagation()
-    console.log(`Remove ${id} from Grimoire`)
-  }
+  const handleRemoveClick = onRemoveSpell
+    ? (e: MouseEvent, spellID: string) => {
+        e.stopPropagation()
+        onRemoveSpell(spellID)
+      }
+    : () => {}
 
   //Panel Tags *START*
   const concentrationTag = (isConcentration: boolean) => {
@@ -60,7 +71,7 @@ export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
   }
 
   const schoolTag = (school: string) => (
-    <Tag color={schoolToColor.get(school)}>{shortenSpellSchool(school)}</Tag>
+    <Tag color={schoolToColor.get(school)} className={s.tagSchool}>{shortenSpellSchool(school)}</Tag>
   )
 
   const scalarData = <
@@ -75,21 +86,21 @@ export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
   }
 
   const castingTimeTag = (castingTime: Spells_spells_result_castingTime) => (
-    <Tag>
+    <Tag className={s.tagScalar}>
       <ClockCircleOutlined />
       {shortenScalar(scalarData(castingTime))}
     </Tag>
   )
 
   const durationTag = (duration: Spells_spells_result_duration) => (
-    <Tag>
+    <Tag className={s.tagScalar}>
       <HourglassOutlined />
       {shortenScalar(scalarData(duration))}
     </Tag>
   )
 
   const rangeTag = (range: Spells_spells_result_range) => (
-    <Tag>
+    <Tag className={s.tagScalar}>
       <ArrowsAltOutlined />
       {shortenScalar(scalarData(range))}
     </Tag>
@@ -99,7 +110,7 @@ export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
     components: Spells_spells_result_components | null
   ) => {
     return components ? (
-      <Tag>
+      <Tag className={s.tagComponents}>
         {`${components.verbal ? 'V' : ''} 
           ${components.somatic ? 'S' : ''} 
           ${components.material ? 'M' : ''}`}
@@ -128,88 +139,87 @@ export const SpellList = ({ spells, grimoireSpells, editable }: Props) => {
     )
   }
 
-  const spellList =
-    total && result
-      ? spellLevels.map((level) => (
-          <div key={`header-${level}`}>
-            {result.some((spell) => spell.level === level) ? (
-              <>
-                <Title level={4}>{`${levelNumberToString.get(level)}`}</Title>
-                <Collapse className="">
-                  {result
-                    .filter((spell) => spell.level === level)
-                    .sort((a, b) => {
-                      if (
-                        grimoireSpells &&
-                        grimoireSpells.indexOf(a.id) >
-                          grimoireSpells.indexOf(b.id)
-                      ) {
-                        return -1
-                      }
-                      if (
-                        grimoireSpells &&
-                        grimoireSpells.indexOf(a.id) <
-                          grimoireSpells.indexOf(b.id)
-                      ) {
-                        return 1
-                      }
-                      return 0
-                    })
-                    .map((spell) => (
-                      <Panel
-                        className={s.collapseItem}
-                        key={spell.id}
-                        header={spell.name}
-                        extra={
-                          grimoireSpells && editable ? (
-                            grimoireSpells.indexOf(spell.id) >= 0 ? (
-                              <div className={s.editableContainer}>
-                                {spellDetailes(spell)}{' '}
-                                <Button
-                                  size="small"
-                                  danger
-                                  type="primary"
-                                  onClick={(e) => onRemoveClick(e, spell.name)}
-                                >
-                                  <MinusOutlined />
-                                  Del
-                                </Button>
-                              </div>
-                            ) : (
-                              <div className={s.editableContainer}>
-                                {spellDetailes(spell)}{' '}
-                                <Button
-                                  size="small"
-                                  type="primary"
-                                  onClick={(e) => onAddClick(e, spell.name)}
-                                >
-                                  <PlusOutlined />
-                                  Add
-                                </Button>
-                              </div>
-                            )
+  const spellList = result
+    ? spellLevels.map((level) => (
+        <div key={`header-${level}`}>
+          {result.some((spell) => spell.level === level) ? (
+            <>
+              <Title level={4}>{`${levelNumberToString.get(level)}`}</Title>
+              <Collapse className="">
+                {result
+                  .filter((spell) => spell.level === level)
+                  .sort((a, b) => {
+                    if (
+                      grimoireSpells &&
+                      grimoireSpells.indexOf(a.id) >
+                        grimoireSpells.indexOf(b.id)
+                    ) {
+                      return -1
+                    }
+                    if (
+                      grimoireSpells &&
+                      grimoireSpells.indexOf(a.id) <
+                        grimoireSpells.indexOf(b.id)
+                    ) {
+                      return 1
+                    }
+                    return 0
+                  })
+                  .map((spell) => (
+                    <Panel
+                      className={s.collapseItem}
+                      key={spell.id}
+                      header={spell.name}
+                      extra={
+                        editable && grimoireSpells ? (
+                          grimoireSpells?.indexOf(spell.id) >= 0 ? (
+                            <div className={s.editableContainer}>
+                              {spellDetailes(spell)}{' '}
+                              <Button
+                                size="small"
+                                danger
+                                type="primary"
+                                onClick={(e) => handleRemoveClick(e, spell.id)}
+                              >
+                                <MinusOutlined />
+                                Del
+                              </Button>
+                            </div>
                           ) : (
-                            spellDetailes(spell)
+                            <div className={s.editableContainer}>
+                              {spellDetailes(spell)}{' '}
+                              <Button
+                                size="small"
+                                type="primary"
+                                onClick={(e) => handleAddClick(e, spell.id)}
+                              >
+                                <PlusOutlined />
+                                Add
+                              </Button>
+                            </div>
                           )
-                        }
-                        style={
-                          grimoireSpells && grimoireSpells.indexOf(spell.id) < 0
-                            ? {
-                                opacity: 0.95,
-                                backgroundColor: 'whitesmoke',
-                              }
-                            : {}
-                        }
-                      >
-                        <SpellComponent spell={spell} />
-                      </Panel>
-                    ))}
-                </Collapse>
-              </>
-            ) : null}
-          </div>
-        ))
-      : null
+                        ) : (
+                          spellDetailes(spell)
+                        )
+                      }
+                      style={
+                        grimoireSpells && grimoireSpells.indexOf(spell.id) < 0
+                          ? {
+                              opacity: 0.95,
+                              backgroundColor: 'whitesmoke',
+                            }
+                          : {}
+                      }
+                    >
+                      <SpellComponent spell={spell} />
+                    </Panel>
+                  ))}
+              </Collapse>
+            </>
+          ) : null}
+        </div>
+      ))
+    : null
 
   return <>{spellList}</>
 }

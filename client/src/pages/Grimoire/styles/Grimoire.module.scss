@@ -1,3 +1,24 @@
 .empty {
   margin-bottom: 1rem !important;
 }
+
+.saveContainer {
+  position: fixed;
+  left: calc(50% - 22px);
+  bottom: 100px;
+}
+
+@media (max-width: 719px) {
+  .saveContainer {
+    bottom: 40px;
+  }
+}
+
+.save {
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 22px !important;
+  line-height: 44px !important;
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05) !important;
+}

@@ -7,16 +7,14 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100%;
-
-  .ant-layout {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
 }
 
 .main-content {
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .main-footer {
@@ -45,8 +43,19 @@ body {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 1rem;
-  padding-top: 3rem;
+  padding: 3rem 1rem 4rem;
+}
+
+@media (max-width: 719px) {
+  .container {
+    padding-bottom: 1rem;
+  }
+}
+
+.centered-container {
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }
 
 .form-container {
