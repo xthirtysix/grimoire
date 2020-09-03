@@ -30,6 +30,14 @@ const verifyCreateGrimoireInput = ({
       "grimoire owner should have at least 1 level in each class"
     );
   }
+
+  characterClasses.map((cls) => {
+    if (cls.level > 20) {
+      throw new Error(
+        "character level could not be higher then 20"
+      )
+    }
+  })
 };
 
 export const grimoireResolvers: IResolvers = {
@@ -115,7 +123,7 @@ export const grimoireResolvers: IResolvers = {
         _id: new ObjectId(id),
       });
 
-      await db.users.update(
+      await db.users.updateOne(
         {
           _id: grimoire.owner,
         },
@@ -147,7 +155,7 @@ export const grimoireResolvers: IResolvers = {
         throw new Error("grimoire can only be edited by it's creator");
       }
 
-      await db.grimoires.update(
+      await db.grimoires.updateOne(
         {
           _id: new ObjectId(grimoireID),
         },
@@ -181,7 +189,7 @@ export const grimoireResolvers: IResolvers = {
       //   throw new Error("grimoire can only be edited by it's creator");
       // }
 
-      await db.grimoires.update(
+      await db.grimoires.updateOne(
         {
           _id: new ObjectId(grimoireID),
         },
