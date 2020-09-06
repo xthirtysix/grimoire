@@ -5,6 +5,25 @@ import { Spell, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
 import { SpellArgs, SpellsArgs, SpellsData, SpellsFilter } from "./types";
 
+const handleFilterQueery = async (
+  filterField: string,
+  filterValue: string,
+  grimoireSpells?: ObjectId[]
+) => {
+  let query: any = {};
+
+  if (grimoireSpells) {
+    query = { $match: {} };
+    query["$match"]["_id"] = { $in: grimoireSpells };
+    query["$match"][filterField] = filterValue;
+
+    return query;
+  }
+
+  query[filterField] = filterValue;
+  return query;
+};
+
 export const spellResolvers: IResolvers = {
   Query: {
     spell: async (
@@ -49,23 +68,37 @@ export const spellResolvers: IResolvers = {
           data.total = await cursor.count();
         }
 
-        if (grimoire) {
-          const grimoireDoc = await db.grimoires.findOne({_id: new ObjectId(grimoire)});
+        const grimoireDoc = grimoire
+          ? await db.grimoires.findOne({
+              _id: new ObjectId(grimoire),
+            })
+          : null;
+        const spells = grimoire ? grimoireDoc?.spells : null;
 
-          cursor = await db.spells.find({_id: {$in: grimoireDoc?.spells}})
+        if (grimoire) {
+          cursor = await db.spells.find({ _id: { $in: grimoireDoc?.spells } });
           data.total = await cursor.count();
         }
 
-        if (filter && filter === SpellsFilter.LEVEL_LOW_TO_HIGH) {
-          cursor = cursor.sort({ level: 1 });
+        if (filter && filter === SpellsFilter.NAME_ASCENDING) {
+          cursor = cursor.sort({ name: 1 });
         }
 
-        if (filter && filter === SpellsFilter.LEVEL_HIGH_TO_LOW) {
-          cursor = cursor.sort({ level: -1 });
+        if (filter && filter === SpellsFilter.NAME_DESCENDING) {
+          cursor = cursor.sort({ name: -1 });
         }
 
         if (filter && filter === SpellsFilter.ABJURATION) {
-          cursor = await db.spells.find({ school: "Abjuration" });
+          cursor = grimoireDoc
+            ? await db.spells.aggregate([
+                await handleFilterQueery("school", "Abjuration", grimoireDoc.spells),
+              ])
+            : await db.spells.find(handleFilterQueery("school", "Abjuration"));
+          if (grimoireDoc) {
+            console.log(
+              handleFilterQueery("school", "Abjuration", grimoireDoc?.spells)
+            );
+          }
         }
 
         if (filter && filter === SpellsFilter.DIVINATION) {
