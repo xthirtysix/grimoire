@@ -1,25 +1,25 @@
-import { Spell  } from "../../../lib/types";
+import { Spell } from "../../../lib/types";
 
 export interface SpellArgs {
   name: string;
 }
 
 export enum SpellsFilter {
-  LEVEL_LOW_TO_HIGH = "LEVEL_LOW_TO_HIGH",
-  LEVEL_HIGH_TO_LOW = "LEVEL_HIGH_TO_LOW",
+  NAME_ASCENDING = "NAME_ASCENDING",
+  NAME_DESCENDING = "NAME_DESCENDING",
   ABJURATION = "ABJURATION",
-  CONJURATION = 'CONJURATION',
-  DIVINATION = 'DIVINATION',
-  ENCHANTMENT = 'ENCHANTMENT',
-  EVOCATION = 'EVOCATION',
-  ILLUSION = 'ILLUSION',
-  NECROMANCY = 'NECROMANCY',
-  TRANSMUTATION = 'TRANSMUTATION'
+  CONJURATION = "CONJURATION",
+  DIVINATION = "DIVINATION",
+  ENCHANTMENT = "ENCHANTMENT",
+  EVOCATION = "EVOCATION",
+  ILLUSION = "ILLUSION",
+  NECROMANCY = "NECROMANCY",
+  TRANSMUTATION = "TRANSMUTATION",
 }
 
 export interface SpellsArgs {
-  filter?: SpellsFilter 
-  grimoire?: string
+  filter?: SpellsFilter;
+  grimoire?: string;
   limit?: number;
 }
 
