@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Affix, Divider, Empty, Layout } from 'antd'
 import { EditOutlined, SaveOutlined } from '@ant-design/icons'
 import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
-import { SpellList, SpellListSkeleton } from '../../lib/components'
-import { Link, RouteComponentProps, useLocation, Redirect } from 'react-router-dom'
+import { SpellFilter, SpellList, SpellListSkeleton } from '../../lib/components'
+import {
+  Link,
+  RouteComponentProps,
+  useLocation,
+  Redirect,
+} from 'react-router-dom'
 // Data
 import {
   ADD_SPELL_TO_GRIMOIRE,
@@ -27,6 +32,7 @@ import {
   Spells as SpellsData,
   SpellsVariables,
 } from '../../lib/graphql/queries/Spells/__generated__/Spells'
+import { SpellsFilter, SpellsSort } from '../../lib/graphql/globalTypes'
 import { useQuery } from 'react-apollo'
 import { useMutation } from '@apollo/react-hooks'
 // Styles
@@ -40,8 +46,12 @@ interface MatchParams {
 }
 
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
+  const [bottom, setBottom] = useState<number>(10)
   const [editable, setEditable] = useState<boolean>(false)
-  const [bottom, setBottom] = useState(10)
+  const [filter, setFilter] = useState<SpellsFilter[]>([])
+  const [sort, setSort] = useState<SpellsSort>(
+    SpellsSort.NAME_ASCENDING
+  )
 
   useEffect(() => {
     return match.params.edit === 'edit' ? setEditable(true) : undefined
@@ -49,14 +59,29 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const currentLocation = useLocation()
 
-  const { data: grimoireData } = useQuery<GrimoireData, GrimoireVariables>(
-    GRIMOIRE,
-    {
-      variables: {
-        id: match.params.id,
-      },
-    }
-  )
+  const {
+    data: grimoireData,
+    // loading: grimoireLoading,
+    // error: grimoireError,
+  } = useQuery<GrimoireData, GrimoireVariables>(GRIMOIRE, {
+    variables: {
+      id: match.params.id,
+    },
+  })
+
+  const {
+    data: spellData,
+    // loading: spellLoading,
+    // error: spellError,
+    refetch: spellRefetch,
+  } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
+    variables: {
+      grimoireID: !editable ? match.params.id : null,
+      filter,
+      sort,
+    },
+    fetchPolicy: 'network-only',
+  })
 
   const [addSpellToGrimoire] = useMutation<
     AddSpellToGrimoireData,
@@ -70,18 +95,6 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     RemoveSpellFromGrimoireVariables
   >(REMOVE_SPELL_FROM_GRIMOIRE, {
     refetchQueries: [{ query: GRIMOIRE, variables: { id: match.params.id } }],
-  })
-
-  const {
-    data: spellData,
-    loading: spellLoading,
-    error: spellError,
-    refetch: spellRefetch,
-  } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
-    variables: {
-      grimoire: !editable ? match.params.id : null,
-    },
-    fetchPolicy: 'network-only',
   })
 
   const handleEditEmptyGrimoire = () => {
@@ -100,27 +113,46 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     })
   }
 
-  if (spellLoading || !spellData || !grimoireData) {
+  if (match.params.edit && match.params.edit !== 'edit') {
+    return <Redirect to="/404" />
+  }
+
+  if (!spellData || !grimoireData) {
     return (
       <Content className="container">
-        <GrimoireDetailesSkeleton />
+        {!grimoireData ? (
+          <GrimoireDetailesSkeleton />
+        ) : (
+          <GrimoireDetailes grimoireDetailes={grimoireData.grimoire} />
+        )}
+        <Divider className="divider" />
         <SpellListSkeleton />
       </Content>
     )
   }
 
-  if (match.params.edit && match.params.edit !== 'edit') {
-    return <Redirect to="/404"/>
-  }
-
-  const allSpells = spellData.spells
-
   const grimoireDetailes = grimoireData.grimoire
   const grimoireSpells = grimoireDetailes.spells
 
+  const editSaveButton = (
+    <Affix offsetBottom={bottom} className={s.saveContainer}>
+      <Link
+        onClick={handleEditEmptyGrimoire}
+        to={
+          editable
+            ? `/grimoire/${grimoireDetailes.id}`
+            : `/grimoire/${grimoireDetailes.id}/edit`
+        }
+        className={`ant-avatar ant-btn-primary fixed-widgets-avatar ant-avatar-circle ant-avatar-icon ${s.save}`}
+      >
+        {editable ? <SaveOutlined /> : <EditOutlined />}
+      </Link>
+    </Affix>
+  )
+
   const spellList = (
     <SpellList
-      spells={allSpells}
+      spells={spellData.spells}
       grimoireSpells={grimoireSpells}
       editable={editable}
       onAddSpell={handleAddSpellToGrimoire}
@@ -145,30 +177,11 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     </>
   )
 
-  if (spellError) {
-    return <h2>Error</h2>
-  }
-
-  const editSaveButton = (
-    <Affix offsetBottom={bottom} className={s.saveContainer}>
-      <Link
-        onClick={handleEditEmptyGrimoire}
-        to={
-          editable
-            ? `/grimoire/${grimoireDetailes.id}`
-            : `/grimoire/${grimoireDetailes.id}/edit`
-        }
-        className={`ant-avatar ant-btn-primary fixed-widgets-avatar ant-avatar-circle ant-avatar-icon ${s.save}`}
-      >
-        {editable ? <SaveOutlined /> : <EditOutlined />}
-      </Link>
-    </Affix>
-  )
-
   return (
     <Content className="container">
       <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
       <Divider className="divider" />
+      <SpellFilter defaultSort={sort} onFilterChange={setFilter} onSortChange={setSort}/>
       {grimoireSpells?.length ? spellList : !editable ? emptyList : spellList}
       {editSaveButton}
     </Content>

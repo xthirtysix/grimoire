@@ -1,0 +1,25 @@
+.filter {
+  display: grid;
+  grid-template-columns: repeat(1, max-content 1fr);
+  align-items: center;
+  grid-column-gap: 2rem;
+  margin-bottom: 1rem;
+
+  label {
+    display: grid;
+    grid-template-columns: repeat(1, max-content 1fr);
+    align-items: center;
+    grid-gap: 1rem;
+  }
+}
+
+@media (max-width: 719px) {
+  .filter {
+    grid-template-columns: 1fr;
+    grid-row-gap: 1rem;
+
+    label {
+      grid-template-columns: repeat(1, minmax(50px, max-content) 1fr);
+    };
+  }
+}

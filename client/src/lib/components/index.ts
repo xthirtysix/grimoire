@@ -1,5 +1,6 @@
 export * from './ErrorBanner'
 export * from './Spell'
-export * from './SpellSkeleton'
+export * from './SpellFilter'
 export * from './SpellList'
 export * from './SpellListSkeleton'
+export * from './SpellSkeleton'

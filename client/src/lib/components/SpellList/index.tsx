@@ -148,23 +148,6 @@ export const SpellList = ({
               <Collapse className="">
                 {result
                   .filter((spell) => spell.level === level)
-                  .sort((a, b) => {
-                    if (
-                      grimoireSpells &&
-                      grimoireSpells.indexOf(a.id) >
-                        grimoireSpells.indexOf(b.id)
-                    ) {
-                      return -1
-                    }
-                    if (
-                      grimoireSpells &&
-                      grimoireSpells.indexOf(a.id) <
-                        grimoireSpells.indexOf(b.id)
-                    ) {
-                      return 1
-                    }
-                    return 0
-                  })
                   .map((spell) => (
                     <Panel
                       className={s.collapseItem}
@@ -182,7 +165,7 @@ export const SpellList = ({
                                 onClick={(e) => handleRemoveClick(e, spell.id)}
                               >
                                 <MinusOutlined />
-                                Del
+                                Erase
                               </Button>
                             </div>
                           ) : (
@@ -194,7 +177,7 @@ export const SpellList = ({
                                 onClick={(e) => handleAddClick(e, spell.id)}
                               >
                                 <PlusOutlined />
-                                Add
+                                Learn
                               </Button>
                             </div>
                           )

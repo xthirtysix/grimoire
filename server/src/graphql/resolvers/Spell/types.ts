@@ -5,8 +5,6 @@ export interface SpellArgs {
 }
 
 export enum SpellsFilter {
-  NAME_ASCENDING = "NAME_ASCENDING",
-  NAME_DESCENDING = "NAME_DESCENDING",
   ABJURATION = "ABJURATION",
   CONJURATION = "CONJURATION",
   DIVINATION = "DIVINATION",
@@ -17,9 +15,15 @@ export enum SpellsFilter {
   TRANSMUTATION = "TRANSMUTATION",
 }
 
+export enum SpellsSort {
+  NAME_ASCENDING = "NAME_ASCENDING",
+  NAME_DESCENDING = "NAME_DESCENDING",
+}
+
 export interface SpellsArgs {
-  filter?: SpellsFilter;
-  grimoire?: string;
+  grimoireID?: string;
+  filter?: SpellsFilter[];
+  sort?: SpellsSort;
   limit?: number;
 }
 
