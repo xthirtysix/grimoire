@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
@@ -89,7 +89,8 @@ export interface Spells {
 }
 
 export interface SpellsVariables {
-  filter?: SpellsFilter | null;
-  grimoire?: string | null;
+  grimoireID?: string | null;
+  filter?: (SpellsFilter | null)[] | null;
+  sort?: SpellsSort | null;
   limit?: number | null;
 }

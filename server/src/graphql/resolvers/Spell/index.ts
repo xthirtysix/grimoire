@@ -3,11 +3,16 @@ import { ObjectId } from "mongodb";
 import { Request } from "express";
 import { Spell, Database } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
-import { SpellArgs, SpellsArgs, SpellsData, SpellsFilter } from "./types";
+import {
+  SpellArgs,
+  SpellsArgs,
+  SpellsData,
+  SpellsFilter,
+  SpellsSort,
+} from "./types";
 
-const handleFilterQueery = async (
-  filterField: string,
-  filterValue: string,
+const handleFilterQuery = async (
+  filterValue: string[],
   grimoireSpells?: ObjectId[]
 ) => {
   let query: any = {};
@@ -15,12 +20,12 @@ const handleFilterQueery = async (
   if (grimoireSpells) {
     query = { $match: {} };
     query["$match"]["_id"] = { $in: grimoireSpells };
-    query["$match"][filterField] = filterValue;
+    query["$match"]["school"] = { $in: filterValue };
 
     return query;
   }
 
-  query[filterField] = filterValue;
+  query["school"] = { $in: filterValue };
   return query;
 };
 
@@ -49,7 +54,7 @@ export const spellResolvers: IResolvers = {
     },
     spells: async (
       _root: undefined,
-      { filter, grimoire, limit }: SpellsArgs,
+      { grimoireID, filter, sort, limit }: SpellsArgs,
       { db }: { db: Database }
     ): Promise<SpellsData> => {
       try {
@@ -68,65 +73,61 @@ export const spellResolvers: IResolvers = {
           data.total = await cursor.count();
         }
 
-        const grimoireDoc = grimoire
+        const grimoire = grimoireID
           ? await db.grimoires.findOne({
-              _id: new ObjectId(grimoire),
+              _id: new ObjectId(grimoireID),
             })
           : null;
-        const spells = grimoire ? grimoireDoc?.spells : null;
 
-        if (grimoire) {
-          cursor = await db.spells.find({ _id: { $in: grimoireDoc?.spells } });
+        if (grimoireID && !grimoire) {
+          throw new Error(`unable to find grimoire width id: ${grimoireID}`);
+        }
+
+        if (grimoireID && grimoire) {
+          cursor = await db.spells.find({ _id: { $in: grimoire.spells } });
           data.total = await cursor.count();
         }
 
-        if (filter && filter === SpellsFilter.NAME_ASCENDING) {
-          cursor = cursor.sort({ name: 1 });
-        }
+        if (filter && filter.length) {
+          const transformedFilterValues = filter.map((value) => {
+            return value.charAt(0) + value.slice(1).toLowerCase();
+          });
 
-        if (filter && filter === SpellsFilter.NAME_DESCENDING) {
-          cursor = cursor.sort({ name: -1 });
-        }
+          let sortQuery;
+          if (sort && sort === SpellsSort.NAME_ASCENDING) {
+            sortQuery = { $sort: { name: 1 } };
+          }
 
-        if (filter && filter === SpellsFilter.ABJURATION) {
-          cursor = grimoireDoc
+          if (sort && sort === SpellsSort.NAME_DESCENDING) {
+            sortQuery = { $sort: { name: -1 } };
+          }
+
+          cursor = grimoire
             ? await db.spells.aggregate([
-                await handleFilterQueery("school", "Abjuration", grimoireDoc.spells),
+                await handleFilterQuery(
+                  transformedFilterValues,
+                  grimoire.spells
+                ),
+                sortQuery !== undefined ? sortQuery : null,
               ])
-            : await db.spells.find(handleFilterQueery("school", "Abjuration"));
-          if (grimoireDoc) {
-            console.log(
-              handleFilterQueery("school", "Abjuration", grimoireDoc?.spells)
-            );
+            : await db.spells.find(
+                await handleFilterQuery(transformedFilterValues)
+              );
+
+          if (!grimoire && sort && sort === SpellsSort.NAME_ASCENDING) {
+            cursor = cursor.sort({ name: 1 });
+          }
+          if (!grimoire && sort && sort === SpellsSort.NAME_DESCENDING) {
+            cursor = cursor.sort({ name: -1 });
           }
         }
 
-        if (filter && filter === SpellsFilter.DIVINATION) {
-          cursor = await db.spells.find({ school: "Divination" });
+        if (sort && sort === SpellsSort.NAME_ASCENDING) {
+          cursor = cursor.sort({ name: 1 });
         }
 
-        if (filter && filter === SpellsFilter.CONJURATION) {
-          cursor = await db.spells.find({ school: "Conjuration" });
-        }
-
-        if (filter && filter === SpellsFilter.ENCHANTMENT) {
-          cursor = await db.spells.find({ school: "Enchantment" });
-        }
-
-        if (filter && filter === SpellsFilter.EVOCATION) {
-          cursor = await db.spells.find({ school: "Evocation" });
-        }
-
-        if (filter && filter === SpellsFilter.ILLUSION) {
-          cursor = await db.spells.find({ school: "Illusion" });
-        }
-
-        if (filter && filter === SpellsFilter.NECROMANCY) {
-          cursor = await db.spells.find({ school: "Necromancy" });
-        }
-
-        if (filter && filter === SpellsFilter.TRANSMUTATION) {
-          cursor = await db.spells.find({ school: "Transmutation" });
+        if (sort && sort === SpellsSort.NAME_DESCENDING) {
+          cursor = cursor.sort({ name: -1 });
         }
 
         data.result = await cursor.toArray();

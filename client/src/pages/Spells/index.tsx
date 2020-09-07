@@ -21,28 +21,28 @@ export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
 
     switch (trimmedRouteParam) {
       case 'abjuration':
-        filter = SpellsFilter.ABJURATION
+        filter = [SpellsFilter.ABJURATION]
         break
       case 'conjuration':
-        filter = SpellsFilter.CONJURATION
+        filter = [SpellsFilter.CONJURATION]
         break
       case 'divination':
-        filter = SpellsFilter.DIVINATION
+        filter = [SpellsFilter.DIVINATION]
         break
       case 'enchantment':
-        filter = SpellsFilter.ENCHANTMENT
+        filter = [SpellsFilter.ENCHANTMENT]
         break
       case 'evocation':
-        filter = SpellsFilter.EVOCATION
+        filter = [SpellsFilter.EVOCATION]
         break
       case 'illusion':
-        filter = SpellsFilter.ILLUSION
+        filter = [SpellsFilter.ILLUSION]
         break
       case 'necromancy':
-        filter = SpellsFilter.NECROMANCY
+        filter = [SpellsFilter.NECROMANCY]
         break
       case 'transmutation':
-        filter = SpellsFilter.TRANSMUTATION
+        filter = [SpellsFilter.TRANSMUTATION]
         break
       default:
         filter = undefined

@@ -10,7 +10,7 @@ import {
   Spells as SpellsData,
   SpellsVariables,
 } from '../../../../lib/graphql/queries/Spells/__generated__/Spells'
-import { SpellsFilter } from '../../../../lib/graphql/globalTypes'
+import { SpellsSort } from '../../../../lib/graphql/globalTypes'
 import { useQuery } from 'react-apollo'
 //Style
 import s from './styles/HomeSpells.module.scss'
@@ -23,7 +23,7 @@ const { Title } = Typography
 export const HomeSpells = () => {
   const { loading, data } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
     variables: {
-      filter: SpellsFilter.LEVEL_LOW_TO_HIGH,
+      sort: SpellsSort.NAME_ASCENDING,
       limit: SPELLS_NUMBER,
     },
   })

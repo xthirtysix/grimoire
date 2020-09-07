@@ -128,21 +128,35 @@
             "description": "",
             "args": [
               {
-                "name": "filter",
+                "name": "grimoireID",
                 "description": null,
                 "type": {
-                  "kind": "ENUM",
-                  "name": "SpellsFilter",
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": null
               },
               {
-                "name": "grimoire",
+                "name": "filter",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "SpellsFilter",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "sort",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "SpellsSort",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1208,18 +1222,6 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "LEVEL_LOW_TO_HIGH",
-            "description": "",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "LEVEL_HIGH_TO_LOW",
-            "description": "",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "ABJURATION",
             "description": "",
             "isDeprecated": false,
@@ -1263,6 +1265,29 @@
           },
           {
             "name": "TRANSMUTATION",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "SpellsSort",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NAME_ASCENDING",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NAME_DESCENDING",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null

@@ -122,12 +122,15 @@ export const typeDefs = gql`
     user(id: ID!): User!
     grimoire(id: ID!): Grimoire!
     spell(name: String!): Spell!
-    spells(filter: SpellsFilter, grimoire: String, limit: Int): Spells!
+    spells(
+      grimoireID: String
+      filter: [SpellsFilter]
+      sort: SpellsSort
+      limit: Int
+    ): Spells!
   }
 
   enum SpellsFilter {
-    LEVEL_LOW_TO_HIGH
-    LEVEL_HIGH_TO_LOW
     ABJURATION
     CONJURATION
     DIVINATION
@@ -136,6 +139,11 @@ export const typeDefs = gql`
     ILLUSION
     NECROMANCY
     TRANSMUTATION
+  }
+
+  enum SpellsSort {
+    NAME_ASCENDING
+    NAME_DESCENDING
   }
 
   # Mutation
