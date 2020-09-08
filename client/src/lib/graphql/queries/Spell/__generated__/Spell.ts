@@ -3,15 +3,11 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { CastingTime } from "./../../../globalTypes";
+
 // ====================================================
 // GraphQL query operation: Spell
 // ====================================================
-
-export interface Spell_spell_castingTime {
-  __typename: "Scalar";
-  value: number | null;
-  unit: string;
-}
 
 export interface Spell_spell_range {
   __typename: "Scalar";
@@ -65,7 +61,7 @@ export interface Spell_spell {
   name: string;
   level: number;
   school: string;
-  castingTime: Spell_spell_castingTime;
+  castingTime: CastingTime;
   range: Spell_spell_range;
   duration: Spell_spell_duration;
   isConcentration: boolean;

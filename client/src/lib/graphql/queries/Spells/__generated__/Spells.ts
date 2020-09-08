@@ -3,17 +3,11 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort, CastingTime } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
 // ====================================================
-
-export interface Spells_spells_result_castingTime {
-  __typename: "Scalar";
-  value: number | null;
-  unit: string;
-}
 
 export interface Spells_spells_result_range {
   __typename: "Scalar";
@@ -67,7 +61,7 @@ export interface Spells_spells_result {
   name: string;
   level: number;
   school: string;
-  castingTime: Spells_spells_result_castingTime;
+  castingTime: CastingTime;
   range: Spells_spells_result_range;
   duration: Spells_spells_result_duration;
   isConcentration: boolean;

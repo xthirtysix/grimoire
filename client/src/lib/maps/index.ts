@@ -21,3 +21,29 @@ export const levelNumberToString = new Map([
   [8, 'Level 8'],
   [9, 'Level 9'],
 ])
+
+export const castingTimeToDisplayed = new Map([
+  ['ACTION', '1 action'],
+  ['BONUTS_ACTION', '1 bonus action'],
+  ['EIGHT_HOURS', '8 hours'],
+  ['ONE_HOUR', '1 hour'],
+  ['ONE_MINUTE', '1 minute'],
+  ['REACTION', 'Reaction'],
+  ['SPECIAL', 'Special'],
+  ['TEN_MINUTES', '10 minutes'],
+  ['TWELVE_HOURS', '12 hours'],
+  ['TWENTYFOUR_HOURS', '24 hours'],
+])
+
+export const castingTimeToShorthand = new Map([
+  ['ACTION', '1a'],
+  ['BONUS_ACTION', '1ba'],
+  ['EIGHT_HOURS', '8h'],
+  ['ONE_HOUR', '1h'],
+  ['ONE_MINUTE', '1m'],
+  ['REACTION', 'Rctn'],
+  ['SPECIAL', 'Spcl'],
+  ['TEN_MINUTES', '10m'],
+  ['TWELVE_HOURS', '12m'],
+  ['TWENTYFOUR_HOURS', '24h'],
+])

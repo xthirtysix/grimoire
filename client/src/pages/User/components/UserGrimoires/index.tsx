@@ -1,7 +1,6 @@
 import React from 'react'
-import { Card, Button, Empty, Typography } from 'antd'
+import { Card, Empty, Typography } from 'antd'
 import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
 //Data
 import { DELETE_GRIMOIRE } from '../../../../lib/graphql/mutations'
 import {
@@ -23,7 +22,11 @@ interface Props {
   userId: string | null
 }
 
-export const UserGrimoires = ({ userGrimoires, viewerIsUser, userId }: Props) => {
+export const UserGrimoires = ({
+  userGrimoires,
+  viewerIsUser,
+  userId,
+}: Props) => {
   const total = userGrimoires ? userGrimoires.total : null
   const result = userGrimoires ? userGrimoires.result : null
 
@@ -35,11 +38,11 @@ export const UserGrimoires = ({ userGrimoires, viewerIsUser, userId }: Props) =>
       displaySuccessMessage('Grimoire successfully removed')
     },
     refetchQueries: [{ query: USER, variables: { id: userId } }],
-    awaitRefetchQueries: true
+    awaitRefetchQueries: true,
   })
 
   const handleDeleteGrimoire = (id: string) => {
-    deleteGrimoire({ variables: { id }})
+    deleteGrimoire({ variables: { id } })
   }
 
   const grimoireList =
@@ -94,18 +97,11 @@ export const UserGrimoires = ({ userGrimoires, viewerIsUser, userId }: Props) =>
         })}
       </ul>
     ) : (
-      <>
-        <Empty
-          className={s.empty}
-          description="There'are no Grimoires in your library yet"
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-        />
-        <Link to="/spells">
-          <Button type="primary" size="large">
-            Create Grimoire
-          </Button>
-        </Link>
-      </>
+      <Empty
+        className={s.empty}
+        description="There'are no Grimoires in your library yet"
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+      />
     )
 
   return <>{grimoireList}</>

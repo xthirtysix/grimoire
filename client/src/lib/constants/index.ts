@@ -34,6 +34,8 @@ export const filterOptions = [
   ]
 
   export const sortOptions = [
+    {label: 'Casting time ascending', value: 'CASTING_TIME_ASCENDING'},
+    {label: 'Casting time descending', value: 'CASTING_TIME_DESCENDING'},
     {label: 'Name A-Z', value: 'NAME_ASCENDING'},
     {label: 'Name Z-A', value: 'NAME_DESCENDING'}
   ]

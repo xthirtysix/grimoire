@@ -7,6 +7,19 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum CastingTime {
+  ACTION = "ACTION",
+  BONUS_ACTION = "BONUS_ACTION",
+  EIGHT_HOURS = "EIGHT_HOURS",
+  ONE_HOUR = "ONE_HOUR",
+  ONE_MINUTE = "ONE_MINUTE",
+  REACTION = "REACTION",
+  SPECIAL = "SPECIAL",
+  TEN_MINUTES = "TEN_MINUTES",
+  TWELVE_HOURS = "TWELVE_HOURS",
+  TWENTYFOUR_HOURS = "TWENTYFOUR_HOURS",
+}
+
 export enum ClassType {
   BARBARIAN = "BARBARIAN",
   BARD = "BARD",
@@ -34,6 +47,8 @@ export enum SpellsFilter {
 }
 
 export enum SpellsSort {
+  CASTING_TIME_ASCENDING = "CASTING_TIME_ASCENDING",
+  CASTING_TIME_DESCENDING = "CASTING_TIME_DESCENDING",
   NAME_ASCENDING = "NAME_ASCENDING",
   NAME_DESCENDING = "NAME_DESCENDING",
 }
