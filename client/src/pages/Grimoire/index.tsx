@@ -49,9 +49,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   const [bottom, setBottom] = useState<number>(10)
   const [editable, setEditable] = useState<boolean>(false)
   const [filter, setFilter] = useState<SpellsFilter[]>([])
-  const [sort, setSort] = useState<SpellsSort>(
-    SpellsSort.NAME_ASCENDING
-  )
+  const [sort, setSort] = useState<SpellsSort>(SpellsSort.NAME_ASCENDING)
 
   useEffect(() => {
     return match.params.edit === 'edit' ? setEditable(true) : undefined
@@ -177,12 +175,31 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     </>
   )
 
+  const spellFilter = (
+    <SpellFilter
+      defaultSort={sort}
+      onFilterChange={setFilter}
+      onSortChange={setSort}
+    />
+  )
+
   return (
     <Content className="container">
       <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
       <Divider className="divider" />
-      <SpellFilter defaultSort={sort} onFilterChange={setFilter} onSortChange={setSort}/>
-      {grimoireSpells?.length ? spellList : !editable ? emptyList : spellList}
+      {grimoireSpells?.length ? (
+        <>
+          {spellFilter}
+          {spellList}
+        </>
+      ) : !editable ? (
+        emptyList
+      ) : (
+        <>
+          {spellFilter}
+          {spellList}
+        </>
+      )}
       {editSaveButton}
     </Content>
   )
