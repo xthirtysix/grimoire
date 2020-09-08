@@ -1,4 +1,5 @@
 import { message, notification } from 'antd'
+import { CastingTime } from '../graphql/globalTypes'
 
 export const displaySuccessMessage = (
   message: string,

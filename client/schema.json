@@ -698,8 +698,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Scalar",
+                "kind": "ENUM",
+                "name": "CastingTime",
                 "ofType": null
               }
             },
@@ -826,6 +826,77 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "CastingTime",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "REACTION",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BONUS_ACTION",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ACTION",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ONE_MINUTE",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEN_MINUTES",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ONE_HOUR",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EIGHT_HOURS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TWELVE_HOURS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TWENTYFOUR_HOURS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SPECIAL",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -1280,6 +1351,18 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "CASTING_TIME_ASCENDING",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CASTING_TIME_DESCENDING",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "NAME_ASCENDING",
             "description": "",

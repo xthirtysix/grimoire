@@ -6,6 +6,7 @@ import {
   authorize,
   createFilterQuery,
   transformFilterValues,
+  orderCastingTimeQuery,
 } from "../../../lib/utils";
 import { SpellArgs, SpellsArgs, SpellsData, SpellsSort } from "./types";
 
@@ -43,11 +44,20 @@ export const spellResolvers: IResolvers = {
           result: [],
         };
 
-        let sortQuery;
+        let projectQuery: any;
+        let sortQuery: any;
 
         switch (sort) {
           case SpellsSort.NAME_DESCENDING:
             sortQuery = { $sort: { name: -1 } };
+            break;
+          case SpellsSort.CASTING_TIME_ASCENDING:
+            projectQuery = orderCastingTimeQuery;
+            sortQuery = { $sort: { order: 1 } };
+            break;
+          case SpellsSort.CASTING_TIME_DESCENDING:
+            projectQuery = orderCastingTimeQuery;
+            sortQuery = { $sort: { order: -1 } };
             break;
           default:
             sortQuery = { $sort: { name: 1 } };
@@ -55,11 +65,30 @@ export const spellResolvers: IResolvers = {
 
         let cursor;
 
-        cursor = await db.spells.aggregate(
-          filter && filter.length
-            ? [createFilterQuery(transformFilterValues(filter)), sortQuery]
-            : [sortQuery]
-        );
+        const formAggregationQuery = (spells?: ObjectId[]) => {
+          const aggregation: any = [sortQuery];
+
+          if (filter && filter.length) {
+            aggregation.unshift(
+              createFilterQuery(transformFilterValues(filter))
+            );
+          }
+
+          if (spells) {
+            let query = { $match: { _id: { $in: spells } } };
+            aggregation.unshift(query);
+          }
+
+          if (projectQuery) {
+            aggregation.unshift(projectQuery);
+          }
+
+          return aggregation;
+        };
+
+        cursor = await db.spells.aggregate(formAggregationQuery());
+
+        console.log(formAggregationQuery());
 
         if (limit) {
           cursor = await db.spells.aggregate([
@@ -79,21 +108,15 @@ export const spellResolvers: IResolvers = {
           }
 
           cursor = await db.spells.aggregate(
-            filter && filter.length
-              ? [
-                  createFilterQuery(
-                    transformFilterValues(filter),
-                    grimoire.spells
-                  ),
-                  sortQuery,
-                ]
-              : [{ $match: { _id: { $in: grimoire.spells } } }, sortQuery]
+            formAggregationQuery(grimoire.spells)
           );
+          console.log(formAggregationQuery(grimoire.spells));
         }
 
         data.result = await cursor.toArray();
         data.total = await data.result.length;
 
+        // console.log(data);
         return data;
       } catch (error) {
         throw new Error(`Failed to query Spells: ${error}`);

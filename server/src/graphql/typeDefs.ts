@@ -67,7 +67,7 @@ export const typeDefs = gql`
     name: String!
     level: Int!
     school: String!
-    castingTime: Scalar!
+    castingTime: CastingTime!
     range: Scalar!
     duration: Scalar!
     isConcentration: Boolean!
@@ -81,6 +81,19 @@ export const typeDefs = gql`
   type Scalar {
     value: Int
     unit: String!
+  }
+
+  enum CastingTime {
+    REACTION
+    BONUS_ACTION
+    ACTION
+    ONE_MINUTE
+    TEN_MINUTES
+    ONE_HOUR
+    EIGHT_HOURS
+    TWELVE_HOURS
+    TWENTYFOUR_HOURS
+    SPECIAL
   }
 
   type Components {
@@ -142,6 +155,8 @@ export const typeDefs = gql`
   }
 
   enum SpellsSort {
+    CASTING_TIME_ASCENDING
+    CASTING_TIME_DESCENDING
     NAME_ASCENDING
     NAME_DESCENDING
   }

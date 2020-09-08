@@ -9,10 +9,7 @@ export const SPELLS = gql`
         name
         level
         school
-        castingTime {
-          value
-          unit
-        }
+        castingTime
         range {
           value
           unit
