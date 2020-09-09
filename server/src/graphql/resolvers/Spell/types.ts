@@ -13,6 +13,16 @@ export enum SpellsFilter {
   ILLUSION = "ILLUSION",
   NECROMANCY = "NECROMANCY",
   TRANSMUTATION = "TRANSMUTATION",
+  REACTION = "REACTION",
+  BONUS_ACTION = "1_BONUS_ACTION",
+  ACTION = "1_ACTION",
+  ONE_MINUTE = "1_MINUTE",
+  TEN_MINUTES = "10_MINUTES",
+  ONE_HOUR = "1_HOUR",
+  EIGHT_HOURS = "8_HOURS",
+  TWELVE_HOURS = "12_HOURS",
+  TWENTYFOUR_HOURS = "24_HOURS",
+  SPECIAL = "SPECIAL",
 }
 
 export enum SpellsSort {
@@ -24,7 +34,7 @@ export enum SpellsSort {
 
 export interface SpellsArgs {
   grimoireID?: string;
-  filter?: SpellsFilter[];
+  filters?: SpellsFilter[];
   sort?: SpellsSort;
   limit?: number;
 }

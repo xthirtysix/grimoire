@@ -9,7 +9,7 @@ import {
   SafetyOutlined,
 } from '@ant-design/icons'
 import { Spell as SpellComponent } from '../'
-import { shortenSpellSchool, shortenScalar } from '../../utils'
+import { shortenScalar } from '../../utils'
 //Data
 import {
   Spells_spells,
@@ -18,12 +18,16 @@ import {
   Spells_spells_result_duration,
   Spells_spells_result_range,
 } from '../../graphql/queries/Spells/__generated__/Spells'
-import { schoolToColor, castingTimeToShorthand } from '../../maps'
 import { CastingTime } from '../../graphql/globalTypes'
 //Styles
 import s from './styles/SpellList.module.scss'
+//Maps
+import {
+  castingTimeToShorthand,
+  schoolToColor,
+  schoolToShorthand,
+} from '../../maps'
 //Constants
-const MAX_SPELL_LEVEL = 10
 
 const { Panel } = Collapse
 const { Title, Text } = Typography
@@ -44,8 +48,6 @@ export const SpellList = ({
   onRemoveSpell,
 }: Props) => {
   const result = spells && spells.result ? spells.result : null
-
-  const spellLevels = Array.from(Array(MAX_SPELL_LEVEL).keys())
 
   const handleAddClick = onAddSpell
     ? (e: MouseEvent, spellID: string) => {
@@ -72,7 +74,7 @@ export const SpellList = ({
 
   const schoolTag = (school: string) => (
     <Tag color={schoolToColor.get(school)} className={s.tagSchool}>
-      {shortenSpellSchool(school)}
+      {schoolToShorthand.get(school)}
     </Tag>
   )
 

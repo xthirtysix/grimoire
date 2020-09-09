@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const SPELLS = gql`
-  query Spells($grimoireID: String, $filter: [SpellsFilter], $sort: SpellsSort, $limit: Int) {
-    spells(grimoireID: $grimoireID, filter: $filter, sort: $sort, limit: $limit) {
+  query Spells($grimoireID: String, $filters: [SpellsFilter], $sort: SpellsSort, $limit: Int) {
+    spells(grimoireID: $grimoireID, filters: $filters, sort: $sort, limit: $limit) {
       total
       result {
         id

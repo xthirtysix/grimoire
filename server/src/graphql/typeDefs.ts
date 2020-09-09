@@ -130,6 +130,27 @@ export const typeDefs = gql`
 
   # Query
 
+  enum SpellsFilter {
+    ABJURATION
+    CONJURATION
+    DIVINATION
+    ENCHANTMENT
+    EVOCATION
+    ILLUSION
+    NECROMANCY
+    TRANSMUTATION
+    REACTION
+    BONUS_ACTION
+    ACTION
+    ONE_MINUTE
+    TEN_MINUTES
+    ONE_HOUR
+    EIGHT_HOURS
+    TWELVE_HOURS
+    TWENTYFOUR_HOURS
+    SPECIAL
+  }
+
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -137,13 +158,14 @@ export const typeDefs = gql`
     spell(name: String!): Spell!
     spells(
       grimoireID: String
-      filter: [SpellsFilter]
+      filters: [SpellsFilter]
       sort: SpellsSort
       limit: Int
     ): Spells!
   }
 
-  enum SpellsFilter {
+
+  enum SpellsSchool {
     ABJURATION
     CONJURATION
     DIVINATION

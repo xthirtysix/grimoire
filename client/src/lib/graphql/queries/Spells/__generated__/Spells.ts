@@ -84,7 +84,7 @@ export interface Spells {
 
 export interface SpellsVariables {
   grimoireID?: string | null;
-  filter?: (SpellsFilter | null)[] | null;
+  filters?: (SpellsFilter | null)[] | null;
   sort?: SpellsSort | null;
   limit?: number | null;
 }

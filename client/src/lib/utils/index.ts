@@ -1,5 +1,4 @@
 import { message, notification } from 'antd'
-import { CastingTime } from '../graphql/globalTypes'
 
 export const displaySuccessMessage = (
   message: string,
@@ -15,29 +14,6 @@ export const displaySuccessMessage = (
 
 export const displayErrorMessage = (error: string) => {
   return message.error(error)
-}
-
-export const shortenSpellSchool = (school: string) => {
-  switch (school) {
-    case 'Abjuration':
-      return 'Abj'
-    case 'Divination':
-      return 'Div'
-    case 'Necromancy':
-      return 'Necr'
-    case 'Illusion':
-      return 'Ill'
-    case 'Transmutation':
-      return 'Trans'
-    case 'Enchantment':
-      return 'Ench'
-    case 'Conjuration':
-      return 'Conj'
-    case 'Evocation':
-      return 'Evoc'
-    default:
-      return null
-  }
 }
 
 export const shortenScalar = (scalar: string) => {
