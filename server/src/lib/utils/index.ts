@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Database, User } from "../types";
-import { SpellsFilter } from "../../graphql/resolvers/Spell/types";
+import { Schools } from "../constants";
 
 export const authorize = async (
   db: Database,
@@ -15,18 +15,25 @@ export const authorize = async (
   return viewer;
 };
 
-export const createFilterQuery = (filterValue: string[]) => {
-  let query: any = { $match: {} };
+export const createFilterQuery = (filterValues: string[]) => {
+  const query: any = { $match: {} };
+  const schools: string[] = [];
+  const castingTimes: string[] = [];
 
-  query["$match"]["school"] = { $in: filterValue };
+  filterValues.map((value) => {
+    return Object.values(Schools).includes(value)
+      ? schools.push(value)
+      : castingTimes.push(value);
+  });
+
+  if (schools && schools.length) {
+    query["$match"]["school"] = { $in: schools };
+  }
+  if (castingTimes && castingTimes.length) {
+    query["$match"]["castingTime"] = { $in: castingTimes };
+  }
 
   return query;
-};
-
-export const transformFilterValues = (filters: SpellsFilter[]) => {
-  return filters.map((value) => {
-    return value.charAt(0) + value.slice(1).toLowerCase();
-  });
 };
 
 export const orderCastingTimeQuery = {

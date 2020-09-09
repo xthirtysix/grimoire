@@ -15,43 +15,43 @@ interface MatchParams {
 }
 
 export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
-  let filter
+  let filters
   if (match.params.filter) {
     let trimmedRouteParam = match.params.filter.trim()
 
     switch (trimmedRouteParam) {
       case 'abjuration':
-        filter = [SpellsFilter.ABJURATION]
+        filters = [SpellsFilter.ABJURATION]
         break
       case 'conjuration':
-        filter = [SpellsFilter.CONJURATION]
+        filters = [SpellsFilter.CONJURATION]
         break
       case 'divination':
-        filter = [SpellsFilter.DIVINATION]
+        filters = [SpellsFilter.DIVINATION]
         break
       case 'enchantment':
-        filter = [SpellsFilter.ENCHANTMENT]
+        filters = [SpellsFilter.ENCHANTMENT]
         break
       case 'evocation':
-        filter = [SpellsFilter.EVOCATION]
+        filters = [SpellsFilter.EVOCATION]
         break
       case 'illusion':
-        filter = [SpellsFilter.ILLUSION]
+        filters = [SpellsFilter.ILLUSION]
         break
       case 'necromancy':
-        filter = [SpellsFilter.NECROMANCY]
+        filters = [SpellsFilter.NECROMANCY]
         break
       case 'transmutation':
-        filter = [SpellsFilter.TRANSMUTATION]
+        filters = [SpellsFilter.TRANSMUTATION]
         break
       default:
-        filter = undefined
+        filters = undefined
     }
   }
 
   const { loading, data } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
     variables: {
-      filter,
+      filters,
     },
   })
 

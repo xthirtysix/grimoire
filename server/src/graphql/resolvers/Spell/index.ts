@@ -5,7 +5,6 @@ import { Spell, Database } from "../../../lib/types";
 import {
   authorize,
   createFilterQuery,
-  transformFilterValues,
   orderCastingTimeQuery,
 } from "../../../lib/utils";
 import { SpellArgs, SpellsArgs, SpellsData, SpellsSort } from "./types";
@@ -35,7 +34,7 @@ export const spellResolvers: IResolvers = {
     },
     spells: async (
       _root: undefined,
-      { grimoireID, filter, sort, limit }: SpellsArgs,
+      { grimoireID, filters, sort, limit }: SpellsArgs,
       { db }: { db: Database }
     ): Promise<SpellsData> => {
       try {
@@ -44,8 +43,9 @@ export const spellResolvers: IResolvers = {
           result: [],
         };
 
-        let projectQuery: any;
-        let sortQuery: any;
+        let cursor;
+        let projectQuery: Object;
+        let sortQuery: Object;
 
         switch (sort) {
           case SpellsSort.NAME_DESCENDING:
@@ -63,15 +63,11 @@ export const spellResolvers: IResolvers = {
             sortQuery = { $sort: { name: 1 } };
         }
 
-        let cursor;
-
         const formAggregationQuery = (spells?: ObjectId[]) => {
-          const aggregation: any = [sortQuery];
+          const aggregation: Object[] = [sortQuery];
 
-          if (filter && filter.length) {
-            aggregation.unshift(
-              createFilterQuery(transformFilterValues(filter))
-            );
+          if (filters && filters.length) {
+            aggregation.unshift(createFilterQuery(filters));
           }
 
           if (spells) {
@@ -89,7 +85,6 @@ export const spellResolvers: IResolvers = {
         cursor = await db.spells.aggregate(formAggregationQuery());
 
         console.log(formAggregationQuery());
-
         if (limit) {
           cursor = await db.spells.aggregate([
             { $sample: { size: limit } },
@@ -110,6 +105,7 @@ export const spellResolvers: IResolvers = {
           cursor = await db.spells.aggregate(
             formAggregationQuery(grimoire.spells)
           );
+
           console.log(formAggregationQuery(grimoire.spells));
         }
 

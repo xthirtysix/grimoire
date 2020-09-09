@@ -48,7 +48,7 @@ interface MatchParams {
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   const [bottom, setBottom] = useState<number>(10)
   const [editable, setEditable] = useState<boolean>(false)
-  const [filter, setFilter] = useState<SpellsFilter[]>([])
+  const [filters, setFilter] = useState<SpellsFilter[]>([])
   const [sort, setSort] = useState<SpellsSort>(SpellsSort.NAME_ASCENDING)
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   } = useQuery<SpellsData, SpellsVariables>(SPELLS, {
     variables: {
       grimoireID: !editable ? match.params.id : null,
-      filter,
+      filters,
       sort,
     },
     fetchPolicy: 'network-only',

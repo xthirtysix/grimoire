@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Select, Tag } from 'antd'
+import { ClockCircleOutlined } from '@ant-design/icons'
 //Data
 import { SpellsFilter, SpellsSort } from '../../graphql/globalTypes'
 //Maps
@@ -7,7 +8,11 @@ import { schoolToColor } from '../../maps'
 //Styles
 import s from './styles/SpellFilter.module.scss'
 //Constants
-import { filterOptions, sortOptions } from '../../constants'
+import {
+  filterSpellSchoolsOptions,
+  filterCastingTimeOptions,
+  sortOptions,
+} from '../../constants'
 
 interface Props {
   defaultSort: SpellsSort
@@ -20,17 +25,50 @@ export const SpellFilter = ({
   onFilterChange,
   onSortChange,
 }: Props) => {
-  const tagRender = (props: any) => {
-    const { label, closable, onClose } = props
+  const [schools, setSchools] = useState<SpellsFilter[]>()
+  const [castingTimes, setCastingTimes] = useState<SpellsFilter[]>()
+
+  const onSchoolsSelectChange = (filters: SpellsFilter[]) => {
+    setSchools(filters)
+    let arr: SpellsFilter[] = []
+    if (castingTimes) {
+      arr = [...arr, ...castingTimes]
+    }
+
+    return onFilterChange([...arr, ...filters])
+  }
+
+  const onCastingTimesSelectChange = (filters: SpellsFilter[]) => {
+    setCastingTimes(filters)
+    let arr: SpellsFilter[] = []
+    if (schools) {
+      arr = [...arr, ...schools]
+    }
+
+    return onFilterChange([...arr, ...filters])
+  }
+
+  const schoolTagRender = (props: any) => {
+    const { closable, label, onClose, value } = props
 
     return (
       <Tag
         closable={closable}
-        color={schoolToColor.get(label)}
+        color={schoolToColor.get(value)}
         onClose={onClose}
         style={{ marginRight: 3 }}
       >
         {label}
+      </Tag>
+    )
+  }
+
+  const castingTimeTagRender = (props: any) => {
+    const { label, closable, onClose } = props
+
+    return (
+      <Tag closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
+        <ClockCircleOutlined /> {label}
       </Tag>
     )
   }
@@ -47,14 +85,29 @@ export const SpellFilter = ({
         />
       </label>
       <label className={s.filterSection}>
-        Filter:
+        Filter by school:
         <Select
           allowClear
           mode="multiple"
-          onChange={onFilterChange}
-          options={filterOptions}
-          tagRender={tagRender}
-          placeholder="Type 'Conjuration'"
+          onChange={onSchoolsSelectChange}
+          options={filterSpellSchoolsOptions}
+          tagRender={schoolTagRender}
+          placeholder="Select 'Conjuration'"
+        />
+      </label>
+      <label className={s.filterSection}>
+        Filter by casting time:
+        <Select
+          allowClear
+          mode="multiple"
+          onChange={onCastingTimesSelectChange}
+          options={filterCastingTimeOptions}
+          optionFilterProp="label"
+          filterOption={(input: string, option: any) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          tagRender={castingTimeTagRender}
+          placeholder="Select '1 Action'"
         />
       </label>
     </div>

@@ -31,7 +31,11 @@ export const Spell = ({ spell }: Props) => {
     <Item label="Concentration">Required</Item>
   ) : null
 
-  const schoolCell = school ? <Item label="School">{school}</Item> : null
+  const schoolCell = school ? (
+    <Item label="School">
+      {school.charAt(0) + school.slice(1).toLowerCase()}
+    </Item>
+  ) : null
 
   const castingTimeCell = castingTime ? (
     <Item label="Casting time">{castingTimeToDisplayed.get(castingTime)}</Item>

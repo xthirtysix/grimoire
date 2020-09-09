@@ -1,12 +1,23 @@
 export const schoolToColor = new Map([
-  ['Abjuration', 'geekblue'],
-  ['Conjuration', 'cyan'],
-  ['Evocation', 'green'],
-  ['Divination', 'purple'],
-  ['Illusion', 'gold'],
-  ['Transmutation', 'magenta'],
-  ['Necromancy', 'volcano'],
-  ['Enchantment', 'orange'],
+  ['ABJURATION', 'geekblue'],
+  ['CONJURATION', 'cyan'],
+  ['EVOCATION', 'green'],
+  ['DIVINATION', 'purple'],
+  ['ILLUSION', 'gold'],
+  ['TRANSMUTATION', 'magenta'],
+  ['NECROMANCY', 'volcano'],
+  ['ENCHANTMENT', 'orange'],
+])
+
+export const schoolToShorthand = new Map([
+  ['ABJURATION', 'Abj'],
+  ['CONJURATION', 'Conj'],
+  ['EVOCATION', 'Evoc'],
+  ['DIVINATION', 'Div'],
+  ['ILLUSION', 'Illu'],
+  ['TRANSMUTATION', 'Trans'],
+  ['NECROMANCY', 'Necr'],
+  ['ENCHANTMENT', 'Ench'],
 ])
 
 export const levelNumberToString = new Map([
@@ -23,16 +34,16 @@ export const levelNumberToString = new Map([
 ])
 
 export const castingTimeToDisplayed = new Map([
-  ['ACTION', '1 action'],
-  ['BONUTS_ACTION', '1 bonus action'],
-  ['EIGHT_HOURS', '8 hours'],
-  ['ONE_HOUR', '1 hour'],
-  ['ONE_MINUTE', '1 minute'],
-  ['REACTION', 'Reaction'],
+  ['ACTION', '1 Action'],
+  ['BONUS_ACTION', '1 Bonus Action'],
+  ['EIGHT_HOURS', '8 Hours'],
+  ['ONE_HOUR', '1 Hour'],
+  ['ONE_MINUTE', '1 Minute'],
+  ['REACTION', '1 Reaction'],
   ['SPECIAL', 'Special'],
-  ['TEN_MINUTES', '10 minutes'],
-  ['TWELVE_HOURS', '12 hours'],
-  ['TWENTYFOUR_HOURS', '24 hours'],
+  ['TEN_MINUTES', '10 Minutes'],
+  ['TWELVE_HOURS', '12 Hours'],
+  ['TWENTYFOUR_HOURS', '24 Hours'],
 ])
 
 export const castingTimeToShorthand = new Map([
