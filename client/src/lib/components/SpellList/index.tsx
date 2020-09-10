@@ -27,7 +27,6 @@ import {
   schoolToColor,
   schoolToShorthand,
 } from '../../maps'
-//Constants
 
 const { Panel } = Collapse
 const { Title, Text } = Typography
