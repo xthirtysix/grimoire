@@ -20,32 +20,32 @@ interface Props {
   onSortChange: (value: SpellsSort) => void
 }
 
+interface Filters {
+  schools?: SpellsFilter[]
+  castingTimes?: SpellsFilter[]
+}
+
 export const SpellFilter = ({
   defaultSort,
   onFilterChange,
   onSortChange,
 }: Props) => {
-  const [schools, setSchools] = useState<SpellsFilter[]>()
-  const [castingTimes, setCastingTimes] = useState<SpellsFilter[]>()
+  const [filters, setFilters] = useState<Filters | undefined>()
 
-  const onSchoolsSelectChange = (filters: SpellsFilter[]) => {
-    setSchools(filters)
-    let arr: SpellsFilter[] = []
-    if (castingTimes) {
-      arr = [...arr, ...castingTimes]
+  const onSchoolsChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, schools: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
     }
-
-    return onFilterChange([...arr, ...filters])
+    return onFilterChange([...Object.values(filters).flat(), ...values])
   }
 
-  const onCastingTimesSelectChange = (filters: SpellsFilter[]) => {
-    setCastingTimes(filters)
-    let arr: SpellsFilter[] = []
-    if (schools) {
-      arr = [...arr, ...schools]
+  const onCastingTimesChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, castingTimes: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
     }
-
-    return onFilterChange([...arr, ...filters])
+    return onFilterChange([...Object.values(filters).flat(), ...values])
   }
 
   const schoolTagRender = (props: any) => {
@@ -89,7 +89,7 @@ export const SpellFilter = ({
         <Select
           allowClear
           mode="multiple"
-          onChange={onSchoolsSelectChange}
+          onChange={onSchoolsChange}
           options={filterSpellSchoolsOptions}
           tagRender={schoolTagRender}
           placeholder="Select 'Conjuration'"
@@ -100,7 +100,7 @@ export const SpellFilter = ({
         <Select
           allowClear
           mode="multiple"
-          onChange={onCastingTimesSelectChange}
+          onChange={onCastingTimesChange}
           options={filterCastingTimeOptions}
           optionFilterProp="label"
           filterOption={(input: string, option: any) =>
