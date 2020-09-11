@@ -24,6 +24,7 @@ import s from './styles/SpellList.module.scss'
 //Maps
 import {
   castingTimeToShorthand,
+  levelToDisplayed,
   schoolToColor,
   schoolToShorthand,
 } from '../../maps'
@@ -153,7 +154,7 @@ export const SpellList = ({
                 {spell.name}
               </Title>
               <Text type="secondary" className={s.spellLevel}>
-                Level {spell.level}
+                {levelToDisplayed.get(spell.level)}
               </Text>
             </div>
           }

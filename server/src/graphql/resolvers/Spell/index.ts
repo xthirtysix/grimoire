@@ -59,6 +59,14 @@ export const spellResolvers: IResolvers = {
             projectQuery = orderCastingTimeQuery;
             sortQuery = { $sort: { order: -1 } };
             break;
+          case SpellsSort.LEVEL_ASCENDING:
+            projectQuery = orderCastingTimeQuery;
+            sortQuery = { $sort: { level: 1 } };
+            break;
+          case SpellsSort.LEVEL_DESCENDING:
+            projectQuery = orderCastingTimeQuery;
+            sortQuery = { $sort: { level: -1 } };
+            break;
           default:
             sortQuery = { $sort: { name: 1 } };
         }
@@ -84,7 +92,6 @@ export const spellResolvers: IResolvers = {
 
         cursor = await db.spells.aggregate(formAggregationQuery());
 
-        console.log(formAggregationQuery());
         if (limit) {
           cursor = await db.spells.aggregate([
             { $sample: { size: limit } },
@@ -105,14 +112,11 @@ export const spellResolvers: IResolvers = {
           cursor = await db.spells.aggregate(
             formAggregationQuery(grimoire.spells)
           );
-
-          console.log(formAggregationQuery(grimoire.spells));
         }
 
         data.result = await cursor.toArray();
         data.total = await data.result.length;
 
-        // console.log(data);
         return data;
       } catch (error) {
         throw new Error(`Failed to query Spells: ${error}`);

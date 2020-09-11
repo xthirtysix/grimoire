@@ -45,7 +45,7 @@ export interface CharacterClass {
 export interface Spell {
   _id: ObjectId;
   name: string;
-  level: number;
+  level: string;
   school: string;
   castingTime: string;
   range: Scalar;
