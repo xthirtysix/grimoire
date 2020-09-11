@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Database, User } from "../types";
-import { Schools } from "../constants";
+import { CASTING_TIMES, LEVELS, SCHOOLS } from "../constants";
 
 export const authorize = async (
   db: Database,
@@ -16,14 +16,21 @@ export const authorize = async (
 };
 
 export const createFilterQuery = (filterValues: string[]) => {
-  const query: any = { $match: {} };
+  let query: any = { $match: {} };
   const schools: string[] = [];
   const castingTimes: string[] = [];
+  const levels: string[] = [];
 
   filterValues.map((value) => {
-    return Object.values(Schools).includes(value)
-      ? schools.push(value)
-      : castingTimes.push(value);
+    if (Object.values(SCHOOLS).includes(value)) {
+      return schools.push(value);
+    }
+    if (Object.values(CASTING_TIMES).includes(value)) {
+      return castingTimes.push(value);
+    }
+    if (Object.values(LEVELS).includes(value)) {
+      return levels.push(value);
+    }
   });
 
   if (schools && schools.length) {
@@ -31,6 +38,9 @@ export const createFilterQuery = (filterValues: string[]) => {
   }
   if (castingTimes && castingTimes.length) {
     query["$match"]["castingTime"] = { $in: castingTimes };
+  }
+  if (levels && levels.length) {
+    query["$match"]["level"] = { $in: levels };
   }
 
   return query;

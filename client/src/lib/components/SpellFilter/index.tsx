@@ -10,6 +10,7 @@ import s from './styles/SpellFilter.module.scss'
 //Constants
 import {
   filterSpellSchoolsOptions,
+  filterLevelOptions,
   filterCastingTimeOptions,
   sortOptions,
 } from '../../constants'
@@ -23,6 +24,7 @@ interface Props {
 interface Filters {
   schools?: SpellsFilter[]
   castingTimes?: SpellsFilter[]
+  levels?: SpellsFilter[]
 }
 
 export const SpellFilter = ({
@@ -37,7 +39,8 @@ export const SpellFilter = ({
     if (filters === undefined) {
       return onFilterChange([...values])
     }
-    return onFilterChange([...Object.values(filters).flat(), ...values])
+    const { schools, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
   }
 
   const onCastingTimesChange = (values: SpellsFilter[]) => {
@@ -45,7 +48,16 @@ export const SpellFilter = ({
     if (filters === undefined) {
       return onFilterChange([...values])
     }
-    return onFilterChange([...Object.values(filters).flat(), ...values])
+    const { castingTimes, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
+  }
+  const onLevelsChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, levels: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
+    }
+    const { levels, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
   }
 
   const schoolTagRender = (props: any) => {
@@ -69,6 +81,16 @@ export const SpellFilter = ({
     return (
       <Tag closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
         <ClockCircleOutlined /> {label}
+      </Tag>
+    )
+  }
+
+  const levelTagRender = (props: any) => {
+    const { label, closable, onClose } = props
+
+    return (
+      <Tag closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
+        {label}
       </Tag>
     )
   }
@@ -108,6 +130,21 @@ export const SpellFilter = ({
           }
           tagRender={castingTimeTagRender}
           placeholder="Select '1 Action'"
+        />
+      </label>
+      <label className={s.filterSection}>
+        Filter by level:
+        <Select
+          allowClear
+          mode="multiple"
+          onChange={onLevelsChange}
+          options={filterLevelOptions}
+          optionFilterProp="label"
+          filterOption={(input: string, option: any) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          tagRender={levelTagRender}
+          placeholder="Select 'Cantrip' or '4th'"
         />
       </label>
     </div>

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort, CastingTime } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort, Level, CastingTime } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
@@ -59,7 +59,7 @@ export interface Spells_spells_result {
   __typename: "Spell";
   id: string;
   name: string;
-  level: number;
+  level: Level;
   school: string;
   castingTime: CastingTime;
   range: Spells_spells_result_range;

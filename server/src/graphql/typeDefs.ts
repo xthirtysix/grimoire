@@ -65,7 +65,7 @@ export const typeDefs = gql`
   type Spell {
     id: ID!
     name: String!
-    level: Int!
+    level: Level!
     school: String!
     castingTime: CastingTime!
     range: Scalar!
@@ -94,6 +94,19 @@ export const typeDefs = gql`
     TWELVE_HOURS
     TWENTYFOUR_HOURS
     SPECIAL
+  }
+
+  enum Level {
+    LEVEL_0
+    LEVEL_1
+    LEVEL_2
+    LEVEL_3
+    LEVEL_4
+    LEVEL_5
+    LEVEL_6
+    LEVEL_7
+    LEVEL_8
+    LEVEL_9
   }
 
   type Components {
@@ -149,6 +162,16 @@ export const typeDefs = gql`
     TWELVE_HOURS
     TWENTYFOUR_HOURS
     SPECIAL
+    LEVEL_0
+    LEVEL_1
+    LEVEL_2
+    LEVEL_3
+    LEVEL_4
+    LEVEL_5
+    LEVEL_6
+    LEVEL_7
+    LEVEL_8
+    LEVEL_9
   }
 
   type Query {
@@ -164,7 +187,6 @@ export const typeDefs = gql`
     ): Spells!
   }
 
-
   enum SpellsSchool {
     ABJURATION
     CONJURATION
@@ -179,6 +201,8 @@ export const typeDefs = gql`
   enum SpellsSort {
     CASTING_TIME_ASCENDING
     CASTING_TIME_DESCENDING
+    LEVEL_ASCENDING
+    LEVEL_DESCENDING
     NAME_ASCENDING
     NAME_DESCENDING
   }

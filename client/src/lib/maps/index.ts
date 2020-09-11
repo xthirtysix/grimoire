@@ -20,17 +20,17 @@ export const schoolToShorthand = new Map([
   ['ENCHANTMENT', 'Ench'],
 ])
 
-export const levelNumberToString = new Map([
-  [0, 'Cantrips'],
-  [1, 'Level 1'],
-  [2, 'Level 2'],
-  [3, 'Level 3'],
-  [4, 'Level 4'],
-  [5, 'Level 5'],
-  [6, 'Level 6'],
-  [7, 'Level 7'],
-  [8, 'Level 8'],
-  [9, 'Level 9'],
+export const levelToDisplayed = new Map([
+  ['LEVEL_0', 'Cantrip'],
+  ['LEVEL_1', '1st'],
+  ['LEVEL_2', '2nd'],
+  ['LEVEL_3', '3rd'],
+  ['LEVEL_4', '4th'],
+  ['LEVEL_5', '5th'],
+  ['LEVEL_6', '6th'],
+  ['LEVEL_7', '7th'],
+  ['LEVEL_8', '8th'],
+  ['LEVEL_9', '9th'],
 ])
 
 export const castingTimeToDisplayed = new Map([

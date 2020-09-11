@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CastingTime } from "./../../../globalTypes";
+import { Level, CastingTime } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spell
@@ -59,7 +59,7 @@ export interface Spell_spell {
   __typename: "Spell";
   id: string;
   name: string;
-  level: number;
+  level: Level;
   school: string;
   castingTime: CastingTime;
   range: Spell_spell_range;
