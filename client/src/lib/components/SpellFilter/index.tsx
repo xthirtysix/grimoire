@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { Select, Tag } from 'antd'
-import { ClockCircleOutlined } from '@ant-design/icons'
+import {
+  ClockCircleOutlined,
+  FilterOutlined,
+  SortDescendingOutlined,
+} from '@ant-design/icons'
 //Data
 import { SpellsFilter, SpellsSort } from '../../graphql/globalTypes'
 //Maps
@@ -9,10 +13,10 @@ import { schoolToColor } from '../../maps'
 import s from './styles/SpellFilter.module.scss'
 //Constants
 import {
-  filterSpellSchoolsOptions,
-  filterLevelOptions,
-  filterCastingTimeOptions,
-  sortOptions,
+  CASTING_TIME_FILTER_OPTIONS,
+  LEVEL_FILTER_OPTIONS,
+  SPELL_SCHOOL_FILTER_OPTIONS,
+  SORT_OPTIONS,
 } from '../../constants'
 
 interface Props {
@@ -34,6 +38,7 @@ export const SpellFilter = ({
 }: Props) => {
   const [filters, setFilters] = useState<Filters | undefined>()
 
+  //Filter change handlers *START*
   const onSchoolsChange = (values: SpellsFilter[]) => {
     setFilters({ ...filters, schools: [...values] })
     if (filters === undefined) {
@@ -59,7 +64,9 @@ export const SpellFilter = ({
     const { levels, ...newFilters } = filters
     return onFilterChange([...Object.values(newFilters).flat(), ...values])
   }
+  //Filter change handlers *END*
 
+  //Tag renderers *START*
   const schoolTagRender = (props: any) => {
     const { closable, label, onClose, value } = props
 
@@ -94,36 +101,41 @@ export const SpellFilter = ({
       </Tag>
     )
   }
+  //Tag renderers *END*
 
   return (
     <div className={s.filter}>
       <label className={s.filterSection}>
-        Sort by:
+        <span>Sort by:</span>
         <Select
           defaultValue={defaultSort}
           onChange={onSortChange}
-          options={sortOptions}
+          options={SORT_OPTIONS}
           className={s.sortSelect}
         />
       </label>
       <label className={s.filterSection}>
-        Filter by school:
+        <span>
+          <FilterOutlined /> by school:
+        </span>
         <Select
           allowClear
           mode="multiple"
           onChange={onSchoolsChange}
-          options={filterSpellSchoolsOptions}
+          options={SPELL_SCHOOL_FILTER_OPTIONS}
           tagRender={schoolTagRender}
           placeholder="Select 'Conjuration'"
         />
       </label>
       <label className={s.filterSection}>
-        Filter by casting time:
+        <span>
+          <FilterOutlined /> by casting time:
+        </span>
         <Select
           allowClear
           mode="multiple"
           onChange={onCastingTimesChange}
-          options={filterCastingTimeOptions}
+          options={CASTING_TIME_FILTER_OPTIONS}
           optionFilterProp="label"
           filterOption={(input: string, option: any) =>
             option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -133,12 +145,14 @@ export const SpellFilter = ({
         />
       </label>
       <label className={s.filterSection}>
-        Filter by level:
+        <span>
+          <FilterOutlined /> by level:
+        </span>
         <Select
           allowClear
           mode="multiple"
           onChange={onLevelsChange}
-          options={filterLevelOptions}
+          options={LEVEL_FILTER_OPTIONS}
           optionFilterProp="label"
           filterOption={(input: string, option: any) =>
             option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0

@@ -1,24 +1,6 @@
 import { castingTimeToDisplayed, levelToDisplayed } from '../maps'
 
-const spellSchools = [
-  'ABJURATION',
-  'CONJURATION',
-  'DIVINATION',
-  'ENCHANTMENT',
-  'EVOCATION',
-  'ILLUSION',
-  'NECROMANCY',
-  'TRANSMUTATION',
-]
-
-export const filterSpellSchoolsOptions = spellSchools.map((spellSchool) => {
-  return {
-    value: spellSchool,
-    label: spellSchool.charAt(0) + spellSchool.slice(1).toLowerCase(),
-  }
-})
-
-const castingTimes = [
+const CASTING_TIMES = [
   'REACTION',
   'BONUS_ACTION',
   'ACTION',
@@ -31,14 +13,14 @@ const castingTimes = [
   'SPECIAL',
 ]
 
-export const filterCastingTimeOptions = castingTimes.map((castingTime) => {
+export const CASTING_TIME_FILTER_OPTIONS = CASTING_TIMES.map((castingTime) => {
   return {
     value: castingTime,
     label: castingTimeToDisplayed.get(castingTime),
   }
 })
 
-const levels = [
+const LEVELS = [
   'LEVEL_0',
   'LEVEL_1',
   'LEVEL_2',
@@ -51,14 +33,32 @@ const levels = [
   'LEVEL_9',
 ]
 
-export const filterLevelOptions = levels.map((level) => {
+export const LEVEL_FILTER_OPTIONS = LEVELS.map((level) => {
   return {
     value: level,
     label: levelToDisplayed.get(level),
   }
 })
 
-export const sortOptions = [
+const SPELL_SCHOOLS = [
+  'ABJURATION',
+  'CONJURATION',
+  'DIVINATION',
+  'ENCHANTMENT',
+  'EVOCATION',
+  'ILLUSION',
+  'NECROMANCY',
+  'TRANSMUTATION',
+]
+
+export const SPELL_SCHOOL_FILTER_OPTIONS = SPELL_SCHOOLS.map((spellSchool) => {
+  return {
+    value: spellSchool,
+    label: spellSchool.charAt(0) + spellSchool.slice(1).toLowerCase(),
+  }
+})
+
+export const SORT_OPTIONS = [
   { label: 'Casting time ascending', value: 'CASTING_TIME_ASCENDING' },
   { label: 'Casting time descending', value: 'CASTING_TIME_DESCENDING' },
   { label: 'Level 0-9', value: 'LEVEL_ASCENDING' },
