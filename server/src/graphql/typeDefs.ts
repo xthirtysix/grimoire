@@ -55,6 +55,85 @@ export const typeDefs = gql`
     WIZARD
   }
 
+  enum Stats {
+    STRENGTH
+    CONSTITUTION
+    DEXTERITY
+    INTELLEGENCE
+    WISDOM
+    CHARISMA
+  }
+
+  enum SpellTag {
+    BANISHMENT
+    BUFF
+    CHARMED
+    COMBAT
+    COMMUNICATION
+    COMPULTION
+    CONTROL
+    CREATION
+    DAMAGE
+    DEBUFF
+    DECEPTION
+    DETECTION
+    DUNAMANCY
+    ENVIRONMENT
+    EXPLORATION
+    FOREKNOWLEDGE
+    HEALING
+    MOVEMENT
+    NEGATION
+    PSIONIC
+    SCRYING
+    SHAPECHANGING
+    SOCIAL
+    SUMMONING
+    TELEPORTATION
+    UTILITY
+    WARDING
+  }
+
+  enum Conditions {
+    BLINDED
+    CHARMED
+    DEAFEND
+    EXHAUSTION
+    FRIGHTENED
+    GRAPPLED
+    INCAPACITATED
+    INVISIBLE
+    PARALYZED
+    PETRIFIED
+    POSISONED
+    PRONE
+    RESTRAINED
+    STUNNED
+    UNCONSCIOUS
+  }
+
+  enum DamageType {
+    ACID
+    BLUDGEONING
+    COLD
+    FIRE
+    FORCE
+    LIGHTNING
+    NECROTIC
+    PIERCING
+    POISON
+    PSYCHIC
+    RADIANT
+    SLASHING
+    THUNDER
+    SHORTBOW
+    LONGBOW
+    ONE_HANDED_MELEE
+    UNARMED
+    NATURAL
+    MELEE_WEAPON
+  }
+
   # Spells
 
   type Spells {
@@ -68,14 +147,43 @@ export const typeDefs = gql`
     level: Level!
     school: String!
     castingTime: CastingTime!
-    range: Scalar!
     duration: Scalar!
+    range: Scalar!
     isConcentration: Boolean!
+    isRitual: Boolean!
     components: Components
     materials: String
     description: String!
-    damage: Damage
     source: String!
+    tags: [SpellTag!]!
+    classes: [ClassType!]!
+    conditions: [Conditions]
+    atHigherLevels: String
+    atHigherSlots: String
+    damageDice: Dice
+    damageScale: [DamageScale!]
+    damageType: DamageType
+    saveRequired: Stats
+  }
+
+  enum DiceType {
+    D4
+    D6
+    D8
+    D10
+    D12
+    D20
+    D100
+  }
+
+  type Dice {
+    quantity: Int!
+    dice: DiceType!
+  }
+
+  type DamageScale {
+    level: Int!
+    dice: Dice!
   }
 
   type Scalar {
@@ -113,32 +221,6 @@ export const typeDefs = gql`
     verbal: Boolean!
     somatic: Boolean!
     material: Boolean!
-  }
-
-  type Damage {
-    type: String
-    isScaleLevel: Boolean
-    isScaleSlot: Boolean
-    basic: String
-    level2: String
-    level3: String
-    level4: String
-    level5: String
-    level6: String
-    level7: String
-    level8: String
-    level9: String
-    level10: String
-    level11: String
-    level12: String
-    level13: String
-    level14: String
-    level15: String
-    level16: String
-    level17: String
-    level18: String
-    level19: String
-    level20: String
   }
 
   # Query

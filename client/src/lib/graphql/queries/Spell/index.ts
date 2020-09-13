@@ -17,6 +17,7 @@ export const SPELL = gql`
         unit
       }
       isConcentration
+      isRitual
       components {
         verbal
         somatic
@@ -24,32 +25,25 @@ export const SPELL = gql`
       }
       materials
       description
-      damage {
-        type
-        isScaleLevel
-        isScaleSlot
-        basic
-        level2
-        level3
-        level4
-        level5
-        level6
-        level7
-        level8
-        level9
-        level10
-        level11
-        level12
-        level13
-        level14
-        level15
-        level16
-        level17
-        level18
-        level19
-        level20
-      }
       source
+      tags
+      classes
+      conditions
+      atHigherLevels
+      atHigherSlots
+      damageDice {
+        dice
+        quantity
+      }
+      damageScale {
+        level
+        dice {
+          dice
+          quantity
+        }
+      }
+      damageType
+      saveRequired
     }
   }
 `

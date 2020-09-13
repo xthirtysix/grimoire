@@ -48,15 +48,34 @@ export interface Spell {
   level: string;
   school: string;
   castingTime: string;
-  range: Scalar;
   duration: Scalar;
+  range: Scalar;
   isConcentration: boolean;
+  isRitual: boolean;
   components: Components;
   materials?: String;
   description: String;
-  damage?: Damage;
   source: string;
+  tags: string[];
+  classes: string[];
+  conditions?: [string];
+  atHigherLevels?: string;
+  atHigherSlots?: string;
+  damageDice?: Dice;
+  damageScale?: DamageScale[];
+  damageType?: string;
+  saveRequired?: string;
   authorized?: boolean;
+}
+
+export interface Dice {
+  quantity: number;
+  dice: string;
+}
+
+export interface DamageScale {
+  level: number;
+  dice: Dice;
 }
 
 export interface Scalar {
@@ -68,30 +87,4 @@ export interface Components {
   verbal: boolean;
   somatic: boolean;
   material: boolean;
-}
-
-export interface Damage {
-  type?: string;
-  isScaleLevel?: boolean;
-  isScaleSlot?: boolean;
-  basic?: string;
-  level2?: string;
-  level3?: string;
-  level4?: string;
-  level5?: string;
-  level6?: string;
-  level7?: string;
-  level8?: string;
-  level9?: string;
-  level10?: string;
-  level11?: string;
-  level12?: string;
-  level13?: string;
-  level14?: string;
-  level15?: string;
-  level16?: string;
-  level17?: string;
-  level18?: string;
-  level19?: string;
-  level20?: string;
 }
