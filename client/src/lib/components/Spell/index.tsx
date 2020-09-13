@@ -1,5 +1,5 @@
 import React from 'react'
-import { Descriptions } from 'antd'
+import { Descriptions, Tag } from 'antd'
 import DOMPurify from 'dompurify'
 //Data
 import { Spell as SpellData } from '../../../lib/graphql/queries/Spell/__generated__/Spell'
@@ -17,19 +17,29 @@ export const Spell = ({ spell }: Props) => {
   }
 
   const {
+    atHigherLevels,
+    atHigherSlots,
     castingTime,
+    classes,
     components,
-    damage,
+    damageDice,
+    damageScale,
+    damageType,
     duration,
     isConcentration,
+    isRitual,
     materials,
     range,
+    saveRequired,
     school,
+    tags,
   } = spell
 
   const concentrationCell = isConcentration ? (
     <Item label="Concentration">Required</Item>
   ) : null
+
+  const ritualCell = isRitual ? <Item label="Ritual">Required</Item> : null
 
   const schoolCell = school ? (
     <Item label="School">
@@ -39,6 +49,30 @@ export const Spell = ({ spell }: Props) => {
 
   const castingTimeCell = castingTime ? (
     <Item label="Casting time">{castingTimeToDisplayed.get(castingTime)}</Item>
+  ) : null
+
+  const classesInfo = classes ? (
+    <div>
+      {classes.map((cls) => {
+        return <Tag key={cls}>{cls.charAt(0) + cls.slice(1).toLowerCase()}</Tag>
+      })}
+    </div>
+  ) : null
+
+  const atHigherLevelsInfo = atHigherLevels ? <p>{atHigherLevels}</p> : null
+
+  const tagsInfo = tags ? (
+    <div>
+      {tags.map((tag) => {
+        return <Tag key={tag}>{tag.charAt(0) + tag.slice(1).toLowerCase()}</Tag>
+      })}
+    </div>
+  ) : null
+
+  const saveThrowCell = saveRequired ? (
+    <Item label="Save">
+      {saveRequired}
+    </Item>
   ) : null
 
   const durationCell = duration ? (
@@ -61,27 +95,27 @@ export const Spell = ({ spell }: Props) => {
     </Item>
   ) : null
 
-  const damageCells = damage ? (
-    <>
-      <Item label="Basic damage">{damage.basic}</Item>
-      <Item label="Damage type">{damage.type}</Item>
-    </>
-  ) : null
+  const damageCells =
+    damageDice && damageType ? (
+      <>
+        <Item label="Basic damage">
+          {damageDice.quantity}
+          {damageDice.dice}
+        </Item>
+        <Item label="Damage type">{damageType}</Item>
+      </>
+    ) : null
 
-  const levelScaleCell = damage?.isScaleLevel ? (
+  const levelScaleCell = damageScale ? (
     <Item label="On higher levels">
-      {Object.entries(damage)
-        .filter((key) => {
-          return key[0].indexOf('level') > -1 && key[1]
-        })
-        .map((key) => {
-          return (
-            <React.Fragment key={key[0]}>
-              <span>{`on ${key[0].slice('level'.length)}: ${key[1]}`}</span>
-              <br></br>
-            </React.Fragment>
-          )
-        })}
+      {damageScale.map((value) => {
+        return (
+          <React.Fragment key={value?.level}>
+            <span>{`on ${value?.level} level: ${value?.dice.quantity}${value?.dice.dice}`}</span>
+            <br></br>
+          </React.Fragment>
+        )
+      })}
     </Item>
   ) : null
 
@@ -92,6 +126,7 @@ export const Spell = ({ spell }: Props) => {
   const spellDataTable = (
     <Descriptions bordered style={{ marginBottom: '1rem' }}>
       {concentrationCell}
+      {ritualCell}
       {schoolCell}
       {castingTimeCell}
       {durationCell}
@@ -99,6 +134,7 @@ export const Spell = ({ spell }: Props) => {
       {componentsCell}
       {damageCells}
       {levelScaleCell}
+      {saveThrowCell}
       {materialsCell}
     </Descriptions>
   )
@@ -115,6 +151,9 @@ export const Spell = ({ spell }: Props) => {
     <>
       {spellDataTable}
       {spellDescription}
+      {atHigherLevelsInfo}
+      {tagsInfo}
+      {classesInfo}
     </>
   )
 }

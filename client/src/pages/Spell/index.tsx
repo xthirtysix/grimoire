@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Empty } from 'antd'
+import { CopyrightOutlined, TrademarkCircleOutlined } from '@ant-design/icons'
 import { Spell as SpellComponent, SpellSkeleton } from '../../lib/components'
 import { RouteComponentProps } from 'react-router-dom'
 //Data
@@ -41,10 +42,17 @@ export const Spell = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const spell = data && data.spell ? data.spell : null
 
+  const spellName = spell ? (
+    <h3>
+      {spell.name} {spell.isConcentration ? <CopyrightOutlined /> : null}{' '}
+      {spell.isRitual ? <TrademarkCircleOutlined /> : null}
+    </h3>
+  ) : null
+
   return spell ? (
     <div className="container">
-      <Card title={spell.name}>
-        <SpellComponent spell={spell}/>
+      <Card title={spellName}>
+        <SpellComponent spell={spell} />
       </Card>
     </div>
   ) : (

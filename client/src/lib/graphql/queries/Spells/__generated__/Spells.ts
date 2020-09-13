@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort, Level, CastingTime } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort, Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stats } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
@@ -28,31 +28,22 @@ export interface Spells_spells_result_components {
   material: boolean;
 }
 
-export interface Spells_spells_result_damage {
-  __typename: "Damage";
-  type: string | null;
-  isScaleLevel: boolean | null;
-  isScaleSlot: boolean | null;
-  basic: string | null;
-  level2: string | null;
-  level3: string | null;
-  level4: string | null;
-  level5: string | null;
-  level6: string | null;
-  level7: string | null;
-  level8: string | null;
-  level9: string | null;
-  level10: string | null;
-  level11: string | null;
-  level12: string | null;
-  level13: string | null;
-  level14: string | null;
-  level15: string | null;
-  level16: string | null;
-  level17: string | null;
-  level18: string | null;
-  level19: string | null;
-  level20: string | null;
+export interface Spells_spells_result_damageDice {
+  __typename: "Dice";
+  dice: DiceType;
+  quantity: number;
+}
+
+export interface Spells_spells_result_damageScale_dice {
+  __typename: "Dice";
+  dice: DiceType;
+  quantity: number;
+}
+
+export interface Spells_spells_result_damageScale {
+  __typename: "DamageScale";
+  level: number;
+  dice: Spells_spells_result_damageScale_dice;
 }
 
 export interface Spells_spells_result {
@@ -65,11 +56,20 @@ export interface Spells_spells_result {
   range: Spells_spells_result_range;
   duration: Spells_spells_result_duration;
   isConcentration: boolean;
+  isRitual: boolean;
   components: Spells_spells_result_components | null;
   materials: string | null;
   description: string;
-  damage: Spells_spells_result_damage | null;
   source: string;
+  tags: SpellTag[];
+  classes: ClassType[];
+  conditions: (Conditions | null)[] | null;
+  atHigherLevels: string | null;
+  atHigherSlots: string | null;
+  damageDice: Spells_spells_result_damageDice | null;
+  damageScale: (Spells_spells_result_damageScale | null)[] | null;
+  damageType: DamageType | null;
+  saveRequired: Stats | null;
 }
 
 export interface Spells_spells {

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Level, CastingTime } from "./../../../globalTypes";
+import { Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stats } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spell
@@ -28,31 +28,22 @@ export interface Spell_spell_components {
   material: boolean;
 }
 
-export interface Spell_spell_damage {
-  __typename: "Damage";
-  type: string | null;
-  isScaleLevel: boolean | null;
-  isScaleSlot: boolean | null;
-  basic: string | null;
-  level2: string | null;
-  level3: string | null;
-  level4: string | null;
-  level5: string | null;
-  level6: string | null;
-  level7: string | null;
-  level8: string | null;
-  level9: string | null;
-  level10: string | null;
-  level11: string | null;
-  level12: string | null;
-  level13: string | null;
-  level14: string | null;
-  level15: string | null;
-  level16: string | null;
-  level17: string | null;
-  level18: string | null;
-  level19: string | null;
-  level20: string | null;
+export interface Spell_spell_damageDice {
+  __typename: "Dice";
+  dice: DiceType;
+  quantity: number;
+}
+
+export interface Spell_spell_damageScale_dice {
+  __typename: "Dice";
+  dice: DiceType;
+  quantity: number;
+}
+
+export interface Spell_spell_damageScale {
+  __typename: "DamageScale";
+  level: number;
+  dice: Spell_spell_damageScale_dice;
 }
 
 export interface Spell_spell {
@@ -65,11 +56,20 @@ export interface Spell_spell {
   range: Spell_spell_range;
   duration: Spell_spell_duration;
   isConcentration: boolean;
+  isRitual: boolean;
   components: Spell_spell_components | null;
   materials: string | null;
   description: string;
-  damage: Spell_spell_damage | null;
   source: string;
+  tags: SpellTag[];
+  classes: ClassType[];
+  conditions: (Conditions | null)[] | null;
+  atHigherLevels: string | null;
+  atHigherSlots: string | null;
+  damageDice: Spell_spell_damageDice | null;
+  damageScale: (Spell_spell_damageScale | null)[] | null;
+  damageType: DamageType | null;
+  saveRequired: Stats | null;
 }
 
 export interface Spell {

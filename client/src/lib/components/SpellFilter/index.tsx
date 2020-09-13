@@ -3,7 +3,6 @@ import { Select, Tag } from 'antd'
 import {
   ClockCircleOutlined,
   FilterOutlined,
-  SortDescendingOutlined,
 } from '@ant-design/icons'
 //Data
 import { SpellsFilter, SpellsSort } from '../../graphql/globalTypes'

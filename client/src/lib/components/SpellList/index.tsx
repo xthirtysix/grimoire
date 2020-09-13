@@ -3,10 +3,12 @@ import { Button, Collapse, Tag, Typography } from 'antd'
 import {
   ArrowsAltOutlined,
   ClockCircleOutlined,
+  CopyrightOutlined,
   HourglassOutlined,
   MinusOutlined,
   PlusOutlined,
   SafetyOutlined,
+  TrademarkCircleOutlined
 } from '@ant-design/icons'
 import { Spell as SpellComponent } from '../'
 import { shortenScalar } from '../../utils'
@@ -64,14 +66,6 @@ export const SpellList = ({
     : () => {}
 
   //Panel Tags *START*
-  const concentrationTag = (isConcentration: boolean) => {
-    return isConcentration ? (
-      <Tag>
-        <SafetyOutlined />
-      </Tag>
-    ) : null
-  }
-
   const schoolTag = (school: string) => (
     <Tag color={schoolToColor.get(school)} className={s.tagSchool}>
       {schoolToShorthand.get(school)}
@@ -132,7 +126,6 @@ export const SpellList = ({
   }: Spells_spells_result) => {
     return (
       <div className={s.tagList}>
-        {concentrationTag(isConcentration)}
         {schoolTag(school)}
         {castingTimeTag(castingTime)}
         {durationTag(duration)}
@@ -152,6 +145,8 @@ export const SpellList = ({
             <div className={s.spellHeader}>
               <Title level={4} className={s.spellName}>
                 {spell.name}
+                {spell.isConcentration ? <CopyrightOutlined/> : null}
+                {spell.isRitual ? <TrademarkCircleOutlined/> : null}
               </Title>
               <Text type="secondary" className={s.spellLevel}>
                 {levelToDisplayed.get(spell.level)}
