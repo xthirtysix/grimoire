@@ -4,6 +4,8 @@ import DOMPurify from 'dompurify'
 //Data
 import { Spell as SpellData } from '../../../lib/graphql/queries/Spell/__generated__/Spell'
 import { castingTimeToDisplayed } from '../../maps'
+//Styles
+import s from './styles/Spell.module.scss'
 
 const { Item } = Descriptions
 
@@ -53,16 +55,27 @@ export const Spell = ({ spell }: Props) => {
 
   const classesInfo = classes ? (
     <div>
+      <b>Classes: </b>
       {classes.map((cls) => {
         return <Tag key={cls}>{cls.charAt(0) + cls.slice(1).toLowerCase()}</Tag>
       })}
     </div>
   ) : null
 
-  const atHigherLevelsInfo = atHigherLevels ? <p>{atHigherLevels}</p> : null
+  const atHigherLevelsInfo = atHigherLevels ? (
+    <p>
+      <b>At higher levels:</b> {atHigherLevels}
+    </p>
+  ) : null
+  const atHigherSlotsInfo = atHigherSlots ? (
+    <p>
+      <b>Using higher spell slots:</b> {atHigherSlots}
+    </p>
+  ) : null
 
   const tagsInfo = tags ? (
     <div>
+      <b>Tags: </b>
       {tags.map((tag) => {
         return <Tag key={tag}>{tag.charAt(0) + tag.slice(1).toLowerCase()}</Tag>
       })}
@@ -70,14 +83,18 @@ export const Spell = ({ spell }: Props) => {
   ) : null
 
   const saveThrowCell = saveRequired ? (
-    <Item label="Save">
-      {saveRequired}
+    <Item label="Saving throw">
+      {saveRequired.charAt(0) + saveRequired.slice(1).toLowerCase()}
     </Item>
   ) : null
 
   const durationCell = duration ? (
     <Item label="Duration">
-      {duration.value ? `${duration.value} ${duration.unit}` : duration.unit}
+      {duration.value
+        ? `${duration.value} ${
+            duration.unit.charAt(0).toUpperCase() + duration.unit.slice(1)
+          }`
+        : duration.unit.charAt(0).toUpperCase() + duration.unit.slice(1)}
     </Item>
   ) : null
 
@@ -100,18 +117,22 @@ export const Spell = ({ spell }: Props) => {
       <>
         <Item label="Basic damage">
           {damageDice.quantity}
-          {damageDice.dice}
+          {damageDice.dice.toLowerCase()}
         </Item>
-        <Item label="Damage type">{damageType}</Item>
+        <Item label="Damage type">
+          {damageType.charAt(0) + damageType.slice(1).toLowerCase()}
+        </Item>
       </>
     ) : null
 
   const levelScaleCell = damageScale ? (
-    <Item label="On higher levels">
+    <Item label="At higher levels">
       {damageScale.map((value) => {
         return (
           <React.Fragment key={value?.level}>
-            <span>{`on ${value?.level} level: ${value?.dice.quantity}${value?.dice.dice}`}</span>
+            <span>{`${value?.level}th level: ${
+              value?.dice.quantity
+            }${value?.dice.dice.toLowerCase()}`}</span>
             <br></br>
           </React.Fragment>
         )
@@ -133,8 +154,8 @@ export const Spell = ({ spell }: Props) => {
       {rangeCell}
       {componentsCell}
       {damageCells}
-      {levelScaleCell}
       {saveThrowCell}
+      {levelScaleCell}
       {materialsCell}
     </Descriptions>
   )
@@ -152,8 +173,11 @@ export const Spell = ({ spell }: Props) => {
       {spellDataTable}
       {spellDescription}
       {atHigherLevelsInfo}
-      {tagsInfo}
-      {classesInfo}
+      {atHigherSlotsInfo}
+      <div className={s.tagsContainer}>
+        {tagsInfo}
+        {classesInfo}
+      </div>
     </>
   )
 }
