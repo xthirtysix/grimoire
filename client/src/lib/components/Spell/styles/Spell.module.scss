@@ -1,0 +1,13 @@
+.tagsContainer {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  margin-top: 2rem;
+}
+
+@media (max-width: 719px) {
+  .tagsContainer {
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    grid-row-gap: 0.8rem;
+  }
+}

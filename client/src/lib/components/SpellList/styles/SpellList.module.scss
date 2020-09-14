@@ -15,7 +15,7 @@
 }
 
 .collapseItem {
-  &> div:first-child {
+  & > div:first-child {
     display: flex !important;
     align-items: center !important;
     flex-wrap: wrap;
@@ -63,4 +63,9 @@
       display: none;
     }
   }
+}
+
+.circleTag {
+  font-size: 0.8rem;
+  line-height: 0.8rem;
 }

@@ -7,8 +7,7 @@ import {
   HourglassOutlined,
   MinusOutlined,
   PlusOutlined,
-  SafetyOutlined,
-  TrademarkCircleOutlined
+  TrademarkCircleOutlined,
 } from '@ant-design/icons'
 import { Spell as SpellComponent } from '../'
 import { shortenScalar } from '../../utils'
@@ -145,8 +144,18 @@ export const SpellList = ({
             <div className={s.spellHeader}>
               <Title level={4} className={s.spellName}>
                 {spell.name}
-                {spell.isConcentration ? <CopyrightOutlined/> : null}
-                {spell.isRitual ? <TrademarkCircleOutlined/> : null}
+                {spell.isConcentration ? (
+                  <>
+                    {' '}
+                    <CopyrightOutlined className={s.circleTag}/>
+                  </>
+                ) : null}
+                {spell.isRitual ? (
+                  <>
+                    {' '}
+                    <TrademarkCircleOutlined className={s.circleTag}/>
+                  </>
+                ) : null}
               </Title>
               <Text type="secondary" className={s.spellLevel}>
                 {levelToDisplayed.get(spell.level)}

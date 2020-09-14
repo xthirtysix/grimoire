@@ -149,21 +149,21 @@ export const typeDefs = gql`
     castingTime: CastingTime!
     duration: Scalar!
     range: Scalar!
+    components: Components
     isConcentration: Boolean!
     isRitual: Boolean!
-    components: Components
     materials: String
     description: String!
-    source: String!
-    tags: [SpellTag!]!
-    classes: [ClassType!]!
     conditions: [Conditions]
-    atHigherLevels: String
-    atHigherSlots: String
     damageDice: Dice
     damageScale: [DamageScale!]
     damageType: DamageType
     saveRequired: Stats
+    atHigherLevels: String
+    atHigherSlots: String
+    tags: [SpellTag!]!
+    classes: [ClassType!]!
+    source: String!
   }
 
   enum DiceType {
