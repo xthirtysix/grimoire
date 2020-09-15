@@ -134,6 +134,26 @@ export const typeDefs = gql`
     MELEE_WEAPON
   }
 
+  enum SpellsSchool {
+    ABJURATION
+    CONJURATION
+    DIVINATION
+    ENCHANTMENT
+    EVOCATION
+    ILLUSION
+    NECROMANCY
+    TRANSMUTATION
+  }
+
+  enum SpellsSort {
+    CASTING_TIME_ASCENDING
+    CASTING_TIME_DESCENDING
+    LEVEL_ASCENDING
+    LEVEL_DESCENDING
+    NAME_ASCENDING
+    NAME_DESCENDING
+  }
+
   # Spells
 
   type Spells {
@@ -158,6 +178,8 @@ export const typeDefs = gql`
     damageDice: Dice
     damageScale: [DamageScale!]
     damageType: DamageType
+    attackType: AttackType
+    effectType: Conditions
     saveRequired: Stats
     atHigherLevels: String
     atHigherSlots: String
@@ -204,6 +226,11 @@ export const typeDefs = gql`
     SPECIAL
   }
 
+  enum AttackType {
+    MELEE
+    RANGED
+  }
+
   enum Level {
     LEVEL_0
     LEVEL_1
@@ -225,37 +252,6 @@ export const typeDefs = gql`
 
   # Query
 
-  enum SpellsFilter {
-    ABJURATION
-    CONJURATION
-    DIVINATION
-    ENCHANTMENT
-    EVOCATION
-    ILLUSION
-    NECROMANCY
-    TRANSMUTATION
-    REACTION
-    BONUS_ACTION
-    ACTION
-    ONE_MINUTE
-    TEN_MINUTES
-    ONE_HOUR
-    EIGHT_HOURS
-    TWELVE_HOURS
-    TWENTYFOUR_HOURS
-    SPECIAL
-    LEVEL_0
-    LEVEL_1
-    LEVEL_2
-    LEVEL_3
-    LEVEL_4
-    LEVEL_5
-    LEVEL_6
-    LEVEL_7
-    LEVEL_8
-    LEVEL_9
-  }
-
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -267,26 +263,6 @@ export const typeDefs = gql`
       sort: SpellsSort
       limit: Int
     ): Spells!
-  }
-
-  enum SpellsSchool {
-    ABJURATION
-    CONJURATION
-    DIVINATION
-    ENCHANTMENT
-    EVOCATION
-    ILLUSION
-    NECROMANCY
-    TRANSMUTATION
-  }
-
-  enum SpellsSort {
-    CASTING_TIME_ASCENDING
-    CASTING_TIME_DESCENDING
-    LEVEL_ASCENDING
-    LEVEL_DESCENDING
-    NAME_ASCENDING
-    NAME_DESCENDING
   }
 
   # Mutation
@@ -312,5 +288,83 @@ export const typeDefs = gql`
   input CharacterClassesInput {
     class: String
     level: Int
+  }
+
+  enum SpellsFilter {
+    # School filters
+    ABJURATION
+    CONJURATION
+    DIVINATION
+    ENCHANTMENT
+    EVOCATION
+    ILLUSION
+    NECROMANCY
+    TRANSMUTATION
+    # Casting time filters
+    REACTION
+    BONUS_ACTION
+    ACTION
+    ONE_MINUTE
+    TEN_MINUTES
+    ONE_HOUR
+    EIGHT_HOURS
+    TWELVE_HOURS
+    TWENTYFOUR_HOURS
+    SPECIAL
+    # Level filters
+    LEVEL_0
+    LEVEL_1
+    LEVEL_2
+    LEVEL_3
+    LEVEL_4
+    LEVEL_5
+    LEVEL_6
+    LEVEL_7
+    LEVEL_8
+    LEVEL_9
+    # Class filters
+    BARD
+    CLERIC
+    DRUID
+    PALADIN
+    RANGER
+    SORCERER
+    WARLOCK
+    WIZARD
+    # Saving throw filters
+    STRENGTH
+    CONSTITUTION
+    DEXTERITY
+    INTELLEGENCE
+    WISDOM
+    CHARISMA
+    # Tag filters
+    BANISHMENT
+    BUFF
+    CHARMED
+    COMBAT
+    COMMUNICATION
+    COMPULTION
+    CONTROL
+    CREATION
+    DAMAGE
+    DEBUFF
+    DECEPTION
+    DETECTION
+    DUNAMANCY
+    ENVIRONMENT
+    EXPLORATION
+    FOREKNOWLEDGE
+    HEALING
+    MOVEMENT
+    NEGATION
+    PSIONIC
+    SCRYING
+    SHAPECHANGING
+    SOCIAL
+    SUMMONING
+    TELEPORTATION
+    UTILITY
+    WARDING
   }
 `;
