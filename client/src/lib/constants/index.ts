@@ -20,6 +20,24 @@ export const CASTING_TIME_FILTER_OPTIONS = CASTING_TIMES.map((castingTime) => {
   }
 })
 
+export const CLASSES = [
+  'BARD',
+  'CLERIC',
+  'DRUID',
+  'PALADIN',
+  'RANGER',
+  'SORCERER',
+  'WARLOCK',
+  'WIZARD',
+]
+
+export const CLASS_FILTER_OPTIONS = CLASSES.map((cls) => {
+  return {
+    value: cls,
+    label: cls.charAt(0) + cls.slice(1).toLowerCase(),
+  }
+})
+
 const LEVELS = [
   'LEVEL_0',
   'LEVEL_1',
@@ -37,6 +55,22 @@ export const LEVEL_FILTER_OPTIONS = LEVELS.map((level) => {
   return {
     value: level,
     label: levelToDisplayed.get(level),
+  }
+})
+
+const SAVES_REQUIRED = [
+  'STRENGTH',
+  'CONSTITUTION',
+  'DEXTERITY',
+  'INTELLEGENCE',
+  'WISDOM',
+  'CHARISMA',
+]
+
+export const SAVE_REQUIRED_FILTER_OPTIONS = SAVES_REQUIRED.map((save) => {
+  return {
+    value: save,
+    label: save.charAt(0) + save.slice(1).toLowerCase(),
   }
 })
 
@@ -66,3 +100,40 @@ export const SORT_OPTIONS = [
   { label: 'Name A-Z', value: 'NAME_ASCENDING' },
   { label: 'Name Z-A', value: 'NAME_DESCENDING' },
 ]
+
+export const TAGS = [
+  'BANISHMENT',
+  'BUFF',
+  'CHARMED',
+  'COMBAT',
+  'COMMUNICATION',
+  'COMPULTION',
+  'CONTROL',
+  'CREATION',
+  'DAMAGE',
+  'DEBUFF',
+  'DECEPTION',
+  'DETECTION',
+  'DUNAMANCY',
+  'ENVIRONMENT',
+  'EXPLORATION',
+  'FOREKNOWLEDGE',
+  'HEALING',
+  'MOVEMENT',
+  'NEGATION',
+  'PSIONIC',
+  'SCRYING',
+  'SHAPECHANGING',
+  'SOCIAL',
+  'SUMMONING',
+  'TELEPORTATION',
+  'UTILITY',
+  'WARDING',
+]
+
+export const TAG_FILTER_OPTIONS = TAGS.map((tag) => {
+  return {
+    value: tag,
+    label: tag.charAt(0) + tag.slice(1).toLowerCase(),
+  }
+})

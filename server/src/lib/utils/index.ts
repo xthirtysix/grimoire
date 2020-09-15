@@ -1,6 +1,14 @@
 import { Request } from "express";
-import { Database, User } from "../types";
-import { CASTING_TIMES, LEVELS, SCHOOLS } from "../constants";
+import { Database, User, Spell } from "../types";
+import {
+  CASTING_TIMES,
+  CLASSES,
+  LEVELS,
+  SAVES,
+  SCHOOLS,
+  TAGS,
+} from "../constants";
+import { SpellsFilter } from "../../graphql/resolvers/Spell/types";
 
 export const authorize = async (
   db: Database,
@@ -15,11 +23,27 @@ export const authorize = async (
   return viewer;
 };
 
-export const createFilterQuery = (filterValues: string[]) => {
-  let query: any = { $match: {} };
-  const schools: string[] = [];
-  const castingTimes: string[] = [];
-  const levels: string[] = [];
+interface Match {
+  school?: { $in: string[] };
+  castingTime?: { $in: string[] };
+  level?: { $in: string[] };
+  classes?: { $in: string[] };
+  saveRequired?: { $in: string[] };
+  tags?: { $in: string[] };
+}
+
+interface Query {
+  $match: Match;
+}
+
+export const createFilterQuery = (filterValues: SpellsFilter[]) => {
+  let query: Query = { $match: {} };
+  const schools: SpellsFilter[] = [];
+  const castingTimes: SpellsFilter[] = [];
+  const levels: SpellsFilter[] = [];
+  const classes: SpellsFilter[] = [];
+  const saves: SpellsFilter[] = [];
+  const tags: SpellsFilter[] = [];
 
   filterValues.map((value) => {
     if (Object.values(SCHOOLS).includes(value)) {
@@ -31,6 +55,15 @@ export const createFilterQuery = (filterValues: string[]) => {
     if (Object.values(LEVELS).includes(value)) {
       return levels.push(value);
     }
+    if (Object.values(CLASSES).includes(value)) {
+      return classes.push(value);
+    }
+    if (Object.values(SAVES).includes(value)) {
+      return saves.push(value);
+    }
+    if (Object.values(TAGS).includes(value)) {
+      return tags.push(value);
+    }
   });
 
   if (schools && schools.length) {
@@ -41,6 +74,15 @@ export const createFilterQuery = (filterValues: string[]) => {
   }
   if (levels && levels.length) {
     query["$match"]["level"] = { $in: levels };
+  }
+  if (classes && classes.length) {
+    query["$match"]["classes"] = { $in: classes };
+  }
+  if (saves && saves.length) {
+    query["$match"]["saveRequired"] = { $in: saves };
+  }
+  if (tags && tags.length) {
+    query["$match"]["tags"] = { $in: tags };
   }
 
   return query;
@@ -59,10 +101,12 @@ export const orderCastingTimeQuery = {
     "duration.value": 1,
     "duration.unit": 1,
     isConcentration: 1,
+    isRitual: 1,
     "components.verbal": 1,
     "components.somatic": 1,
     "components.material": 1,
     source: 1,
+    classes: 1,
     order: {
       $cond: {
         if: { $eq: ["$castingTime", "RECTION"] },

@@ -64,6 +64,7 @@ export interface Spell {
   damageDice?: Dice;
   damageScale?: DamageScale[];
   damageType?: string;
+  attackType?: string;
   saveRequired?: string;
   authorized?: boolean;
 }

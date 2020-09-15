@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { Select, Tag } from 'antd'
-import {
-  ClockCircleOutlined,
-  FilterOutlined,
-} from '@ant-design/icons'
+import { ClockCircleOutlined, FilterOutlined } from '@ant-design/icons'
 //Data
 import { SpellsFilter, SpellsSort } from '../../graphql/globalTypes'
 //Maps
@@ -13,9 +10,12 @@ import s from './styles/SpellFilter.module.scss'
 //Constants
 import {
   CASTING_TIME_FILTER_OPTIONS,
+  CLASS_FILTER_OPTIONS,
   LEVEL_FILTER_OPTIONS,
+  SAVE_REQUIRED_FILTER_OPTIONS,
   SPELL_SCHOOL_FILTER_OPTIONS,
   SORT_OPTIONS,
+  TAG_FILTER_OPTIONS,
 } from '../../constants'
 
 interface Props {
@@ -28,6 +28,9 @@ interface Filters {
   schools?: SpellsFilter[]
   castingTimes?: SpellsFilter[]
   levels?: SpellsFilter[]
+  classes?: SpellsFilter[]
+  saves?: SpellsFilter[]
+  tags?: SpellsFilter[]
 }
 
 export const SpellFilter = ({
@@ -46,7 +49,6 @@ export const SpellFilter = ({
     const { schools, ...newFilters } = filters
     return onFilterChange([...Object.values(newFilters).flat(), ...values])
   }
-
   const onCastingTimesChange = (values: SpellsFilter[]) => {
     setFilters({ ...filters, castingTimes: [...values] })
     if (filters === undefined) {
@@ -63,6 +65,31 @@ export const SpellFilter = ({
     const { levels, ...newFilters } = filters
     return onFilterChange([...Object.values(newFilters).flat(), ...values])
   }
+  const onClassesChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, classes: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
+    }
+    const { classes, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
+  }
+  const onSavesChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, saves: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
+    }
+    const { saves, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
+  }
+  const onTagsChange = (values: SpellsFilter[]) => {
+    setFilters({ ...filters, tags: [...values] })
+    if (filters === undefined) {
+      return onFilterChange([...values])
+    }
+    const { tags, ...newFilters } = filters
+    return onFilterChange([...Object.values(newFilters).flat(), ...values])
+  }
+
   //Filter change handlers *END*
 
   //Tag renderers *START*
@@ -158,6 +185,57 @@ export const SpellFilter = ({
           }
           tagRender={levelTagRender}
           placeholder="Select 'Cantrip' or '4th'"
+        />
+      </label>
+      <label className={s.filterSection}>
+        <span>
+          <FilterOutlined /> by class:
+        </span>
+        <Select
+          allowClear
+          mode="multiple"
+          onChange={onClassesChange}
+          options={CLASS_FILTER_OPTIONS}
+          optionFilterProp="label"
+          filterOption={(input: string, option: any) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          tagRender={levelTagRender}
+          placeholder="Select 'Wizard'"
+        />
+      </label>
+      <label className={s.filterSection}>
+        <span>
+          <FilterOutlined /> by required save:
+        </span>
+        <Select
+          allowClear
+          mode="multiple"
+          onChange={onSavesChange}
+          options={SAVE_REQUIRED_FILTER_OPTIONS}
+          optionFilterProp="label"
+          filterOption={(input: string, option: any) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          tagRender={levelTagRender}
+          placeholder="Select 'Dexterity'"
+        />
+      </label>
+      <label className={s.filterSection}>
+        <span>
+          <FilterOutlined /> by tags:
+        </span>
+        <Select
+          allowClear
+          mode="multiple"
+          onChange={onTagsChange}
+          options={TAG_FILTER_OPTIONS}
+          optionFilterProp="label"
+          filterOption={(input: string, option: any) =>
+            option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          tagRender={levelTagRender}
+          placeholder="Select 'Deafening'"
         />
       </label>
     </div>

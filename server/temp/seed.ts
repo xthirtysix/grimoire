@@ -88,6 +88,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "NECROTIC",
+    attackType: "RANGED",
     atHigherLevels:
       "This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).",
     tags: ["DAMAGE"],
@@ -188,6 +189,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "FORCE",
+    attackType: "RANGED",
     atHigherLevels:
       "The spell creates more than one beam when you reach higher levels: two beams at 5th level, three beams at 11th level, and four beams at 17th level. You can direct the beams at the same target or at different ones. Make a separate attack roll for each beam.",
     tags: ["DAMAGE"],
@@ -233,6 +235,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "FIRE",
+    attackType: "RANGED",
     atHigherLevels:
       "This spell's damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).",
     tags: ["DAMAGE"],
@@ -518,6 +521,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "FIRE",
+    attackType: "RANGED",
     atHigherLevels:
       "This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).",
     tags: ["CREATION", "DAMAGE"],
@@ -563,6 +567,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "COLD",
+    attackType: "RANGED",
     atHigherLevels:
       "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).",
     tags: ["DAMAGE"],
@@ -667,6 +672,8 @@ const spells: Spell[] = [
       material: true,
     },
     materials: "Mistletoe, a shamrock leaf, and a club or quarterstaff",
+    damageType: "BLUDGEONING",
+    attackType: "MELEE",
     tags: ["DAMAGE", "BUFF"],
     classes: ["DRUID"],
     source: "PHB",
@@ -710,6 +717,7 @@ const spells: Spell[] = [
       },
     ],
     damageType: "LIGHTNING",
+    attackType: "MELEE",
     atHigherLevels:
       "The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).",
     tags: ["DAMAGE"],
