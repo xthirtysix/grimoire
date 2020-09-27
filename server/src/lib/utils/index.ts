@@ -1,13 +1,5 @@
 import { Request } from "express";
-import { Database, User, Spell } from "../types";
-import {
-  CASTING_TIMES,
-  CLASSES,
-  LEVELS,
-  SAVES,
-  SCHOOLS,
-  TAGS,
-} from "../constants";
+import { Database, User } from "../types";
 import { SpellsFilter } from "../../graphql/resolvers/Spell/types";
 
 export const authorize = async (
@@ -23,67 +15,17 @@ export const authorize = async (
   return viewer;
 };
 
-interface Match {
-  school?: { $in: string[] };
-  castingTime?: { $in: string[] };
-  level?: { $in: string[] };
-  classes?: { $in: string[] };
-  saveRequired?: { $in: string[] };
-  tags?: { $in: string[] };
-}
-
 interface Query {
-  $match: Match;
+  $match: { [key: string]: { $in: string[] } };
 }
 
-export const createFilterQuery = (filterValues: SpellsFilter[]) => {
-  let query: Query = { $match: {} };
-  const schools: SpellsFilter[] = [];
-  const castingTimes: SpellsFilter[] = [];
-  const levels: SpellsFilter[] = [];
-  const classes: SpellsFilter[] = [];
-  const saves: SpellsFilter[] = [];
-  const tags: SpellsFilter[] = [];
+export const createFilterQuery = (filter: SpellsFilter) => {
+  const query: Query = { $match: {} };
+  const filters = Object.entries(filter);
 
-  filterValues.map((value) => {
-    if (Object.values(SCHOOLS).includes(value)) {
-      return schools.push(value);
-    }
-    if (Object.values(CASTING_TIMES).includes(value)) {
-      return castingTimes.push(value);
-    }
-    if (Object.values(LEVELS).includes(value)) {
-      return levels.push(value);
-    }
-    if (Object.values(CLASSES).includes(value)) {
-      return classes.push(value);
-    }
-    if (Object.values(SAVES).includes(value)) {
-      return saves.push(value);
-    }
-    if (Object.values(TAGS).includes(value)) {
-      return tags.push(value);
-    }
+  filters.map(([type, values]) => {
+    values.length ? (query["$match"][type] = { $in: values }) : null;
   });
-
-  if (schools && schools.length) {
-    query["$match"]["school"] = { $in: schools };
-  }
-  if (castingTimes && castingTimes.length) {
-    query["$match"]["castingTime"] = { $in: castingTimes };
-  }
-  if (levels && levels.length) {
-    query["$match"]["level"] = { $in: levels };
-  }
-  if (classes && classes.length) {
-    query["$match"]["classes"] = { $in: classes };
-  }
-  if (saves && saves.length) {
-    query["$match"]["saveRequired"] = { $in: saves };
-  }
-  if (tags && tags.length) {
-    query["$match"]["tags"] = { $in: tags };
-  }
 
   return query;
 };

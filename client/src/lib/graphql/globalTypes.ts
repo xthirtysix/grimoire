@@ -128,35 +128,15 @@ export enum SpellTag {
   WARDING = "WARDING",
 }
 
-export enum SpellsFilter {
+export enum SpellsSchool {
   ABJURATION = "ABJURATION",
-  ACTION = "ACTION",
-  BONUS_ACTION = "BONUS_ACTION",
   CONJURATION = "CONJURATION",
   DIVINATION = "DIVINATION",
-  EIGHT_HOURS = "EIGHT_HOURS",
   ENCHANTMENT = "ENCHANTMENT",
   EVOCATION = "EVOCATION",
   ILLUSION = "ILLUSION",
-  LEVEL_0 = "LEVEL_0",
-  LEVEL_1 = "LEVEL_1",
-  LEVEL_2 = "LEVEL_2",
-  LEVEL_3 = "LEVEL_3",
-  LEVEL_4 = "LEVEL_4",
-  LEVEL_5 = "LEVEL_5",
-  LEVEL_6 = "LEVEL_6",
-  LEVEL_7 = "LEVEL_7",
-  LEVEL_8 = "LEVEL_8",
-  LEVEL_9 = "LEVEL_9",
   NECROMANCY = "NECROMANCY",
-  ONE_HOUR = "ONE_HOUR",
-  ONE_MINUTE = "ONE_MINUTE",
-  REACTION = "REACTION",
-  SPECIAL = "SPECIAL",
-  TEN_MINUTES = "TEN_MINUTES",
   TRANSMUTATION = "TRANSMUTATION",
-  TWELVE_HOURS = "TWELVE_HOURS",
-  TWENTYFOUR_HOURS = "TWENTYFOUR_HOURS",
 }
 
 export enum SpellsSort {
@@ -168,7 +148,7 @@ export enum SpellsSort {
   NAME_DESCENDING = "NAME_DESCENDING",
 }
 
-export enum Stats {
+export enum Stat {
   CHARISMA = "CHARISMA",
   CONSTITUTION = "CONSTITUTION",
   DEXTERITY = "DEXTERITY",
@@ -189,6 +169,15 @@ export interface CreateGrimoireInput {
 
 export interface LogInInput {
   code: string;
+}
+
+export interface SpellsFilter {
+  school?: SpellsSchool[] | null;
+  castingTime?: CastingTime[] | null;
+  level?: Level[] | null;
+  classes?: ClassType[] | null;
+  saveRequired?: Stat[] | null;
+  tags?: SpellTag[] | null;
 }
 
 //==============================================================

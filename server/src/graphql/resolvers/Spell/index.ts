@@ -74,7 +74,7 @@ export const spellResolvers: IResolvers = {
         const formAggregationQuery = (spells?: ObjectId[]) => {
           const aggregation: Object[] = [sortQuery];
 
-          if (filters && filters.length) {
+          if (filters) {
             aggregation.unshift(createFilterQuery(filters));
           }
 

@@ -4,7 +4,7 @@ export interface SpellArgs {
   name: string;
 }
 
-export enum SpellsFilter {
+export enum SpellsSchool {
   ABJURATION = "ABJURATION",
   CONJURATION = "CONJURATION",
   DIVINATION = "DIVINATION",
@@ -13,6 +13,9 @@ export enum SpellsFilter {
   ILLUSION = "ILLUSION",
   NECROMANCY = "NECROMANCY",
   TRANSMUTATION = "TRANSMUTATION",
+}
+
+export enum CastingTime {
   REACTION = "REACTION",
   BONUS_ACTION = "1_BONUS_ACTION",
   ACTION = "1_ACTION",
@@ -23,6 +26,82 @@ export enum SpellsFilter {
   TWELVE_HOURS = "12_HOURS",
   TWENTYFOUR_HOURS = "24_HOURS",
   SPECIAL = "SPECIAL",
+}
+
+export enum Level {
+  LEVEL_0 = "LEVEL_0",
+  LEVEL_1 = "LEVEL_1",
+  LEVEL_2 = "LEVEL_2",
+  LEVEL_3 = "LEVEL_3",
+  LEVEL_4 = "LEVEL_4",
+  LEVEL_5 = "LEVEL_5",
+  LEVEL_6 = "LEVEL_6",
+  LEVEL_7 = "LEVEL_7",
+  LEVEL_8 = "LEVEL_8",
+  LEVEL_9 = "LEVEL_9",
+}
+
+export enum ClassType {
+  BARBARIAN = "BARBARIAN",
+  BARD = "BARD",
+  CLERIC = "CLERIC",
+  DRUID = "DRUID",
+  FIGHTER = "FIGHTER",
+  MONK = "MONK",
+  PALADIN = "PALADIN",
+  RANGER = "RANGER",
+  ROGUE = "ROGUE",
+  SORCERER = "SORCERER",
+  WARLOCK = "WARLOCK",
+  WIZARD = "WIZARD",
+}
+
+export enum Stat {
+  STRENGTH = "STRENGTH",
+  CONSTITUTION = "CONSTITUTION",
+  DEXTERITY = "DEXTERITY",
+  INTELLEGENCE = "INTELLEGENCE",
+  WISDOM = "WISDOM",
+  CHARISMA = "CHARISMA",
+}
+
+export enum SpellTag {
+  BANISHMENT = "BANISHMENT",
+  BUFF = "BUFF",
+  CHARMED = "CHARMED",
+  COMBAT = "COMBAT",
+  COMMUNICATION = "COMMUNICATION",
+  COMPULTION = "COMPULTION",
+  CONTROL = "CONTROL",
+  CREATION = "CREATION",
+  DAMAGE = "DAMAGE",
+  DEBUFF = "DEBUFF",
+  DECEPTION = "DECEPTION",
+  DETECTION = "DETECTION",
+  DUNAMANCY = "DUNAMANCY",
+  ENVIRONMENT = "ENVIRONMENT",
+  EXPLORATION = "EXPLORATION",
+  FOREKNOWLEDGE = "FOREKNOWLEDGE",
+  HEALING = "HEALING",
+  MOVEMENT = "MOVEMENT",
+  NEGATION = "NEGATION",
+  PSIONIC = "PSIONIC",
+  SCRYING = "SCRYING",
+  SHAPECHANGING = "SHAPECHANGING",
+  SOCIAL = "SOCIAL",
+  SUMMONING = "SUMMONING",
+  TELEPORTATION = "TELEPORTATION",
+  UTILITY = "UTILITY",
+  WARDING = "WARDING",
+}
+
+export interface SpellsFilter {
+  schools: SpellsSchool[];
+  castingTimes: CastingTime[];
+  levels: Level[];
+  classes: ClassType[];
+  savingThrows: Stat[];
+  tags: SpellTag[];
 }
 
 export enum SpellsSort {
@@ -36,7 +115,7 @@ export enum SpellsSort {
 
 export interface SpellsArgs {
   grimoireID?: string;
-  filters?: SpellsFilter[];
+  filters?: SpellsFilter;
   sort?: SpellsSort;
   limit?: number;
 }
