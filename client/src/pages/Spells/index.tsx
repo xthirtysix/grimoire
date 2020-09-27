@@ -7,45 +7,50 @@ import {
   Spells as SpellsData,
   SpellsVariables,
 } from '../../lib/graphql/queries/Spells/__generated__/Spells'
-import { SpellsFilter } from '../../lib/graphql/globalTypes'
+import { SpellsSchool } from '../../lib/graphql/globalTypes'
 import { useQuery } from 'react-apollo'
 
 interface MatchParams {
   filter: string
 }
 
+interface Filters {
+  school: SpellsSchool[]
+}
+
 export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
-  let filters
+  let filters: Filters = { school: [] }
+
   if (match.params.filter) {
     let trimmedRouteParam = match.params.filter.trim()
 
     switch (trimmedRouteParam) {
       case 'abjuration':
-        filters = [SpellsFilter.ABJURATION]
+        filters = { school: [SpellsSchool.ABJURATION] }
         break
       case 'conjuration':
-        filters = [SpellsFilter.CONJURATION]
+        filters = { school: [SpellsSchool.CONJURATION] }
         break
       case 'divination':
-        filters = [SpellsFilter.DIVINATION]
+        filters = { school: [SpellsSchool.DIVINATION] }
         break
       case 'enchantment':
-        filters = [SpellsFilter.ENCHANTMENT]
+        filters = { school: [SpellsSchool.ENCHANTMENT] }
         break
       case 'evocation':
-        filters = [SpellsFilter.EVOCATION]
+        filters = { school: [SpellsSchool.EVOCATION] }
         break
       case 'illusion':
-        filters = [SpellsFilter.ILLUSION]
+        filters = { school: [SpellsSchool.ILLUSION] }
         break
       case 'necromancy':
-        filters = [SpellsFilter.NECROMANCY]
+        filters = { school: [SpellsSchool.NECROMANCY] }
         break
       case 'transmutation':
-        filters = [SpellsFilter.TRANSMUTATION]
+        filters = { school: [SpellsSchool.TRANSMUTATION] }
         break
       default:
-        filters = undefined
+        filters = { school: [] }
     }
   }
 
@@ -59,7 +64,7 @@ export const Spells = ({ match }: RouteComponentProps<MatchParams>) => {
 
   if (loading) {
     return (
-      <div className="container" >
+      <div className="container">
         <SpellListSkeleton />
       </div>
     )

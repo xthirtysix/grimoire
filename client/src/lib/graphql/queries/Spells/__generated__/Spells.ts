@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort, Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stats } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort, Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
@@ -67,9 +67,9 @@ export interface Spells_spells_result {
   atHigherLevels: string | null;
   atHigherSlots: string | null;
   damageDice: Spells_spells_result_damageDice | null;
-  damageScale: (Spells_spells_result_damageScale | null)[] | null;
+  damageScale: Spells_spells_result_damageScale[] | null;
   damageType: DamageType | null;
-  saveRequired: Stats | null;
+  saveRequired: Stat | null;
 }
 
 export interface Spells_spells {
@@ -84,7 +84,7 @@ export interface Spells {
 
 export interface SpellsVariables {
   grimoireID?: string | null;
-  filters?: (SpellsFilter | null)[] | null;
+  filters?: SpellsFilter | null;
   sort?: SpellsSort | null;
   limit?: number | null;
 }

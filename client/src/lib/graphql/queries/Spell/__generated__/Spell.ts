@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stats } from "./../../../globalTypes";
+import { Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spell
@@ -67,9 +67,9 @@ export interface Spell_spell {
   atHigherLevels: string | null;
   atHigherSlots: string | null;
   damageDice: Spell_spell_damageDice | null;
-  damageScale: (Spell_spell_damageScale | null)[] | null;
+  damageScale: Spell_spell_damageScale[] | null;
   damageType: DamageType | null;
-  saveRequired: Stats | null;
+  saveRequired: Stat | null;
 }
 
 export interface Spell {

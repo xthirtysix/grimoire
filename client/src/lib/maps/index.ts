@@ -58,3 +58,12 @@ export const castingTimeToShorthand = new Map([
   ['TWELVE_HOURS', '12m'],
   ['TWENTYFOUR_HOURS', '24h'],
 ])
+
+export const filterTypeToSelectLabel = new Map([
+  ['school', 'by school'],
+  ['castingTime', 'by casting time'],
+  ['level', 'by level'],
+  ['classes', 'by class'],
+  ['saveRequired', 'by saving throw required'],
+  ['tags', 'by tag'],
+])

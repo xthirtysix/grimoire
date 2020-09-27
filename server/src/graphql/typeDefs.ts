@@ -55,7 +55,7 @@ export const typeDefs = gql`
     WIZARD
   }
 
-  enum Stats {
+  enum Stat {
     STRENGTH
     CONSTITUTION
     DEXTERITY
@@ -180,7 +180,7 @@ export const typeDefs = gql`
     damageType: DamageType
     attackType: AttackType
     effectType: Conditions
-    saveRequired: Stats
+    saveRequired: Stat
     atHigherLevels: String
     atHigherSlots: String
     tags: [SpellTag!]!
@@ -259,7 +259,7 @@ export const typeDefs = gql`
     spell(name: String!): Spell!
     spells(
       grimoireID: String
-      filters: [SpellsFilter]
+      filters: SpellsFilter
       sort: SpellsSort
       limit: Int
     ): Spells!
@@ -290,81 +290,12 @@ export const typeDefs = gql`
     level: Int
   }
 
-  enum SpellsFilter {
-    # School filters
-    ABJURATION
-    CONJURATION
-    DIVINATION
-    ENCHANTMENT
-    EVOCATION
-    ILLUSION
-    NECROMANCY
-    TRANSMUTATION
-    # Casting time filters
-    REACTION
-    BONUS_ACTION
-    ACTION
-    ONE_MINUTE
-    TEN_MINUTES
-    ONE_HOUR
-    EIGHT_HOURS
-    TWELVE_HOURS
-    TWENTYFOUR_HOURS
-    SPECIAL
-    # Level filters
-    LEVEL_0
-    LEVEL_1
-    LEVEL_2
-    LEVEL_3
-    LEVEL_4
-    LEVEL_5
-    LEVEL_6
-    LEVEL_7
-    LEVEL_8
-    LEVEL_9
-    # Class filters
-    BARD
-    CLERIC
-    DRUID
-    PALADIN
-    RANGER
-    SORCERER
-    WARLOCK
-    WIZARD
-    # Saving throw filters
-    STRENGTH
-    CONSTITUTION
-    DEXTERITY
-    INTELLEGENCE
-    WISDOM
-    CHARISMA
-    # Tag filters
-    BANISHMENT
-    BUFF
-    CHARMED
-    COMBAT
-    COMMUNICATION
-    COMPULTION
-    CONTROL
-    CREATION
-    DAMAGE
-    DEBUFF
-    DECEPTION
-    DETECTION
-    DUNAMANCY
-    ENVIRONMENT
-    EXPLORATION
-    FOREKNOWLEDGE
-    HEALING
-    MOVEMENT
-    NEGATION
-    PSIONIC
-    SCRYING
-    SHAPECHANGING
-    SOCIAL
-    SUMMONING
-    TELEPORTATION
-    UTILITY
-    WARDING
+  input SpellsFilter {
+    school: [SpellsSchool!]
+    castingTime: [CastingTime!]
+    level: [Level!]
+    classes: [ClassType!]
+    saveRequired: [Stat!]
+    tags: [SpellTag!]
   }
 `;
