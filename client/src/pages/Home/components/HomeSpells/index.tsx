@@ -1,9 +1,6 @@
 import React from 'react'
-import { Layout, Typography } from 'antd'
-import {
-  SpellList,
-  SpellListSkeleton,
-} from '../../../../lib/components'
+import { Typography } from 'antd'
+import { SpellList, SpellListSkeleton } from '../../../../lib/components'
 //Data
 import { SPELLS } from '../../../../lib/graphql/queries/Spells'
 import {
@@ -17,7 +14,6 @@ import s from './styles/HomeSpells.module.scss'
 //Constants
 const SPELLS_NUMBER = 4
 
-const { Content } = Layout
 const { Title } = Typography
 
 export const HomeSpells = () => {
@@ -39,11 +35,11 @@ export const HomeSpells = () => {
   }
 
   return (
-    <Content className={s.container}>
-      <Title level={3} className={s.title}>
+    <section className={s.container}>
+      <Title level={2} className={s.title}>
         Sample Grimoire
       </Title>
       <div className="container">{spellList}</div>
-    </Content>
+    </section>
   )
 }

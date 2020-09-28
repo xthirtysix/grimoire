@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Affix, Divider, Empty, Layout } from 'antd'
 import { EditOutlined, SaveOutlined } from '@ant-design/icons'
 import { GrimoireDetailes, GrimoireDetailesSkeleton } from './components'
-import { SpellFilter, SpellList, SpellListSkeleton } from '../../lib/components'
+import {
+  SpellFilter,
+  SpellList,
+  SpellSort,
+  SpellListSkeleton,
+} from '../../lib/components'
 import {
   Link,
   RouteComponentProps,
@@ -48,6 +53,7 @@ interface MatchParams {
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   const [bottom, setBottom] = useState<number>(10)
   const [editable, setEditable] = useState<boolean>(false)
+  const [sort, setSort] = useState<SpellsSort>(SpellsSort.NAME_ASCENDING)
   const [filters, setFilter] = useState<SpellsFilter>({
     school: [],
     castingTime: [],
@@ -56,7 +62,6 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     saveRequired: [],
     tags: [],
   })
-  const [sort, setSort] = useState<SpellsSort>(SpellsSort.NAME_ASCENDING)
 
   useEffect(() => {
     return match.params.edit === 'edit' ? setEditable(true) : undefined
@@ -182,28 +187,21 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
     </>
   )
 
-  const spellFilter = (
-    <SpellFilter
-      defaultSort={sort}
-      onFilterChange={setFilter}
-      onSortChange={setSort}
-    />
-  )
-
   return (
     <Content className="container">
       <GrimoireDetailes grimoireDetailes={grimoireDetailes} />
       <Divider className="divider" />
       {grimoireSpells?.length ? (
         <>
-          {spellFilter}
+          <SpellFilter onFilterChange={setFilter} />
+          <SpellSort defaultSort={sort} onSortChange={setSort} />
           {spellList}
         </>
       ) : !editable ? (
         emptyList
       ) : (
         <>
-          {spellFilter}
+          <SpellFilter onFilterChange={setFilter} />
           {spellList}
         </>
       )}

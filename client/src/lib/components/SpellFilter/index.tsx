@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { SpellFilterSelect } from './components'
-import { Select } from 'antd'
 //Data
-import { SpellsFilter, SpellsSort } from '../../graphql/globalTypes'
+import { SpellsFilter } from '../../graphql/globalTypes'
 //Constants
 import {
   CASTING_TIME_FILTER_OPTIONS,
@@ -10,23 +9,16 @@ import {
   LEVEL_FILTER_OPTIONS,
   SAVE_REQUIRED_FILTER_OPTIONS,
   SPELL_SCHOOL_FILTER_OPTIONS,
-  SORT_OPTIONS,
   TAG_FILTER_OPTIONS,
 } from '../../constants'
 //Styles
 import s from './styles/SpellFilter.module.scss'
 
 interface Props {
-  defaultSort: SpellsSort
   onFilterChange: (value: SpellsFilter) => void
-  onSortChange: (value: SpellsSort) => void
 }
 
-export const SpellFilter = ({
-  defaultSort,
-  onFilterChange,
-  onSortChange,
-}: Props) => {
+export const SpellFilter = ({ onFilterChange }: Props) => {
   const [filters, setFilters] = useState<SpellsFilter>({
     school: [],
     castingTime: [],
@@ -53,15 +45,6 @@ export const SpellFilter = ({
 
   return (
     <div className={s.filter}>
-      <label className={s.filterSection}>
-        <span>Sort by:</span>
-        <Select
-          defaultValue={defaultSort}
-          options={SORT_OPTIONS}
-          className={s.sortSelect}
-          onChange={onSortChange}
-        />
-      </label>
       {selectFields.map(([filterType, options, placeholderText]: any) => {
         return (
           <SpellFilterSelect

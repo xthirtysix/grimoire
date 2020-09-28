@@ -1,11 +1,9 @@
 .container {
-  height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 600px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  text-align: left;
 
   .header {
     margin-bottom: 0;
