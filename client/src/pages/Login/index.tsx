@@ -96,7 +96,7 @@ export const LogIn = ({ setViewer }: Props) => {
           Login to Grimoire!
         </Title>
         <Text className={s.loginDescription}>
-          Sign in with Google to fullfill your own Grimoire!
+          Sign in with Google and create your own Grimoire!
         </Text>
         <button onClick={onAuthorize} className={s.googleButton}>
           <span className={s.googleButtonImageContainer}>

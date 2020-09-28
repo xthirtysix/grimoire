@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select, Tag } from 'antd'
-import { ClockCircleOutlined, FilterOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined } from '@ant-design/icons'
 import { SelectValue } from 'antd/lib/tree-select'
 // Maps
 import { filterTypeToSelectLabel, schoolToColor } from '../../../../maps'
@@ -50,8 +50,8 @@ export const SpellFilterSelect = ({
 
   return (
     <label className={s.filterSection}>
-      <span>
-        <FilterOutlined /> {filterTypeToSelectLabel.get(filterType)}:
+      <span style={{ fontWeight: 700 }}>
+        {filterTypeToSelectLabel.get(filterType)}:
       </span>
       <Select
         allowClear

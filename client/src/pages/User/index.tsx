@@ -83,7 +83,7 @@ export const User = ({
         <Title level={3}>Your grimoires</Title>
         {grimoiresCount < MAX_GRIMOIRE_COUNT ? (
           <Link
-            to="/create_grimoire"
+            to="/grimoire/create"
             className="ant-btn ant-btn-primary ant-btn-sm"
           >
             <PlusOutlined /> New Grimoire

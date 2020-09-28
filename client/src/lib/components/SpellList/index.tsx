@@ -147,13 +147,13 @@ export const SpellList = ({
                 {spell.isConcentration ? (
                   <>
                     {' '}
-                    <CopyrightOutlined className={s.circleTag}/>
+                    <CopyrightOutlined className={s.circleTag} />
                   </>
                 ) : null}
                 {spell.isRitual ? (
                   <>
                     {' '}
-                    <TrademarkCircleOutlined className={s.circleTag}/>
+                    <TrademarkCircleOutlined className={s.circleTag} />
                   </>
                 ) : null}
               </Title>

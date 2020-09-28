@@ -1,5 +1,4 @@
 import React from 'react'
-import { Layout } from 'antd'
 import {
   HomeAllSpells,
   HomeSchools,
@@ -10,7 +9,6 @@ import {
 import { displayErrorMessage } from '../../lib/utils'
 import { RouteComponentProps } from 'react-router-dom'
 
-const { Content } = Layout
 
 export const Home = ({ history }: RouteComponentProps) => {
   const onSearch = (value: string) => {
@@ -33,13 +31,13 @@ export const Home = ({ history }: RouteComponentProps) => {
 
   return (
     <>
-      <Content className="container">
-        <HomeSchools onSearch={onSearch} />
-      </Content>
+      <h1 className="visually-hidden">
+        Grimoire - a tool to store, sort and track spells in Dungeons & Dragons
+        games
+      </h1>
+      <HomeSchools onSearch={onSearch} />
       <HomeAllSpells />
-      <Content>
-        <HomeWhyRegister />
-      </Content>
+      <HomeWhyRegister />
       <HomeWave />
       <HomeSpells />
     </>

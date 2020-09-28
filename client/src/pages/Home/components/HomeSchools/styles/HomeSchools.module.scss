@@ -20,14 +20,13 @@
   display: grid;
   margin: 0;
   padding: 0;
-  padding-bottom: 4rem;
   list-style: none;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   grid-gap: 1rem;
   text-align: center;
 }
 
-.schools {
+.container {
   @media (max-width: 719px) {
     li:not(:nth-child(1)):not(:nth-child(2)) {
       display: none;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Input } from 'antd'
+import { Affix, Layout, Input } from 'antd'
 import { BookOutlined } from '@ant-design/icons'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import { MenuItems } from './components'
@@ -30,7 +30,10 @@ export const AppHeader = withRouter(
         return
       }
 
-      if (pathnameSubStrings[1] === 'spell' && pathnameSubStrings.length === 3) {
+      if (
+        pathnameSubStrings[1] === 'spell' &&
+        pathnameSubStrings.length === 3
+      ) {
         setSearch(pathnameSubStrings[2])
         return
       }
@@ -56,22 +59,26 @@ export const AppHeader = withRouter(
 
     return (
       <Header className={s.header}>
-        <Link to="/" className={s.logo}>
-          <BookOutlined />
-          <span>Grimoire</span>
-        </Link>
-        <Search
-          placeholder="Search 'Fireball'"
-          size="middle"
-          enterButton
-          onChange={(evt) => setSearch(evt.target.value)}
-          value={search}
-          onSearch={onSearch}
-          className={s.search}
-        />
-        <div className={s.list}>
-          <MenuItems viewer={viewer} setViewer={setViewer} />
-        </div>
+        <Affix offsetTop={0} style={{ zIndex: 100, width: '100%' }}>
+          <div className={s.container}>
+            <Link to="/" className={s.logo}>
+              <BookOutlined />
+              <span>Grimoire</span>
+            </Link>
+            <Search
+              placeholder="Search 'Fireball'"
+              size="middle"
+              enterButton
+              onChange={(evt) => setSearch(evt.target.value)}
+              value={search}
+              onSearch={onSearch}
+              className={s.search}
+            />
+            <div className={s.list}>
+              <MenuItems viewer={viewer} setViewer={setViewer} />
+            </div>
+          </div>
+        </Affix>
       </Header>
     )
   }

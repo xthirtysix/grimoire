@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Affix, Layout, Spin } from 'antd'
+import { Layout, Spin } from 'antd'
 import { AppHeader, AppHeaderSkeleton, AppFooter } from './sections'
 import {
   Home,
@@ -91,16 +91,14 @@ const App = () => {
 
   return (
     <Router>
-      <Layout>
-        <Affix offsetTop={0} style={{ zIndex: 100 }}>
-          <AppHeader viewer={viewer} setViewer={setViewer} />
-        </Affix>
-        <main className="main-content">
+      <>
+        <AppHeader viewer={viewer} setViewer={setViewer} />
+        <Content className="main-content">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route
               exact
-              path="/create_grimoire"
+              path="/grimoire/create"
               render={(props) => <CreateGrimoire {...props} viewer={viewer} />}
             />
             <Route exact path="/grimoire/:id" component={Grimoire} />
@@ -120,9 +118,9 @@ const App = () => {
             />
             <Route component={NotFound} />
           </Switch>
-        </main>
+        </Content>
         <AppFooter />
-      </Layout>
+      </>
     </Router>
   )
 }

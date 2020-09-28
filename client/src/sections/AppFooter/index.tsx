@@ -7,15 +7,18 @@ const { Text } = Typography
 
 export const AppFooter = () => {
   return (
-    <section className="main-footer">
+    <footer className="main-footer">
       <h2 className="visually-hidden">Main footer</h2>
       <Divider className={s.divider} />
       <div className={s.container}>
         <Text type="secondary">
-          © Copyright by <a className={s.link} href="https://github.com/xthirtysix">xthirtysix</a>{' '}
+          © Copyright by{' '}
+          <a className={s.link} href="https://github.com/xthirtysix">
+            xthirtysix
+          </a>{' '}
           2020
         </Text>
       </div>
-    </section>
+    </footer>
   )
 }
