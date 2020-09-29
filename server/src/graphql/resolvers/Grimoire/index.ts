@@ -33,11 +33,9 @@ const verifyCreateGrimoireInput = ({
 
   characterClasses.map((cls) => {
     if (cls.level > 20) {
-      throw new Error(
-        "character level could not be higher then 20"
-      )
+      throw new Error("character level could not be higher then 20");
     }
-  })
+  });
 };
 
 export const grimoireResolvers: IResolvers = {
@@ -171,32 +169,34 @@ export const grimoireResolvers: IResolvers = {
       { grimoireID, spellID }: AddSpellArgs,
       { db, req }: { db: Database; req: Request }
     ): Promise<void> => {
-      // let viewer = await authorize(db, req);
+      let viewer = await authorize(db, req);
 
-      // if (!viewer) {
-      //   throw new Error("viewer can not be found");
-      // }
+      if (!viewer) {
+        throw new Error("viewer can not be found");
+      }
 
-      // const grimoire = await db.grimoires.findOne({
-      //   _id: new ObjectId(grimoireID),
-      // });
+      const grimoire = await db.grimoires.findOne({
+        _id: new ObjectId(grimoireID),
+      });
 
-      // if (!grimoire) {
-      //   throw new Error("grimoire can not be found");
-      // }
+      if (!grimoire) {
+        throw new Error("grimoire can not be found");
+      }
 
-      // if (grimoire && viewer._id !== grimoire.owner) {
-      //   throw new Error("grimoire can only be edited by it's creator");
-      // }
+      if (grimoire && viewer._id !== grimoire.owner) {
+        throw new Error("grimoire can only be edited by it's creator");
+      }
 
-      await db.grimoires.updateOne(
-        {
-          _id: new ObjectId(grimoireID),
-        },
-        {
-          $pull: { spells: new ObjectId(spellID) },
-        }
-      );
+      if (grimoire && viewer._id === grimoire.owner) {
+        await db.grimoires.updateOne(
+          {
+            _id: new ObjectId(grimoireID),
+          },
+          {
+            $pull: { spells: new ObjectId(spellID) },
+          }
+        );
+      }
 
       return;
     },
