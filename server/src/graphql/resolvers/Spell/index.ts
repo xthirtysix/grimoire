@@ -88,10 +88,10 @@ export const spellResolvers: IResolvers = {
           return aggregation;
         };
 
-        cursor = await db.spells.aggregate(formAggregationQuery());
+        cursor = db.spells.aggregate(formAggregationQuery());
 
         if (limit) {
-          cursor = await db.spells.aggregate([
+          cursor = db.spells.aggregate([
             { $sample: { size: limit } },
             sortQuery,
           ]);
@@ -107,13 +107,13 @@ export const spellResolvers: IResolvers = {
             throw new Error(`unable to find grimoire width id: ${grimoireID}`);
           }
 
-          cursor = await db.spells.aggregate(
+          cursor = db.spells.aggregate(
             formAggregationQuery(grimoire.spells)
           );
         }
 
         data.result = await cursor.toArray();
-        data.total = await data.result.length;
+        data.total = data.result.length;
 
         return data;
       } catch (error) {

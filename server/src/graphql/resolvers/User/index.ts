@@ -45,7 +45,7 @@ export const userResolvers: IResolvers = {
           result: [],
         };
 
-        let cursor = await db.grimoires.find({
+        let cursor = db.grimoires.find({
           _id: { $in: user.grimoires},
         });
 
