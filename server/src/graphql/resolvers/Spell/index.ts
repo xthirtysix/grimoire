@@ -60,11 +60,9 @@ export const spellResolvers: IResolvers = {
             sortQuery = { $sort: { order: -1 } };
             break;
           case SpellsSort.LEVEL_ASCENDING:
-            projectQuery = orderCastingTimeQuery;
             sortQuery = { $sort: { level: 1 } };
             break;
           case SpellsSort.LEVEL_DESCENDING:
-            projectQuery = orderCastingTimeQuery;
             sortQuery = { $sort: { level: -1 } };
             break;
           default:
