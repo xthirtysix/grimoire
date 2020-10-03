@@ -21,7 +21,9 @@
     "@types/dotenv": "^8.2.0",
     "@types/lodash.merge": "^4.6.6",
     "@types/mongodb": "^3.5.27",
-    "dotenv": "^8.2.0"
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "dotenv": "^8.2.0",
+    "typescript-eslint": "0.0.1-alpha.0"
   },
   "scripts": {
     "start": "nodemon src/index.ts",
