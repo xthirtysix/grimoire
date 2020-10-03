@@ -14,7 +14,6 @@ import {
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
-// import { DatePicker, message } from 'antd'
 //Data
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider, useMutation } from 'react-apollo'
@@ -31,9 +30,9 @@ import { displayErrorMessage } from './lib/utils'
 
 const client = new ApolloClient({
   uri: '/api',
-  request: async (opearation) => {
+  request: async (operation) => {
     const token = sessionStorage.getItem('token')
-    opearation.setContext({
+    operation.setContext({
       headers: {
         'X-CSRF-TOKEN': token || '',
       },
@@ -76,9 +75,11 @@ const App = () => {
     return (
       <>
         <AppHeaderSkeleton />
-        <Content className="container">
-          <Spin className="centered" tip="Casting a spell..." />
-        </Content>
+        <Spin
+          wrapperClassName="container"
+          className="centered"
+          tip="Casting a spell..."
+        />
       </>
     )
   }

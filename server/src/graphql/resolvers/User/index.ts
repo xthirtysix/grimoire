@@ -38,7 +38,7 @@ export const userResolvers: IResolvers = {
       user: User,
       _args: {},
       { db }: { db: Database }
-    ): Promise<UserGrimoiresData | null> => {
+    ): Promise<UserGrimoiresData> => {
       try {
         const data: UserGrimoiresData = {
           total: 0,

@@ -1,18 +1,17 @@
-import { IResolvers } from "apollo-server-express";
-import { Request } from "express";
-import { Grimoire, User, Database } from "../../../lib/types";
-import { authorize } from "../../../lib/utils";
-import { GrimoireArgs, AddSpellArgs, CreateGrimoireInput } from "./types";
-import { CreateGrimoireArgs } from "../Grimoire/types";
-import { ObjectId } from "mongodb";
-import { SpellsData } from "../Spell/types";
+import {IResolvers} from "apollo-server-express";
+import {Request} from "express";
+import {Grimoire, User, Database} from "../../../lib/types";
+import {authorize} from "../../../lib/utils";
+import {GrimoireArgs, AddSpellArgs, CreateGrimoireInput} from "./types";
+import {CreateGrimoireArgs} from "../Grimoire/types";
+import {ObjectId} from "mongodb";
 
 const MAX_GRIMOIRE_COUNT = 6;
 
 const verifyCreateGrimoireInput = ({
-  name,
-  characterClasses,
-}: CreateGrimoireInput) => {
+                                     name,
+                                     characterClasses,
+                                   }: CreateGrimoireInput) => {
   if (!name) {
     throw new Error("name must contain letters, numbers or symbols");
   }
@@ -42,11 +41,11 @@ export const grimoireResolvers: IResolvers = {
   Query: {
     grimoire: async (
       _root: undefined,
-      { id }: GrimoireArgs,
-      { db, req }: { db: Database; req: Request }
+      {id}: GrimoireArgs,
+      {db}: { db: Database; }
     ): Promise<Grimoire> => {
       try {
-        const grimoire = await db.grimoires.findOne({ _id: new ObjectId(id) });
+        const grimoire = await db.grimoires.findOne({_id: new ObjectId(id)});
 
         if (!grimoire) {
           throw new Error(`grimoire with ${id} can not be found`);
@@ -61,8 +60,8 @@ export const grimoireResolvers: IResolvers = {
   Mutation: {
     createGrimoire: async (
       _root: undefined,
-      { input }: CreateGrimoireArgs,
-      { db, req }: { db: Database; req: Request }
+      {input}: CreateGrimoireArgs,
+      {db, req}: { db: Database; req: Request }
     ): Promise<Grimoire> => {
       verifyCreateGrimoireInput(input);
 
@@ -72,7 +71,7 @@ export const grimoireResolvers: IResolvers = {
         throw new Error("viewer can not be found");
       }
 
-      const user = await db.users.findOne({ _id: viewer._id });
+      const user = await db.users.findOne({_id: viewer._id});
 
       if (user?.grimoires && user.grimoires.length >= MAX_GRIMOIRE_COUNT) {
         throw new Error(
@@ -90,16 +89,16 @@ export const grimoireResolvers: IResolvers = {
       const insertedGrimoire: Grimoire = insertResult.ops[0];
 
       await db.users.updateOne(
-        { _id: viewer._id },
-        { $push: { grimoires: insertedGrimoire._id } }
+        {_id: viewer._id},
+        {$push: {grimoires: insertedGrimoire._id}}
       );
 
       return insertedGrimoire;
     },
     deleteGrimoire: async (
       _root: undefined,
-      { id }: GrimoireArgs,
-      { db, req }: { db: Database; req: Request }
+      {id}: GrimoireArgs,
+      {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
       let viewer = await authorize(db, req);
 
@@ -107,7 +106,7 @@ export const grimoireResolvers: IResolvers = {
         throw new Error("viewer can not be found");
       }
 
-      const grimoire = await db.grimoires.findOne({ _id: new ObjectId(id) });
+      const grimoire = await db.grimoires.findOne({_id: new ObjectId(id)});
 
       if (!grimoire) {
         throw new Error(`grimoire with ${id} can not be found`);
@@ -125,15 +124,15 @@ export const grimoireResolvers: IResolvers = {
         {
           _id: grimoire.owner,
         },
-        { $pull: { grimoires: new ObjectId(id) } }
+        {$pull: {grimoires: new ObjectId(id)}}
       );
 
       return;
     },
     addSpellToGrimoire: async (
       _root: undefined,
-      { grimoireID, spellID }: AddSpellArgs,
-      { db, req }: { db: Database; req: Request }
+      {grimoireID, spellID}: AddSpellArgs,
+      {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
       let viewer = await authorize(db, req);
 
@@ -158,7 +157,7 @@ export const grimoireResolvers: IResolvers = {
           _id: new ObjectId(grimoireID),
         },
         {
-          $push: { spells: new ObjectId(spellID) },
+          $push: {spells: new ObjectId(spellID)},
         }
       );
 
@@ -166,8 +165,8 @@ export const grimoireResolvers: IResolvers = {
     },
     removeSpellFromGrimoire: async (
       _root: undefined,
-      { grimoireID, spellID }: AddSpellArgs,
-      { db, req }: { db: Database; req: Request }
+      {grimoireID, spellID}: AddSpellArgs,
+      {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
       let viewer = await authorize(db, req);
 
@@ -193,7 +192,7 @@ export const grimoireResolvers: IResolvers = {
             _id: new ObjectId(grimoireID),
           },
           {
-            $pull: { spells: new ObjectId(spellID) },
+            $pull: {spells: new ObjectId(spellID)},
           }
         );
       }
@@ -208,7 +207,7 @@ export const grimoireResolvers: IResolvers = {
     owner: async (
       grimoire: Grimoire,
       _args: {},
-      { db }: { db: Database }
+      {db}: { db: Database }
     ): Promise<User> => {
       const owner = await db.users.findOne({
         _id: grimoire.owner,

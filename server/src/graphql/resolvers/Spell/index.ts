@@ -1,23 +1,23 @@
-import { IResolvers } from "apollo-server-express";
-import { ObjectId } from "mongodb";
-import { Request } from "express";
-import { Spell, Database } from "../../../lib/types";
+import {IResolvers} from "apollo-server-express";
+import {ObjectId} from "mongodb";
+import {Request} from "express";
+import {Spell, Database} from "../../../lib/types";
 import {
   authorize,
   createFilterQuery,
   orderCastingTimeQuery,
 } from "../../../lib/utils";
-import { SpellArgs, SpellsArgs, SpellsData, SpellsSort } from "./types";
+import {SpellArgs, SpellsArgs, SpellsData, SpellsSort} from "./types";
 
 export const spellResolvers: IResolvers = {
   Query: {
     spell: async (
       _root: undefined,
-      { name }: SpellArgs,
-      { db, req }: { db: Database; req: Request }
+      {name}: SpellArgs,
+      {db, req}: { db: Database; req: Request }
     ): Promise<Spell> => {
       try {
-        const spell = await db.spells.findOne({ name });
+        const spell = await db.spells.findOne({name});
         if (!spell) {
           throw new Error("spell can't be found");
         }
@@ -34,8 +34,8 @@ export const spellResolvers: IResolvers = {
     },
     spells: async (
       _root: undefined,
-      { grimoireID, filters, sort, limit }: SpellsArgs,
-      { db }: { db: Database }
+      {grimoireID, filters, sort, limit}: SpellsArgs,
+      {db}: { db: Database }
     ): Promise<SpellsData> => {
       try {
         const data: SpellsData = {
@@ -49,24 +49,24 @@ export const spellResolvers: IResolvers = {
 
         switch (sort) {
           case SpellsSort.NAME_DESCENDING:
-            sortQuery = { $sort: { name: -1 } };
+            sortQuery = {$sort: {name: -1}};
             break;
           case SpellsSort.CASTING_TIME_ASCENDING:
             projectQuery = orderCastingTimeQuery;
-            sortQuery = { $sort: { order: 1 } };
+            sortQuery = {$sort: {order: 1}};
             break;
           case SpellsSort.CASTING_TIME_DESCENDING:
             projectQuery = orderCastingTimeQuery;
-            sortQuery = { $sort: { order: -1 } };
+            sortQuery = {$sort: {order: -1}};
             break;
           case SpellsSort.LEVEL_ASCENDING:
-            sortQuery = { $sort: { level: 1 } };
+            sortQuery = {$sort: {level: 1}};
             break;
           case SpellsSort.LEVEL_DESCENDING:
-            sortQuery = { $sort: { level: -1 } };
+            sortQuery = {$sort: {level: -1}};
             break;
           default:
-            sortQuery = { $sort: { name: 1 } };
+            sortQuery = {$sort: {name: 1}};
         }
 
         const formAggregationQuery = (spells?: ObjectId[]) => {
@@ -77,7 +77,7 @@ export const spellResolvers: IResolvers = {
           }
 
           if (spells) {
-            let query = { $match: { _id: { $in: spells } } };
+            let query = {$match: {_id: {$in: spells}}};
             aggregation.unshift(query);
           }
 
@@ -92,7 +92,7 @@ export const spellResolvers: IResolvers = {
 
         if (limit) {
           cursor = db.spells.aggregate([
-            { $sample: { size: limit } },
+            {$sample: {size: limit}},
             sortQuery,
           ]);
           data.total = limit;

@@ -46,8 +46,7 @@ import s from './styles/Grimoire.module.scss'
 const { Content } = Layout
 
 interface MatchParams {
-  id: string
-  edit: string
+  [key: string]: string
 }
 
 export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {

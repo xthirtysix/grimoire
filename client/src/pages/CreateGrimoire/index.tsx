@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   Select,
+  Spin,
   Typography,
 } from 'antd'
 import { Link, Redirect } from 'react-router-dom'
@@ -78,7 +79,13 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   }
 
   if (loading) {
-    return <h3>We are creating your grimoire right now</h3>
+    return (
+      <Spin
+        wrapperClassName="container"
+        className="centered"
+        tip="Creating grimoire..."
+      />
+    )
   }
 
   if (data && data.createGrimoire) {

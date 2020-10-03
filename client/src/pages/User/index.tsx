@@ -46,7 +46,11 @@ export const User = ({
   const grimoiresCount = user && user.grimoires ? user.grimoires.total : 0
   const viewerIsUser = viewer.id === match.params.id
   const userProfileElement = user ? (
-    <UserProfile user={user} grimoires={grimoiresCount} maxGrimoires={MAX_GRIMOIRE_COUNT} />
+    <UserProfile
+      user={user}
+      grimoires={grimoiresCount}
+      maxGrimoires={MAX_GRIMOIRE_COUNT}
+    />
   ) : null
   const userGrimoires =
     user && user.grimoires ? (
