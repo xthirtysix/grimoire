@@ -21,20 +21,24 @@ export const CASTING_TIME_FILTER_OPTIONS = CASTING_TIMES.map((castingTime) => {
 })
 
 export const CLASSES = [
-  'BARD',
-  'CLERIC',
-  'DRUID',
-  'PALADIN',
-  'RANGER',
-  'SORCERER',
-  'WARLOCK',
-  'WIZARD',
+  'Bard',
+  'Barbarian',
+  'Cleric',
+  'Druid',
+  'Fighter',
+  'Monk',
+  'Paladin',
+  'Ranger',
+  'Rogue',
+  'Sorcerer',
+  'Warlock',
+  'Wizard',
 ]
 
 export const CLASS_FILTER_OPTIONS = CLASSES.map((cls) => {
   return {
     value: cls,
-    label: cls.charAt(0) + cls.slice(1).toLowerCase(),
+    label: cls
   }
 })
 
@@ -62,7 +66,7 @@ const SAVES_REQUIRED = [
   'STRENGTH',
   'CONSTITUTION',
   'DEXTERITY',
-  'INTELLEGENCE',
+  'INTELLIGENCE',
   'WISDOM',
   'CHARISMA',
 ]

@@ -36,7 +36,7 @@ export const userResolvers: IResolvers = {
     },
     grimoires: async (
       user: User,
-      _args: {},
+      _args: undefined,
       { db }: { db: Database }
     ): Promise<UserGrimoiresData> => {
       try {
@@ -45,7 +45,7 @@ export const userResolvers: IResolvers = {
           result: [],
         };
 
-        let cursor = db.grimoires.find({
+        const cursor = db.grimoires.find({
           _id: { $in: user.grimoires},
         });
 
