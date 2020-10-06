@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -10,10 +10,10 @@ import {
   Spin,
   Typography,
 } from 'antd'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, Redirect } from 'react-router-dom'
 import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
 //Data
-import { ClassType } from '../../lib/graphql/globalTypes'
 import { CREATE_GRIMOIRE } from '../../lib/graphql/mutations'
 import {
   CreateGrimoire as CreateGrimoireData,
@@ -24,9 +24,10 @@ import { useMutation } from '@apollo/react-hooks'
 import { Viewer } from '../../lib/types'
 //Styles
 import s from './styles/CreateGrimoire.module.scss'
+// Constants
+import { CLASS_FILTER_OPTIONS } from '../../lib/constants'
 
-const { Item } = Form
-const { Option } = Select
+const { Item, List } = Form
 const { Title, Text } = Typography
 
 interface Props {
@@ -35,6 +36,37 @@ interface Props {
 
 export const CreateGrimoire = ({ viewer }: Props) => {
   const [form] = Form.useForm()
+  const [options, setOptions] = useState<any>(CLASS_FILTER_OPTIONS)
+  const [levelPoints, setLevelPoints] = useState<any>(0)
+
+  const onSelectChange = () => {
+    setOptions(
+      CLASS_FILTER_OPTIONS.filter(({ value }: { value: any }) => {
+        return (
+          form
+            .getFieldsValue(['characterClasses'])
+            .characterClasses.map((cls: any) => {
+              return cls ? cls.class : null
+            })
+            .indexOf(value) === -1
+        )
+      })
+    )
+  }
+
+  const onLevelChange = () => {
+    setLevelPoints(
+      Object.values(
+        form
+          .getFieldsValue(['characterClasses'])
+          .characterClasses.map((cls: any) => {
+            return cls && cls.level ? cls.level : 0
+          })
+      ).reduce(
+        (accumulator: any, currentValue: any) => accumulator + currentValue
+      )
+    )
+  }
 
   const [createGrimoire, { loading, data }] = useMutation<
     CreateGrimoireData,
@@ -55,12 +87,21 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   })
 
   const onFinish = (values: any) => {
-    const characterClasses = [
-      {
-        class: values.class,
-        level: values.level,
-      },
-    ]
+    const classFields = form.getFieldsValue(['characterClasses']).characterClasses
+
+    if (classFields === undefined || !classFields.length) {
+      displayErrorMessage('Please add at least one class')
+      return
+    }
+
+    const characterClasses: any[] = []
+
+    values.characterClasses.map((charClass: any) => {
+      characterClasses.push({
+        ...charClass,
+        class: charClass.class.toUpperCase(),
+      })
+    })
 
     const input = {
       name: values.name,
@@ -97,7 +138,7 @@ export const CreateGrimoire = ({ viewer }: Props) => {
       <Card className="form-container">
         <Title level={3}>You'll have to be signed in to create Grimoire.</Title>
         <Text type="secondary">
-          You... shall... not... pass! Untill signing in. You can do that at{' '}
+          You... shall... not... pass! Until signing in. You can do that at{' '}
           <Link to="/login">login</Link> page, and try again after.
         </Text>
       </Card>
@@ -117,6 +158,7 @@ export const CreateGrimoire = ({ viewer }: Props) => {
       </div>
       <Card className="form-container">
         <Form
+          form={form}
           layout="horizontal"
           name="create_grimoire_from"
           onFinish={onFinish}
@@ -137,52 +179,84 @@ export const CreateGrimoire = ({ viewer }: Props) => {
             <Input maxLength={30} placeholder="Type 'Elminster Aumar'" />
           </Item>
           <Divider />
-          <div className={s.classSelect}>
-            <Item
-              name="class"
-              label="Class"
-              extra="Choose character class"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please choose a class from the list',
-                },
-              ]}
-            >
-              <Select
-                showSearch
-                placeholder="Type 'Wizard'"
-                optionFilterProp="children"
-              >
-                <Option value={ClassType.BARBARIAN}>Barbarian</Option>
-                <Option value={ClassType.BARD}>Bard</Option>
-                <Option value={ClassType.CLERIC}>Cleric</Option>
-                <Option value={ClassType.DRUID}>Druid</Option>
-                <Option value={ClassType.FIGHTER}>Fighter</Option>
-                <Option value={ClassType.MONK}>Monk</Option>
-                <Option value={ClassType.PALADIN}>Paladin</Option>
-                <Option value={ClassType.RANGER}>Ranger</Option>
-                <Option value={ClassType.ROGUE}>Rogue</Option>
-                <Option value={ClassType.SORCERER}>Sorcerer</Option>
-                <Option value={ClassType.WARLOCK}>Warlock</Option>
-                <Option value={ClassType.WIZARD}>Wizard</Option>
-              </Select>
-            </Item>
-            <Item
-              name="level"
-              label="Level"
-              extra="Up to 20"
-              rules={[
-                {
-                  required: true,
-                  message:
-                    'Please enter character level from 1 to 20 in chosen class',
-                },
-              ]}
-            >
-              <InputNumber min={1} max={20} />
-            </Item>
-          </div>
+
+          <List name="characterClasses">
+            {(fields, { add, remove }) => {
+              return (
+                <>
+                  {fields.map((field, idx) => (
+                    <React.Fragment key={field.key}>
+                      <div className={s.classSelect}>
+                        <Item
+                          noStyle
+                          shouldUpdate={(prevValues, curValues) =>
+                            prevValues.class !== curValues.class ||
+                            prevValues.level !== curValues.level
+                          }
+                        >
+                          {() => (
+                            <Item
+                              {...field}
+                              {...idx}
+                              label="Class"
+                              name={[field.name, 'class']}
+                              fieldKey={[field.fieldKey, 'class']}
+                              rules={[
+                                { required: true, message: 'Missing class' },
+                              ]}
+                            >
+                              <Select
+                                options={options}
+                                onChange={onSelectChange}
+                                optionFilterProp="label"
+                              />
+                            </Item>
+                          )}
+                        </Item>
+                        <Item
+                          {...field}
+                          label="Level"
+                          name={[field.name, 'level']}
+                          fieldKey={[field.fieldKey, 'level']}
+                          rules={[{ required: true, message: 'Missing level' }]}
+                        >
+                          <InputNumber
+                            min={1}
+                            max={20}
+                            required
+                            onChange={(value) => onLevelChange()}
+                          />
+                        </Item>
+
+                        <MinusCircleOutlined
+                          aria-label="delete class"
+                          onClick={() => (remove(field.name), onSelectChange())}
+                        />
+                      </div>
+                      <Divider />
+                    </React.Fragment>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => {
+                        add()
+                      }}
+                      block
+                    >
+                      <PlusOutlined /> Add class
+                    </Button>
+                  </Form.Item>
+                </>
+              )
+            }}
+          </List>
+          {levelPoints > 20 && (
+            <Text type="danger">
+              Your characters total level is {levelPoints}, wich may not be
+              allowed for a general game
+            </Text>
+          )}
           <Item className={s.submitContainer}>
             <Button className={s.submitButton} type="primary" htmlType="submit">
               Submit

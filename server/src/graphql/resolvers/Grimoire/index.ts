@@ -24,11 +24,11 @@ const verifyCreateGrimoireInput = ({
     throw new Error("grimoire owner should have at least 1 class");
   }
 
-  if (!(characterClasses.length % 2)) {
-    throw new Error(
-      "grimoire owner should have at least 1 level in each class"
-    );
-  }
+  // if (!(characterClasses.length % 2)) {
+  //   throw new Error(
+  //     "grimoire owner should have at least 1 level in each class"
+  //   );
+  // }
 
   characterClasses.map((cls) => {
     if (cls.level > 20) {
@@ -65,7 +65,7 @@ export const grimoireResolvers: IResolvers = {
     ): Promise<Grimoire> => {
       verifyCreateGrimoireInput(input);
 
-      let viewer = await authorize(db, req);
+      const viewer = await authorize(db, req);
 
       if (!viewer) {
         throw new Error("viewer can not be found");
@@ -100,7 +100,7 @@ export const grimoireResolvers: IResolvers = {
       {id}: GrimoireArgs,
       {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
-      let viewer = await authorize(db, req);
+      const viewer = await authorize(db, req);
 
       if (!viewer) {
         throw new Error("viewer can not be found");
@@ -134,7 +134,7 @@ export const grimoireResolvers: IResolvers = {
       {grimoireID, spellID}: AddSpellArgs,
       {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
-      let viewer = await authorize(db, req);
+      const viewer = await authorize(db, req);
 
       if (!viewer) {
         throw new Error("viewer can not be found");
@@ -168,7 +168,7 @@ export const grimoireResolvers: IResolvers = {
       {grimoireID, spellID}: AddSpellArgs,
       {db, req}: { db: Database; req: Request }
     ): Promise<void> => {
-      let viewer = await authorize(db, req);
+      const viewer = await authorize(db, req);
 
       if (!viewer) {
         throw new Error("viewer can not be found");
@@ -206,7 +206,7 @@ export const grimoireResolvers: IResolvers = {
     },
     owner: async (
       grimoire: Grimoire,
-      _args: {},
+      _args: undefined,
       {db}: { db: Database }
     ): Promise<User> => {
       const owner = await db.users.findOne({
