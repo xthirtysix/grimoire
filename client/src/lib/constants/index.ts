@@ -35,10 +35,21 @@ export const CLASSES = [
   'Wizard',
 ]
 
-export const CLASS_FILTER_OPTIONS = CLASSES.map((cls) => {
+export const SPELLCASTERS = [
+  'BARD',
+  'CLERIC',
+  'DRUID',
+  'PALADIN',
+  'RANGER',
+  'SORCERER',
+  'WARLOCK',
+  'WIZARD'
+]
+
+export const CLASS_FILTER_OPTIONS = SPELLCASTERS.map((cls) => {
   return {
     value: cls,
-    label: cls
+    label: cls.charAt(0) + cls.slice(1).toLowerCase()
   }
 })
 
