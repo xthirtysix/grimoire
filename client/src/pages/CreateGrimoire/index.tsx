@@ -13,7 +13,7 @@ import {
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, Redirect } from 'react-router-dom'
 import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
-//Data
+// Data
 import { CREATE_GRIMOIRE } from '../../lib/graphql/mutations'
 import {
   CreateGrimoire as CreateGrimoireData,
@@ -22,13 +22,18 @@ import {
 import { USER } from '../../lib/graphql/queries'
 import { useMutation } from '@apollo/react-hooks'
 import { Viewer } from '../../lib/types'
-//Styles
+// Styles
 import s from './styles/CreateGrimoire.module.scss'
 // Constants
 import { CLASS_FILTER_OPTIONS } from '../../lib/constants'
 
 const { Item, List } = Form
 const { Title, Text } = Typography
+
+interface CharacterClass {
+  class?: string
+  level?: number
+}
 
 interface Props {
   viewer: Viewer
@@ -37,36 +42,7 @@ interface Props {
 export const CreateGrimoire = ({ viewer }: Props) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>(CLASS_FILTER_OPTIONS)
-  const [levelPoints, setLevelPoints] = useState<any>(0)
-
-  const onSelectChange = () => {
-    setOptions(
-      CLASS_FILTER_OPTIONS.filter(({ value }: { value: any }) => {
-        return (
-          form
-            .getFieldsValue(['characterClasses'])
-            .characterClasses.map((cls: any) => {
-              return cls ? cls.class : null
-            })
-            .indexOf(value) === -1
-        )
-      })
-    )
-  }
-
-  const onLevelChange = () => {
-    setLevelPoints(
-      Object.values(
-        form
-          .getFieldsValue(['characterClasses'])
-          .characterClasses.map((cls: any) => {
-            return cls && cls.level ? cls.level : 0
-          })
-      ).reduce(
-        (accumulator: any, currentValue: any) => accumulator + currentValue
-      )
-    )
-  }
+  const [totalLevel, setTotalLevel] = useState<number>(0)
 
   const [createGrimoire, { loading, data }] = useMutation<
     CreateGrimoireData,
@@ -86,20 +62,54 @@ export const CreateGrimoire = ({ viewer }: Props) => {
     awaitRefetchQueries: true,
   })
 
+  const onSelectChange = () => {
+    setOptions(
+      CLASS_FILTER_OPTIONS.filter(({ value }: { value: any }) => {
+        return (
+          form
+            .getFieldsValue(['characterClasses'])
+            .characterClasses.map((cls: CharacterClass) => {
+              return cls ? cls.class : null
+            })
+            .indexOf(value) === -1
+        )
+      })
+    )
+  }
+
+  const onLevelChange = () => {
+    setTotalLevel(
+      Object.values<number>(
+        form
+          .getFieldsValue(['characterClasses'])
+          .characterClasses.map(({ level }: { level: number }) => {
+            return level ? level : 0
+          })
+      ).reduce(
+        (accumulator: number, currentValue: number) =>
+          accumulator + currentValue
+      )
+    )
+  }
+
   const onFinish = (values: any) => {
-    const classFields = form.getFieldsValue(['characterClasses']).characterClasses
+    const classFields = form.getFieldsValue(['characterClasses'])
+      .characterClasses
 
     if (classFields === undefined || !classFields.length) {
       displayErrorMessage('Please add at least one class')
       return
     }
 
-    const characterClasses: any[] = []
+    const characterClasses: CharacterClass[] = []
 
-    values.characterClasses.map((charClass: any) => {
-      characterClasses.push({
+
+    values.characterClasses.map((charClass: CharacterClass) => {
+      const uppercased = charClass.class ? charClass.class.toUpperCase() : undefined 
+    
+      return characterClasses.push({
         ...charClass,
-        class: charClass.class.toUpperCase(),
+        class: uppercased
       })
     })
 
@@ -224,13 +234,16 @@ export const CreateGrimoire = ({ viewer }: Props) => {
                             min={1}
                             max={20}
                             required
-                            onChange={(value) => onLevelChange()}
+                            onChange={onLevelChange}
                           />
                         </Item>
 
                         <MinusCircleOutlined
                           aria-label="delete class"
-                          onClick={() => (remove(field.name), onSelectChange())}
+                          onClick={() => {
+                            remove(field.name)
+                            onSelectChange()
+                          }}
                         />
                       </div>
                       <Divider />
@@ -251,9 +264,9 @@ export const CreateGrimoire = ({ viewer }: Props) => {
               )
             }}
           </List>
-          {levelPoints > 20 && (
+          {totalLevel > 20 && (
             <Text type="danger">
-              Your characters total level is {levelPoints}, wich may not be
+              Your characters total level is {totalLevel}, wich may not be
               allowed for a general game
             </Text>
           )}
