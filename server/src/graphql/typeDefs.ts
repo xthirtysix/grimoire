@@ -59,7 +59,7 @@ export const typeDefs = gql`
     STRENGTH
     CONSTITUTION
     DEXTERITY
-    INTELLEGENCE
+    INTELLIGENCE
     WISDOM
     CHARISMA
   }

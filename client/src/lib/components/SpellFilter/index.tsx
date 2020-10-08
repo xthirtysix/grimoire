@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { SpellFilterSelect } from './components'
-//Data
+// Data
 import { SpellsFilter } from '../../graphql/globalTypes'
-//Constants
+// Constants
 import {
   CASTING_TIME_FILTER_OPTIONS,
   CLASS_FILTER_OPTIONS,
@@ -11,26 +11,21 @@ import {
   SPELL_SCHOOL_FILTER_OPTIONS,
   TAG_FILTER_OPTIONS,
 } from '../../constants'
-//Styles
+// Styles
 import s from './styles/SpellFilter.module.scss'
 
 interface Props {
+  filters: SpellsFilter
   onFilterChange: (value: SpellsFilter) => void
+  disabledFilters?: string[] | string
 }
 
-export const SpellFilter = ({ onFilterChange }: Props) => {
-  const [filters, setFilters] = useState<SpellsFilter>({
-    school: [],
-    castingTime: [],
-    level: [],
-    classes: [],
-    saveRequired: [],
-    tags: [],
-  })
-
+export const SpellFilter = ({
+  filters,
+  onFilterChange,
+  disabledFilters,
+}: Props) => {
   const onChange = (values: any, type: any): void => {
-    setFilters({ ...filters, [type]: [...values] })
-
     return onFilterChange({ ...filters, [type]: [...values] })
   }
 
@@ -43,20 +38,34 @@ export const SpellFilter = ({ onFilterChange }: Props) => {
     ['tags', TAG_FILTER_OPTIONS, 'Type "Charmed"...'],
   ]
 
+  const disabledSelectFields = disabledFilters
+    ? typeof disabledFilters === 'string'
+      ? Array(disabledFilters)
+      : disabledFilters
+    : undefined
+
+  const allowedSelectFields = disabledSelectFields
+    ? selectFields.filter((filter: any[]) => {
+        return !~disabledSelectFields.indexOf(filter[0])
+      })
+    : selectFields
+
   return (
     <div className={s.filter}>
-      {selectFields.map(([filterType, options, placeholderText]: any) => {
-        return (
-          <SpellFilterSelect
-            key={filterType}
-            filterType={filterType}
-            options={options}
-            placeholderText={placeholderText}
-            onChange={onChange}
-            isSchool
-          />
-        )
-      })}
+      {allowedSelectFields.map(
+        ([filterType, options, placeholderText]: any) => {
+          return (
+            <SpellFilterSelect
+              key={filterType}
+              filterType={filterType}
+              options={options}
+              placeholderText={placeholderText}
+              onChange={onChange}
+              isSchool
+            />
+          )
+        }
+      )}
     </div>
   )
 }

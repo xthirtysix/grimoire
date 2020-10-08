@@ -16,10 +16,10 @@ export const authorize = async (
 };
 
 interface Query {
-  $match: { [key: string]: { $in: string[] } };
+  [key: string]: {[key: string]: any}
 }
 
-export const createFilterQuery = (filter: SpellsFilter) => {
+export const createFilterQuery = (filter: SpellsFilter): Query => {
   const query: Query = { $match: {} };
   const filters = Object.entries(filter);
 
