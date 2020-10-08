@@ -53,7 +53,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
   const [bottom, setBottom] = useState<number>(10)
   const [editable, setEditable] = useState<boolean>(false)
   const [sort, setSort] = useState<SpellsSort>(SpellsSort.NAME_ASCENDING)
-  const [filters, setFilter] = useState<SpellsFilter>({
+  const [filters, setFilters] = useState<SpellsFilter>({
     school: [],
     castingTime: [],
     level: [],
@@ -89,7 +89,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
       filters,
       sort,
     },
-    fetchPolicy: 'network-only',
+    // fetchPolicy: 'network-only',
   })
 
   const [addSpellToGrimoire] = useMutation<
@@ -192,7 +192,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
       <Divider className="divider" />
       {grimoireSpells?.length ? (
         <>
-          <SpellFilter onFilterChange={setFilter} />
+          <SpellFilter filters={filters} onFilterChange={setFilters} />
           <SpellSort defaultSort={sort} onSortChange={setSort} />
           {spellList}
         </>
@@ -200,7 +200,7 @@ export const Grimoire = ({ match }: RouteComponentProps<MatchParams>) => {
         emptyList
       ) : (
         <>
-          <SpellFilter onFilterChange={setFilter} />
+          <SpellFilter filters={filters} onFilterChange={setFilters} />
           {spellList}
         </>
       )}

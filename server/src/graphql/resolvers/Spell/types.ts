@@ -4,6 +4,7 @@ export interface SpellArgs {
   name: string;
 }
 
+
 export enum SpellsSchool {
   ABJURATION = "ABJURATION",
   CONJURATION = "CONJURATION",
@@ -60,7 +61,7 @@ export enum Stat {
   STRENGTH = "STRENGTH",
   CONSTITUTION = "CONSTITUTION",
   DEXTERITY = "DEXTERITY",
-  INTELLEGENCE = "INTELLEGENCE",
+  INTELLIGENCE = "INTELLIGENCE",
   WISDOM = "WISDOM",
   CHARISMA = "CHARISMA",
 }
