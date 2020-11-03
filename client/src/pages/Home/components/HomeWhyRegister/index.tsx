@@ -1,39 +1,48 @@
-import React from 'react'
-import { Typography } from 'antd'
-import { Link } from 'react-scroll'
-import classnames from 'classnames'
+import React from 'react';
+import { Typography } from 'antd';
+import { Link } from 'react-scroll';
+import { FormattedMessage } from 'react-intl';
+import classnames from 'classnames';
 //Styles
-import home from '../../styles/Home.module.scss'
-import s from './styles/HomeWhyRegister.module.scss'
+import home from '../../styles/Home.module.scss';
+import s from './styles/HomeWhyRegister.module.scss';
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
-export const HomeWhyRegister = () => {
+export const HomeWhyRegister = (): JSX.Element => {
   return (
     <section className={classnames(home.container, s.container)}>
       <Title level={2} className={s.header}>
-        Why becoming a wizard? <span className="visually-hidden">(Why register?)</span>
+        <FormattedMessage id="whyRegisterHeader" />
+        <span className="visually-hidden">Why register?</span>
       </Title>
       <Text className={s.subheader} type="secondary">
-        and register on grimoire
+        <FormattedMessage id="whyRegisterSubheader" />
       </Text>
       <Text>
-        Here you can create Spellbooks where you'll store and sort{' '}
-        <strong>just the spells you need</strong>. No more no less.
+        <FormattedMessage
+          id="whyRegisterParagraphOne"
+          values={{ strong: <FormattedMessage id="whyRegisterParagraphOneStrong" /> }}
+        />
       </Text>
       <Text>
-        Lets{' '}
-        <Link
-          activeClass="active"
-          to="wave"
-          spy={true}
-          smooth={true}
-          duration={1000}
-        >
-          dive deeper
-        </Link>{' '}
-        into the Weave, and see how your own Grimoire may look like...
+        <FormattedMessage
+          id="whyRegisterParagraphTwo"
+          values={{
+            link: (
+              <Link
+                activeClass="active"
+                to="wave"
+                spy={true}
+                smooth={true}
+                duration={1000}
+              >
+                <FormattedMessage id="whyRegisterParagraphTwoLink" />
+              </Link>
+            ),
+          }}
+        />
       </Text>
     </section>
-  )
-}
+  );
+};

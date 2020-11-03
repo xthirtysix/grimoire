@@ -1,71 +1,104 @@
-import React from 'react'
-import { SpellFilterSelect } from './components'
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { SpellFilterSelect } from './components';
 // Data
-import { SpellsFilter } from '../../graphql/globalTypes'
+import { SpellsFilter } from '../../graphql/globalTypes';
 // Constants
 import {
-  CASTING_TIME_FILTER_OPTIONS,
-  CLASS_FILTER_OPTIONS,
-  LEVEL_FILTER_OPTIONS,
-  SAVE_REQUIRED_FILTER_OPTIONS,
-  SPELL_SCHOOL_FILTER_OPTIONS,
-  TAG_FILTER_OPTIONS,
-} from '../../constants'
+  CASTING_TIMES,
+  SPELLCASTERS,
+  LEVELS,
+  SAVES_REQUIRED,
+  SPELL_SCHOOLS,
+  TAGS,
+} from '../../constants';
 // Styles
-import s from './styles/SpellFilter.module.scss'
+import s from './styles/SpellFilter.module.scss';
+import { SelectValue } from 'antd/lib/select';
 
 interface Props {
-  filters: SpellsFilter
-  onFilterChange: (value: SpellsFilter) => void
-  disabledFilters?: string[] | string
+  filters: SpellsFilter;
+  onFilterChange: (value: SpellsFilter) => void;
+  disabledFilters?: string[] | string;
 }
 
 export const SpellFilter = ({
   filters,
   onFilterChange,
   disabledFilters,
-}: Props) => {
-  const onChange = (values: any, type: any): void => {
-    return onFilterChange({ ...filters, [type]: [...values] })
-  }
+}: Props): JSX.Element => {
+  const intl = useIntl();
+
+  const onChange = (values: string | SelectValue, type: string): void => {
+    return onFilterChange({ ...filters, [type]: [...(values as string[])] });
+  };
+
+  const translatedOptions = (options: string[]): { value: string; label: string }[] => {
+    return options.map((option: string) => {
+      return {
+        value: option,
+        label: intl.formatMessage({ id: option }),
+      };
+    });
+  };
 
   const selectFields = [
-    ['school', SPELL_SCHOOL_FILTER_OPTIONS, 'Type "Conjuration"...'],
-    ['castingTime', CASTING_TIME_FILTER_OPTIONS, 'Type "1 action"...'],
-    ['level', LEVEL_FILTER_OPTIONS, 'Type "Cantrip"...'],
-    ['classes', CLASS_FILTER_OPTIONS, 'Type "Wizard"...'],
-    ['saveRequired', SAVE_REQUIRED_FILTER_OPTIONS, 'Type "Dexterity"...'],
-    ['tags', TAG_FILTER_OPTIONS, 'Type "Charmed"...'],
-  ]
+    [
+      'school',
+      translatedOptions(SPELL_SCHOOLS),
+      intl.formatMessage({ id: 'schoolPlaceholder' }),
+    ],
+    [
+      'castingTime',
+      translatedOptions(CASTING_TIMES),
+      intl.formatMessage({ id: 'castingTimePlaceholder' }),
+    ],
+    ['level', translatedOptions(LEVELS), intl.formatMessage({ id: 'levelPlaceholder' })],
+    [
+      'classes',
+      translatedOptions(SPELLCASTERS),
+      intl.formatMessage({ id: 'classPlaceholder' }),
+    ],
+    [
+      'saveRequired',
+      translatedOptions(SAVES_REQUIRED),
+      intl.formatMessage({ id: 'savePlaceholder' }),
+    ],
+    ['tags', translatedOptions(TAGS), intl.formatMessage({ id: 'tagPlaceholder' })],
+  ];
 
   const disabledSelectFields = disabledFilters
     ? typeof disabledFilters === 'string'
       ? Array(disabledFilters)
       : disabledFilters
-    : undefined
+    : undefined;
 
   const allowedSelectFields = disabledSelectFields
-    ? selectFields.filter((filter: any[]) => {
-        return !~disabledSelectFields.indexOf(filter[0])
+    ? selectFields.filter((filter: (string | { value: string; label: string }[])[]) => {
+        return !~disabledSelectFields.indexOf(filter[0] as string);
       })
-    : selectFields
+    : selectFields;
 
   return (
     <div className={s.filter}>
       {allowedSelectFields.map(
-        ([filterType, options, placeholderText]: any) => {
+        ([filterType, options, placeholderText]: (
+          | string
+          | { value: string; label: string }[]
+          | string[]
+        )[]) => {
           return (
             <SpellFilterSelect
-              key={filterType}
-              filterType={filterType}
-              options={options}
-              placeholderText={placeholderText}
+              key={filterType as string}
+              filterType={filterType as string}
+              options={options as { value: string; label: string }[]}
+              placeholderText={placeholderText as string}
               onChange={onChange}
               isSchool
             />
-          )
+          );
         }
       )}
     </div>
-  )
-}
+  );
+};

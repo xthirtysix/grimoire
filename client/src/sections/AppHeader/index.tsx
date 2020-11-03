@@ -1,43 +1,45 @@
-import React, { useState, useEffect } from 'react'
-import { Affix, Layout, Input } from 'antd'
-import { BookOutlined } from '@ant-design/icons'
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
-import { MenuItems } from './components'
-import { displayErrorMessage } from '../../lib/utils'
+import React, { useEffect, useState } from 'react';
+import { Affix, Input, Layout, Switch } from 'antd';
+import { BookOutlined } from '@ant-design/icons';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { MenuItems } from './components';
+import { displayErrorMessage } from '../../lib/utils';
+import { useIntl } from 'react-intl';
 //Data
-import { Viewer } from '../../lib/types'
+import { Viewer } from '../../lib/types';
 //Styles
-import s from './styles/AppHeader.module.scss'
+import s from './styles/AppHeader.module.scss';
+import { useDispatch } from 'react-redux';
 
-const { Header } = Layout
-const { Search } = Input
+const { Header } = Layout;
+const { Search } = Input;
 
 interface Props {
-  viewer: Viewer
-  setViewer: (viewer: Viewer) => void
+  viewer: Viewer;
+  setViewer: (viewer: Viewer) => void;
 }
 
 export const AppHeader = withRouter(
   ({ viewer, setViewer, history, location }: Props & RouteComponentProps) => {
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState('');
+    const intl = useIntl();
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-      const { pathname } = location
-      const pathnameSubStrings = pathname.split('/')
+      const { pathname } = location;
+      const pathnameSubStrings = pathname.split('/');
 
       if (!pathname.includes('/spell')) {
-        setSearch('')
-        return
+        setSearch('');
+        return;
       }
 
-      if (
-        pathnameSubStrings[1] === 'spell' &&
-        pathnameSubStrings.length === 3
-      ) {
-        setSearch(pathnameSubStrings[2])
-        return
+      if (pathnameSubStrings[1] === 'spell' && pathnameSubStrings.length === 3) {
+        setSearch(pathnameSubStrings[2]);
+        return;
       }
-    }, [location])
+    }, [location]);
 
     const onSearch = (value: string) => {
       const trimmedValue = value
@@ -46,16 +48,16 @@ export const AppHeader = withRouter(
         .map((substr) => {
           return substr.toLowerCase() !== 'the'
             ? substr.charAt(0).toUpperCase() + substr.slice(1).toLowerCase()
-            : substr.toLowerCase()
+            : substr.toLowerCase();
         })
-        .join(' ')
+        .join(' ');
 
       if (trimmedValue) {
-        history.push(`/spell/${trimmedValue}`)
+        history.push(`/spell/${trimmedValue}`);
       } else {
-        displayErrorMessage('Please enter a valid search')
+        displayErrorMessage('Please enter a valid search');
       }
-    }
+    };
 
     return (
       <Header className={s.header}>
@@ -66,7 +68,7 @@ export const AppHeader = withRouter(
               <span>Grimoire</span>
             </Link>
             <Search
-              placeholder="Search 'Fireball'"
+              placeholder={intl.formatMessage({ id: 'mainSearchPlaceholder' })}
               size="middle"
               enterButton
               onChange={(evt) => setSearch(evt.target.value)}
@@ -74,12 +76,17 @@ export const AppHeader = withRouter(
               onSearch={onSearch}
               className={s.search}
             />
+            <Switch
+              checkedChildren="En"
+              unCheckedChildren="Ru"
+              onChange={() => dispatch({ type: 'SWITCH_LOCALE' })}
+            />
             <div className={s.list}>
               <MenuItems viewer={viewer} setViewer={setViewer} />
             </div>
           </div>
         </Affix>
       </Header>
-    )
+    );
   }
-)
+);

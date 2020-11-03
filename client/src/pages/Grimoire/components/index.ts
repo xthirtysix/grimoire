@@ -1,2 +1,2 @@
-export * from './GrimoireDetailes'
-export * from './GrimoireDetailesSkeleton'
+export * from './GrimoireDetails';
+export * from './GrimoireDetailsSkeleton';

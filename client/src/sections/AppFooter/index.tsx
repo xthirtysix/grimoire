@@ -1,9 +1,9 @@
-import React from 'react'
-import { Typography, Divider } from 'antd'
+import React from 'react';
+import { Typography, Divider } from 'antd';
 //Styles
-import s from './styles/AppFooter.module.scss'
+import s from './styles/AppFooter.module.scss';
 
-const { Text } = Typography
+const { Text } = Typography;
 
 export const AppFooter = () => {
   return (
@@ -20,5 +20,5 @@ export const AppFooter = () => {
         </Text>
       </div>
     </footer>
-  )
-}
+  );
+};

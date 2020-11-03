@@ -1,0 +1,66 @@
+import { LOCALES } from '../../constants';
+
+interface Messages {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
+
+export const tags: Messages = {
+  [LOCALES.ENGLISH]: {
+    BANISHMENT: 'Banishment',
+    BUFF: 'Buff',
+    CHARMED: 'Charmed',
+    COMBAT: 'Combat',
+    COMMUNICATION: 'Communication',
+    COMPULTION: 'Compultion',
+    CONTROL: 'Control',
+    CREATION: 'Creation',
+    DAMAGE: 'Damage',
+    DEBUFF: 'Debuff',
+    DECEPTION: 'Deception',
+    DETECTION: 'Detection',
+    ENVIRONMENT: 'Environment',
+    EXPLORATION: 'Exploration',
+    FOREKNOWLEDGE: 'Foreknowledge',
+    HEALING: 'Healing',
+    MOVEMENT: 'Movement',
+    NEGATION: 'Negation',
+    PSIONIC: 'Psionic',
+    SCRYING: 'Scrying',
+    SHAPECHANGING: 'Shapechanging',
+    SOCIAL: 'Social',
+    SUMMONING: 'Summoning',
+    TELEPORTATION: 'Teleportation',
+    UTILITY: 'Utility',
+    WARDING: 'Warding',
+  },
+  [LOCALES.RUSSIAN]: {
+    BANISHMENT: 'Изгнание',
+    BUFF: 'Бафф',
+    CHARMED: 'Очарование',
+    COMBAT: 'Бой',
+    COMMUNICATION: 'Общение',
+    COMPULTION: 'Принуждение',
+    CONTROL: 'Контроль',
+    CREATION: 'Создание',
+    DAMAGE: 'Урон',
+    DEBUFF: 'Дебафф',
+    DECEPTION: 'Обман',
+    DETECTION: 'Обнаружение',
+    ENVIRONMENT: 'Окружающая среда',
+    EXPLORATION: 'Исследование',
+    FOREKNOWLEDGE: 'Предвидение',
+    HEALING: 'Исцеление',
+    MOVEMENT: 'Движение',
+    NEGATION: 'Отрицание',
+    PSIONIC: 'Псионика',
+    SCRYING: 'Наблюдение',
+    SHAPECHANGING: 'Изменение формы',
+    SOCIAL: 'Социальное',
+    SUMMONING: 'Призыв',
+    TELEPORTATION: 'Телепортация',
+    UTILITY: 'Вспомогательное',
+    WARDING: 'Оберег',
+  },
+};

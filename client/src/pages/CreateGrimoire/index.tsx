@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   Button,
   Card,
@@ -9,40 +10,56 @@ import {
   Select,
   Spin,
   Typography,
-} from 'antd'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { Link, Redirect } from 'react-router-dom'
-import { displaySuccessMessage, displayErrorMessage } from '../../lib/utils'
+} from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Link, Redirect } from 'react-router-dom';
+import { displayErrorMessage, displaySuccessMessage } from '../../lib/utils';
 // Data
-import { CREATE_GRIMOIRE } from '../../lib/graphql/mutations'
+import { CREATE_GRIMOIRE } from '../../lib/graphql/mutations';
 import {
   CreateGrimoire as CreateGrimoireData,
   CreateGrimoireVariables,
-} from '../../lib/graphql/mutations/CreateGrimoire/__generated__/CreateGrimoire'
-import { USER } from '../../lib/graphql/queries'
-import { useMutation } from '@apollo/react-hooks'
-import { Viewer } from '../../lib/types'
+} from '../../lib/graphql/mutations/CreateGrimoire/__generated__/CreateGrimoire';
+import { USER } from '../../lib/graphql/queries';
+import { useMutation } from '@apollo/react-hooks';
+import { Viewer } from '../../lib/types';
 // Styles
-import s from './styles/CreateGrimoire.module.scss'
+import s from './styles/CreateGrimoire.module.scss';
 // Constants
-import { CLASS_FILTER_OPTIONS } from '../../lib/constants'
+import { CLASSES } from '../../lib/constants';
+import { Store } from 'redux';
 
-const { Item, List } = Form
-const { Title, Text } = Typography
+const { Item, List } = Form;
+const { Title, Text } = Typography;
 
 interface CharacterClass {
-  class?: string
-  level?: number
+  class?: string;
+  level?: number;
+}
+
+interface ClassInput {
+  class: {
+    value: string;
+    label: string;
+    key: string;
+  };
+  level: number;
+}
+
+interface FormData {
+  name: string;
+  characterClasses: ClassInput[];
 }
 
 interface Props {
-  viewer: Viewer
+  viewer: Viewer;
 }
 
-export const CreateGrimoire = ({ viewer }: Props) => {
-  const [form] = Form.useForm()
-  const [options, setOptions] = useState<any>(CLASS_FILTER_OPTIONS)
-  const [totalLevel, setTotalLevel] = useState<number>(0)
+export const CreateGrimoire = ({ viewer }: Props): JSX.Element => {
+  const intl = useIntl();
+  const [form] = Form.useForm();
+  const [options, setOptions] = useState<string[]>(CLASSES);
+  const [totalLevel, setTotalLevel] = useState<number>(0);
 
   const [createGrimoire, { loading, data }] = useMutation<
     CreateGrimoireData,
@@ -50,32 +67,44 @@ export const CreateGrimoire = ({ viewer }: Props) => {
   >(CREATE_GRIMOIRE, {
     onCompleted: (data) => {
       displaySuccessMessage(
-        `Grimoire ${data.createGrimoire.name} successfully created`
-      )
+        intl.formatMessage(
+          {
+            id: 'createGrimoireSubmitSuccess',
+          },
+          {
+            name: data.createGrimoire.name,
+          }
+        )
+      );
     },
     onError: () => {
-      displayErrorMessage(
-        `Grimoire was not created. Check your internet connection or try again later`
-      )
+      displayErrorMessage(intl.formatMessage({ id: 'createGrimoireSubmitError' }));
     },
     refetchQueries: [{ query: USER, variables: { id: viewer.id } }],
     awaitRefetchQueries: true,
-  })
+  });
+
+  const updateOptions = () => {
+    const values = Object.values(
+      form
+        .getFieldsValue(['characterClasses'])
+        .characterClasses.map((cls: CharacterClass) => {
+          return cls ? cls.class : null;
+        })
+    ).map((item: any): string => {
+      return item.value;
+    });
+
+    setOptions(
+      CLASSES.filter((option: string) => {
+        return !~values.indexOf(option);
+      })
+    );
+  };
 
   const onSelectChange = () => {
-    setOptions(
-      CLASS_FILTER_OPTIONS.filter(({ value }: { value: any }) => {
-        return (
-          form
-            .getFieldsValue(['characterClasses'])
-            .characterClasses.map((cls: CharacterClass) => {
-              return cls ? cls.class : null
-            })
-            .indexOf(value) === -1
-        )
-      })
-    )
-  }
+    updateOptions();
+  };
 
   const onLevelChange = () => {
     setTotalLevel(
@@ -83,64 +112,59 @@ export const CreateGrimoire = ({ viewer }: Props) => {
         form
           .getFieldsValue(['characterClasses'])
           .characterClasses.map(({ level }: { level: number }) => {
-            return level ? level : 0
+            return level ? level : 0;
           })
-      ).reduce(
-        (accumulator: number, currentValue: number) =>
-          accumulator + currentValue
-      )
-    )
-  }
+      ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue)
+    );
+  };
 
-  const onFinish = (values: any) => {
-    const classFields = form.getFieldsValue(['characterClasses'])
-      .characterClasses
+  const onFinish = (v: FormData) => {
+    const classFields = form.getFieldsValue(['characterClasses']).characterClasses;
 
     if (classFields === undefined || !classFields.length) {
-      displayErrorMessage('Please add at least one class')
-      return
+      displayErrorMessage(intl.formatMessage({ id: 'addClassError' }));
+      return;
     }
 
-    const characterClasses: CharacterClass[] = []
+    const characterClasses: CharacterClass[] = [];
 
+    v.characterClasses.map((charClass: ClassInput) => {
+      const cls = charClass.class ? charClass.class.value : undefined;
 
-    values.characterClasses.map((charClass: CharacterClass) => {
-      const uppercased = charClass.class ? charClass.class.toUpperCase() : undefined 
-    
       return characterClasses.push({
         ...charClass,
-        class: uppercased
-      })
-    })
+        class: cls,
+      });
+    });
 
     const input = {
-      name: values.name,
+      name: v.name,
       characterClasses,
-    }
+    };
 
     createGrimoire({
       variables: {
         input,
       },
-    })
-  }
+    }).then();
+  };
 
   const onFinishFailed = ({ errorFields }: any) => {
-    form.scrollToField(errorFields[0].name)
-  }
+    form.scrollToField(errorFields[0].name);
+  };
 
   if (loading) {
     return (
       <Spin
         wrapperClassName="container"
         className="centered"
-        tip="Creating grimoire..."
+        tip={intl.formatMessage({ id: 'createGrimoireSpinner' })}
       />
-    )
+    );
   }
 
   if (data && data.createGrimoire) {
-    return <Redirect to={`/user/${viewer.id}`} />
+    return <Redirect to={`/user/${viewer.id}`} />;
   }
 
   if (!viewer.id) {
@@ -152,18 +176,17 @@ export const CreateGrimoire = ({ viewer }: Props) => {
           <Link to="/login">login</Link> page, and try again after.
         </Text>
       </Card>
-    )
+    );
   }
 
   return (
     <>
       <div className={s.title}>
         <Title level={3}>
-          Welcome, spellcaster! Let's create your own Grimoire!
+          <FormattedMessage id="createGrimoireHeader" />
         </Title>
         <Text type="secondary">
-          In this form we'll collect some information, to fill title page of the
-          Grimoire.
+          <FormattedMessage id="createGrimoireFormDescription" />
         </Text>
       </div>
       <Card className="form-container">
@@ -173,20 +196,24 @@ export const CreateGrimoire = ({ viewer }: Props) => {
           name="create_grimoire_from"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          initialValues={{ level: 1 }}
         >
           <Item
             name="name"
-            label="Name"
-            extra="Max length of 30 characters"
+            label={intl.formatMessage({ id: 'createGrimoireFormName' })}
+            extra={intl.formatMessage({ id: 'createGrimoireFormNameExtra' })}
             rules={[
               {
                 required: true,
-                message: 'Please enter valid name under 30 characters',
+                message: intl.formatMessage({ id: 'createGrimoireFormNameError' }),
               },
             ]}
           >
-            <Input maxLength={30} placeholder="Type 'Elminster Aumar'" />
+            <Input
+              maxLength={30}
+              placeholder={intl.formatMessage({
+                id: 'createGrimoireFormNamePlaceholder',
+              })}
+            />
           </Item>
           <Divider />
 
@@ -208,27 +235,49 @@ export const CreateGrimoire = ({ viewer }: Props) => {
                             <Item
                               {...field}
                               {...idx}
-                              label="Class"
-                              name={[field.name, 'class']}
+                              label={intl.formatMessage({ id: 'spellClass' })}
                               fieldKey={[field.fieldKey, 'class']}
+                              name={[field.name, 'class']}
+                              initialValue={{ value: options[idx] }}
                               rules={[
-                                { required: true, message: 'Missing class' },
+                                {
+                                  required: true,
+                                  message: intl.formatMessage({
+                                    id: 'createGrimoireFormClassError',
+                                  }),
+                                },
                               ]}
                             >
                               <Select
-                                options={options}
                                 onChange={onSelectChange}
+                                showSearch
+                                labelInValue
+                                options={options.map((option) => {
+                                  return {
+                                    value: option,
+                                    label: intl.formatMessage({ id: option }),
+                                  };
+                                })}
                                 optionFilterProp="label"
+                                optionLabelProp="label"
                               />
                             </Item>
                           )}
                         </Item>
                         <Item
                           {...field}
-                          label="Level"
+                          label={intl.formatMessage({ id: 'spellLevel' })}
                           name={[field.name, 'level']}
                           fieldKey={[field.fieldKey, 'level']}
-                          rules={[{ required: true, message: 'Missing level' }]}
+                          initialValue={1}
+                          rules={[
+                            {
+                              required: true,
+                              message: intl.formatMessage({
+                                id: 'createGrimoireFormLevelError',
+                              }),
+                            },
+                          ]}
                         >
                           <InputNumber
                             min={1}
@@ -241,42 +290,41 @@ export const CreateGrimoire = ({ viewer }: Props) => {
                         <MinusCircleOutlined
                           aria-label="delete class"
                           onClick={() => {
-                            remove(field.name)
-                            onSelectChange()
+                            remove(field.name);
+                            onSelectChange();
                           }}
                         />
                       </div>
                       <Divider />
                     </React.Fragment>
                   ))}
-                  <Form.Item>
+                  <Item>
                     <Button
                       type="dashed"
                       onClick={() => {
-                        add()
+                        add();
                       }}
                       block
                     >
-                      <PlusOutlined /> Add class
+                      <PlusOutlined /> <FormattedMessage id="addClassBtn" />
                     </Button>
-                  </Form.Item>
+                  </Item>
                 </>
-              )
+              );
             }}
           </List>
           {totalLevel > 20 && (
             <Text type="danger">
-              Your characters total level is {totalLevel}, wich may not be
-              allowed for a general game
+              <FormattedMessage id="levelTooHigh" values={{ totalLevel }} />
             </Text>
           )}
           <Item className={s.submitContainer}>
             <Button className={s.submitButton} type="primary" htmlType="submit">
-              Submit
+              <FormattedMessage id="submit" />
             </Button>
           </Item>
         </Form>
       </Card>
     </>
-  )
-}
+  );
+};

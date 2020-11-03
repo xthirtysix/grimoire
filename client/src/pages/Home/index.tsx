@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 import {
   HomeAllSpells,
   HomeSchools,
   HomeSpells,
   HomeWave,
   HomeWhyRegister,
-} from './components'
-import { displayErrorMessage } from '../../lib/utils'
-import { RouteComponentProps } from 'react-router-dom'
+} from './components';
+import { displayErrorMessage } from '../../lib/utils';
+import { RouteComponentProps } from 'react-router-dom';
 
-
-export const Home = ({ history }: RouteComponentProps) => {
+export const Home = ({ history }: RouteComponentProps): JSX.Element => {
   const onSearch = (value: string) => {
     const trimmedValue = value
       .trim()
@@ -18,22 +17,21 @@ export const Home = ({ history }: RouteComponentProps) => {
       .map((substr) => {
         return substr.toLowerCase() !== 'the'
           ? substr.charAt(0).toUpperCase() + substr.slice(1).toLowerCase()
-          : substr.toLowerCase()
+          : substr.toLowerCase();
       })
-      .join(' ')
+      .join(' ');
 
     if (trimmedValue) {
-      history.push(`/spell/${trimmedValue}`)
+      history.push(`/spell/${trimmedValue}`);
     } else {
-      displayErrorMessage('Please enter a valid search')
+      displayErrorMessage('Please enter a valid search');
     }
-  }
+  };
 
   return (
     <>
       <h1 className="visually-hidden">
-        Grimoire - a tool to store, sort and track spells in Dungeons & Dragons
-        games
+        Grimoire - a tool to store, sort and track spells in Dungeons & Dragons games
       </h1>
       <HomeSchools onSearch={onSearch} />
       <HomeAllSpells />
@@ -41,5 +39,5 @@ export const Home = ({ history }: RouteComponentProps) => {
       <HomeWave />
       <HomeSpells />
     </>
-  )
-}
+  );
+};

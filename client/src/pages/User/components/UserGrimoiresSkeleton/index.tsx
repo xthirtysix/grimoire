@@ -1,9 +1,9 @@
-import React from 'react'
-import { Card, Skeleton } from 'antd'
+import React from 'react';
+import { Card, Skeleton } from 'antd';
 //Styles
-import s from './styles/UserGrimoiresSkeleton.module.scss'
+import s from './styles/UserGrimoiresSkeleton.module.scss';
 
-const { Input, Button } = Skeleton
+const { Input, Button } = Skeleton;
 
 export const UserGrimoiresSkeleton = () => {
   const grimoireSkeleton = (
@@ -46,14 +46,14 @@ export const UserGrimoiresSkeleton = () => {
         <Button active={true} size={'default'} style={{ height: 14 }} />
       </div>
     </Card>
-  )
+  );
 
-  const grimoires = []
-  const SKELETONS_COUNT = 3
+  const grimoires = [];
+  const SKELETONS_COUNT = 3;
 
   for (let i = 0; i < SKELETONS_COUNT; i++) {
-    grimoires.push(<li key={i}>{grimoireSkeleton}</li>)
+    grimoires.push(<li key={i}>{grimoireSkeleton}</li>);
   }
 
-  return <ul className={s.grid}>{grimoires}</ul>
-}
+  return <ul className={s.grid}>{grimoires}</ul>;
+};

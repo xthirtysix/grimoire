@@ -3,19 +3,19 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort, Level, CastingTime, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "./../../../globalTypes";
+import { SpellsFilter, SpellsSort, Level, CastingTime, Duration, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
 // ====================================================
 
-export interface Spells_spells_result_range {
-  __typename: "Scalar";
-  value: number | null;
-  unit: string;
+export interface Spells_spells_result_name {
+  __typename: "Bilingual";
+  en: string;
+  ru: string;
 }
 
-export interface Spells_spells_result_duration {
+export interface Spells_spells_result_range {
   __typename: "Scalar";
   value: number | null;
   unit: string;
@@ -26,6 +26,30 @@ export interface Spells_spells_result_components {
   verbal: boolean;
   somatic: boolean;
   material: boolean;
+}
+
+export interface Spells_spells_result_materials {
+  __typename: "Bilingual";
+  en: string;
+  ru: string;
+}
+
+export interface Spells_spells_result_description {
+  __typename: "Bilingual";
+  en: string;
+  ru: string;
+}
+
+export interface Spells_spells_result_atHigherLevels {
+  __typename: "Bilingual";
+  en: string;
+  ru: string;
+}
+
+export interface Spells_spells_result_atHigherSlots {
+  __typename: "Bilingual";
+  en: string;
+  ru: string;
 }
 
 export interface Spells_spells_result_damageDice {
@@ -49,23 +73,23 @@ export interface Spells_spells_result_damageScale {
 export interface Spells_spells_result {
   __typename: "Spell";
   id: string;
-  name: string;
+  name: Spells_spells_result_name;
   level: Level;
   school: string;
   castingTime: CastingTime;
   range: Spells_spells_result_range;
-  duration: Spells_spells_result_duration;
+  duration: Duration;
   isConcentration: boolean;
   isRitual: boolean;
   components: Spells_spells_result_components | null;
-  materials: string | null;
-  description: string;
+  materials: Spells_spells_result_materials | null;
+  description: Spells_spells_result_description;
   source: string;
   tags: SpellTag[];
   classes: ClassType[];
   conditions: (Conditions | null)[] | null;
-  atHigherLevels: string | null;
-  atHigherSlots: string | null;
+  atHigherLevels: Spells_spells_result_atHigherLevels | null;
+  atHigherSlots: Spells_spells_result_atHigherSlots | null;
   damageDice: Spells_spells_result_damageDice | null;
   damageScale: Spells_spells_result_damageScale[] | null;
   damageType: DamageType | null;

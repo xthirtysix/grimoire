@@ -1,49 +1,53 @@
-import React from 'react'
-import { Card, Empty, Typography } from 'antd'
-import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons'
+import React from 'react';
+import { Card, Empty, Typography } from 'antd';
+import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 //Data
-import { DELETE_GRIMOIRE } from '../../../../lib/graphql/mutations'
+import { DELETE_GRIMOIRE } from '../../../../lib/graphql/mutations';
 import {
   DeleteGrimoire as DeleteGrimoireData,
   DeleteGrimoireVariables,
-} from '../../../../lib/graphql/mutations/DeleteGrimoire/__generated__/DeleteGrimoire'
-import { USER } from '../../../../lib/graphql/queries'
-import { User } from '../../../../lib/graphql/queries/User/__generated__/User'
-import { useMutation } from '@apollo/react-hooks'
+} from '../../../../lib/graphql/mutations/DeleteGrimoire/__generated__/DeleteGrimoire';
+import { USER } from '../../../../lib/graphql/queries';
+import { User } from '../../../../lib/graphql/queries/User/__generated__/User';
+import { useMutation } from '@apollo/react-hooks';
 //Styles
-import s from './styles/UserGrimoires.module.scss'
-import { displaySuccessMessage } from '../../../../lib/utils'
+import s from './styles/UserGrimoires.module.scss';
+import { displaySuccessMessage } from '../../../../lib/utils';
 
-const { Text, Title } = Typography
+const { Text, Title } = Typography;
 
 interface Props {
-  userGrimoires: User['user']['grimoires']
-  viewerIsUser: boolean
-  userId: string | null
+  userGrimoires: User['user']['grimoires'];
+  viewerIsUser: boolean;
+  userId: string | null;
 }
 
 export const UserGrimoires = ({
   userGrimoires,
   viewerIsUser,
   userId,
-}: Props) => {
-  const total = userGrimoires ? userGrimoires.total : null
-  const result = userGrimoires ? userGrimoires.result : null
+}: Props): JSX.Element => {
+  const intl = useIntl();
 
-  const [deleteGrimoire] = useMutation<
-    DeleteGrimoireData,
-    DeleteGrimoireVariables
-  >(DELETE_GRIMOIRE, {
-    onCompleted: () => {
-      displaySuccessMessage('Grimoire successfully removed')
-    },
-    refetchQueries: [{ query: USER, variables: { id: userId } }],
-    awaitRefetchQueries: true,
-  })
+  const total = userGrimoires ? userGrimoires.total : null;
+  const result = userGrimoires ? userGrimoires.result : null;
+
+  const [deleteGrimoire] = useMutation<DeleteGrimoireData, DeleteGrimoireVariables>(
+    DELETE_GRIMOIRE,
+    {
+      onCompleted: () => {
+        displaySuccessMessage(intl.formatMessage({ id: 'grimoireDeleteMsg' }));
+      },
+      refetchQueries: [{ query: USER, variables: { id: userId } }],
+      awaitRefetchQueries: true,
+    }
+  );
 
   const handleDeleteGrimoire = (id: string) => {
-    deleteGrimoire({ variables: { id } })
-  }
+    deleteGrimoire({ variables: { id } }).then();
+  };
 
   const grimoireList =
     total && result ? (
@@ -57,52 +61,54 @@ export const UserGrimoires = ({
                 </Title>
                 <Text className={s.cardClasses}>
                   {grimoire.characterClasses.map((cls) => {
-                    let value = cls.class ? (
-                      <span className={s.cardCharacterClass} key={cls.class}>
+                    return cls.class ? (
+                      <span
+                        className={s.cardCharacterClass}
+                        key={grimoire.name + cls.class}
+                      >
                         <span>
-                          {cls.class.charAt(0) +
-                            cls.class.slice(1).toLowerCase()}
+                          <FormattedMessage id={cls.class} />
                         </span>
-                        , level <span>{cls.level}</span>
+                        , {intl.formatMessage({ id: 'spellLevel' }).toLowerCase()}&nbsp;
+                        <span>{cls.level}</span>
                       </span>
-                    ) : null
-                    return value
+                    ) : null;
                   })}
                 </Text>
                 <div className={s.cardButtonContainer}>
-                  <a href={`/grimoire/${grimoire.id}`}>
+                  <Link to={`/grimoire/${grimoire.id}`}>
                     <EyeOutlined />
-                    View
-                  </a>
+                    <FormattedMessage id="grimoireView" />
+                  </Link>
                   {viewerIsUser ? (
                     <>
-                      <a href={`/grimoire/${grimoire.id}/edit`}>
+                      <Link to={`/grimoire/${grimoire.id}/edit`}>
                         <EditOutlined />
-                        Edit
-                      </a>
+                        <FormattedMessage id="grimoireEdit" />
+                      </Link>
                       <button
                         type="button"
                         className={s.cardRemoveButton}
                         onClick={() => handleDeleteGrimoire(grimoire.id)}
                       >
                         <DeleteOutlined />
-                        Remove
+                        <FormattedMessage id="grimoireRemove" />
                       </button>
                     </>
                   ) : null}
                 </div>
               </Card>
             </li>
-          )
+          );
         })}
       </ul>
     ) : (
       <Empty
         className={s.empty}
-        description="There'are no Grimoires in your library yet"
+        description={intl.formatMessage({ id: 'grimoiresEmpty' })}
         image={Empty.PRESENTED_IMAGE_SIMPLE}
       />
-    )
+    );
 
-  return <>{grimoireList}</>
-}
+  return <>{grimoireList}</>;
+};

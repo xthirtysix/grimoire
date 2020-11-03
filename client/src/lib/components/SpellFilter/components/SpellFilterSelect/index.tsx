@@ -1,18 +1,19 @@
-import React from 'react'
-import { Select, Tag } from 'antd'
-import { ClockCircleOutlined } from '@ant-design/icons'
-import { SelectValue } from 'antd/lib/tree-select'
+import React from 'react';
+import { Select, Tag } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
+import { SelectValue } from 'antd/lib/tree-select';
+import { FormattedMessage } from 'react-intl';
 // Maps
-import { filterTypeToSelectLabel, schoolToColor } from '../../../../maps'
+import { schoolToColor } from '../../../../maps';
 // Styles
-import s from './styles/SpellFilter.module.scss'
+import s from './styles/SpellFilter.module.scss';
 
 interface Props {
-  filterType: string
-  options: { label: any; value: any }[]
-  placeholderText: string
-  onChange: (values: SelectValue, type: string) => void
-  isSchool?: boolean
+  filterType: string;
+  options: { label: string; value: string }[];
+  placeholderText: string;
+  onChange: (values: SelectValue, type: string) => void;
+  isSchool?: boolean;
 }
 
 export const SpellFilterSelect = ({
@@ -21,37 +22,40 @@ export const SpellFilterSelect = ({
   placeholderText,
   onChange,
   isSchool,
-}: Props) => {
-  const tagRenderer = (props: any) => {
-    const { closable, label, onClose, value } = props
-    const color = isSchool ? schoolToColor.get(value) : ''
-    let icon
+}: Props): JSX.Element => {
+  const tagRenderer = <T extends unknown>(props: { [key: string]: T }) => {
+    const { closable, label, onClose, value } = props;
+    const color = isSchool ? schoolToColor.get(value as string) : '';
+    let icon;
 
     switch (filterType) {
       case 'castingTime':
-        icon = <ClockCircleOutlined />
-        break
+        icon = <ClockCircleOutlined />;
+        break;
       default:
-        icon = null
-        break
+        icon = null;
+        break;
     }
 
     return (
       <Tag
-        closable={closable}
-        onClose={onClose}
+        closable={closable as boolean}
+        onClose={onClose as () => void}
         style={{ marginRight: 3 }}
         color={color}
       >
         {icon} {label}
       </Tag>
-    )
-  }
+    );
+  };
 
   return (
     <label className={s.filterSection}>
       <span style={{ fontWeight: 700 }}>
-        {filterTypeToSelectLabel.get(filterType)}:
+        <FormattedMessage
+          id={`spell${filterType.charAt(0).toUpperCase()}${filterType.slice(1)}`}
+        />
+        :
       </span>
       <Select
         allowClear
@@ -59,12 +63,12 @@ export const SpellFilterSelect = ({
         onChange={(values) => onChange(values, filterType)}
         options={options}
         optionFilterProp="label"
-        filterOption={(input: string, { label }: any) =>
+        filterOption={(input: string, { label }: any): boolean =>
           label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         tagRender={(props) => tagRenderer(props)}
         placeholder={placeholderText}
       />
     </label>
-  )
-}
+  );
+};

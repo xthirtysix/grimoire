@@ -1,1 +1,1 @@
-export * from '../../../lib/components/SpellSkeleton'
+export * from '../../../lib/components/SpellSkeleton';
