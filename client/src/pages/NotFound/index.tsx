@@ -1,5 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const NotFound = () => {
-  return <h2>404</h2>
-}
+  return <h2>404</h2>;
+};

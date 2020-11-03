@@ -1,6 +1,13 @@
-import { castingTimeToDisplayed, levelToDisplayed } from '../maps'
+interface Locale {
+  [key: string]: string;
+}
 
-const CASTING_TIMES = [
+export const LOCALES: Locale = {
+  ENGLISH: 'en',
+  RUSSIAN: 'ru',
+};
+
+export const CASTING_TIMES = [
   'REACTION',
   'BONUS_ACTION',
   'ACTION',
@@ -11,29 +18,22 @@ const CASTING_TIMES = [
   'TWELVE_HOURS',
   'TWENTYFOUR_HOURS',
   'SPECIAL',
-]
-
-export const CASTING_TIME_FILTER_OPTIONS = CASTING_TIMES.map((castingTime) => {
-  return {
-    value: castingTime,
-    label: castingTimeToDisplayed.get(castingTime),
-  }
-})
+];
 
 export const CLASSES = [
-  'Bard',
-  'Barbarian',
-  'Cleric',
-  'Druid',
-  'Fighter',
-  'Monk',
-  'Paladin',
-  'Ranger',
-  'Rogue',
-  'Sorcerer',
-  'Warlock',
-  'Wizard',
-]
+  'BARD',
+  'BARBARIAN',
+  'CLERIC',
+  'DRUID',
+  'FIGHTER',
+  'MONK',
+  'PALADIN',
+  'RANGER',
+  'ROGUE',
+  'SORCERER',
+  'WARLOCK',
+  'WIZARD',
+];
 
 export const SPELLCASTERS = [
   'BARD',
@@ -43,17 +43,10 @@ export const SPELLCASTERS = [
   'RANGER',
   'SORCERER',
   'WARLOCK',
-  'WIZARD'
-]
+  'WIZARD',
+];
 
-export const CLASS_FILTER_OPTIONS = SPELLCASTERS.map((cls) => {
-  return {
-    value: cls,
-    label: cls.charAt(0) + cls.slice(1).toLowerCase()
-  }
-})
-
-const LEVELS = [
+export const LEVELS = [
   'LEVEL_0',
   'LEVEL_1',
   'LEVEL_2',
@@ -64,32 +57,18 @@ const LEVELS = [
   'LEVEL_7',
   'LEVEL_8',
   'LEVEL_9',
-]
+];
 
-export const LEVEL_FILTER_OPTIONS = LEVELS.map((level) => {
-  return {
-    value: level,
-    label: levelToDisplayed.get(level),
-  }
-})
-
-const SAVES_REQUIRED = [
+export const SAVES_REQUIRED = [
   'STRENGTH',
   'CONSTITUTION',
   'DEXTERITY',
   'INTELLIGENCE',
   'WISDOM',
   'CHARISMA',
-]
+];
 
-export const SAVE_REQUIRED_FILTER_OPTIONS = SAVES_REQUIRED.map((save) => {
-  return {
-    value: save,
-    label: save.charAt(0) + save.slice(1).toLowerCase(),
-  }
-})
-
-const SPELL_SCHOOLS = [
+export const SPELL_SCHOOLS = [
   'ABJURATION',
   'CONJURATION',
   'DIVINATION',
@@ -98,23 +77,16 @@ const SPELL_SCHOOLS = [
   'ILLUSION',
   'NECROMANCY',
   'TRANSMUTATION',
-]
-
-export const SPELL_SCHOOL_FILTER_OPTIONS = SPELL_SCHOOLS.map((spellSchool) => {
-  return {
-    value: spellSchool,
-    label: spellSchool.charAt(0) + spellSchool.slice(1).toLowerCase(),
-  }
-})
+];
 
 export const SORT_OPTIONS = [
-  { label: 'Casting time ascending', value: 'CASTING_TIME_ASCENDING' },
-  { label: 'Casting time descending', value: 'CASTING_TIME_DESCENDING' },
-  { label: 'Level 0-9', value: 'LEVEL_ASCENDING' },
-  { label: 'Level 9-0', value: 'LEVEL_DESCENDING' },
-  { label: 'Name A-Z', value: 'NAME_ASCENDING' },
-  { label: 'Name Z-A', value: 'NAME_DESCENDING' },
-]
+  'CASTING_TIME_ASCENDING',
+  'CASTING_TIME_DESCENDING',
+  'LEVEL_ASCENDING',
+  'LEVEL_DESCENDING',
+  'NAME_ASCENDING',
+  'NAME_DESCENDING',
+];
 
 export const TAGS = [
   'BANISHMENT',
@@ -129,7 +101,6 @@ export const TAGS = [
   'DEBUFF',
   'DECEPTION',
   'DETECTION',
-  'DUNAMANCY',
   'ENVIRONMENT',
   'EXPLORATION',
   'FOREKNOWLEDGE',
@@ -144,11 +115,4 @@ export const TAGS = [
   'TELEPORTATION',
   'UTILITY',
   'WARDING',
-]
-
-export const TAG_FILTER_OPTIONS = TAGS.map((tag) => {
-  return {
-    value: tag,
-    label: tag.charAt(0) + tag.slice(1).toLowerCase(),
-  }
-})
+];

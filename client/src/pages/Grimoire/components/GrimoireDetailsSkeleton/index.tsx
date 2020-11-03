@@ -1,9 +1,9 @@
-import React from 'react'
-import { Divider, Skeleton } from 'antd'
+import React from 'react';
+import { Divider, Skeleton } from 'antd';
 
-const { Input } = Skeleton
+const { Input } = Skeleton;
 
-export const GrimoireDetailesSkeleton = () => {
+export const GrimoireDetailsSkeleton = () => {
   return (
     <>
       <Input
@@ -18,5 +18,5 @@ export const GrimoireDetailesSkeleton = () => {
       />
       <Divider style={{ marginBottom: 12 }} />
     </>
-  )
-}
+  );
+};

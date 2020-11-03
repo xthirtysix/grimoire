@@ -1,9 +1,9 @@
-import React from 'react'
-import { Skeleton } from 'antd'
+import React from 'react';
+import { Skeleton } from 'antd';
 //Styles
-import s from './styles/UserProfileSkeleton.module.scss'
+import s from './styles/UserProfileSkeleton.module.scss';
 
-const { Avatar, Input } = Skeleton
+const { Avatar, Input } = Skeleton;
 
 export const UserProfileSkeleton = () => {
   return (
@@ -27,5 +27,5 @@ export const UserProfileSkeleton = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};

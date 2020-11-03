@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost';
 
 export const GRIMOIRE = gql`
   query Grimoire($id: ID!) {
@@ -15,4 +15,4 @@ export const GRIMOIRE = gql`
       spells
     }
   }
-`
+`;

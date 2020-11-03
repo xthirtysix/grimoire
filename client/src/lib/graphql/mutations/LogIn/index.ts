@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost';
 
 export const LOG_IN = gql`
   mutation LogIn($input: LogInInput) {
@@ -9,4 +9,4 @@ export const LOG_IN = gql`
       didRequest
     }
   }
-`
+`;

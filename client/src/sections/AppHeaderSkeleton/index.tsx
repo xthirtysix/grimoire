@@ -1,9 +1,9 @@
-import React from 'react'
-import { Layout } from 'antd'
+import React from 'react';
+import { Layout } from 'antd';
 //Styles
-import s from './styles/AppHeaderSkeleton.module.scss'
+import s from './styles/AppHeaderSkeleton.module.scss';
 
-const { Header } = Layout
+const { Header } = Layout;
 
 export const AppHeaderSkeleton = () => {
   return (
@@ -12,5 +12,5 @@ export const AppHeaderSkeleton = () => {
         Grimoire
       </a>
     </Header>
-  )
-}
+  );
+};

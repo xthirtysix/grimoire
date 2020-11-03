@@ -12,9 +12,10 @@
 
 .container {
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  grid-template-areas: 'logo search user';
+  grid-template-columns: auto max-content min-content 1fr;
+  grid-template-areas: 'logo search switch user';
   grid-gap: 1rem;
+  align-items: center;
   width: 100%;
   min-height: 64px;
   padding: 0 1rem !important;
@@ -25,7 +26,7 @@
 @media (max-width: 767px) {
   .container {
     grid-template-columns: 1fr;
-    grid-template-areas: 'search search' 'logo user';
+    grid-template-areas: 'search search search' 'logo switch user';
     grid-gap: 0;
   }
 }

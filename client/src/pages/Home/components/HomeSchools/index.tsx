@@ -1,5 +1,5 @@
-import React from 'react'
-import { Card, Input } from 'antd'
+import React from 'react';
+import { Card, Input } from 'antd';
 import {
   BlockOutlined,
   EnvironmentOutlined,
@@ -9,27 +9,32 @@ import {
   StarOutlined,
   StopOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { FormattedMessage, useIntl } from 'react-intl';
 //Styles
-import schools from './styles/HomeSchools.module.scss'
-import home from '../../styles/Home.module.scss'
+import schools from './styles/HomeSchools.module.scss';
+import home from '../../styles/Home.module.scss';
 
-const { Search } = Input
+const { Search } = Input;
 
 interface Props {
-  onSearch: (value: string) => void
+  onSearch: (value: string) => void;
 }
 
-export const HomeSchools = ({ onSearch }: Props) => {
+export const HomeSchools = ({ onSearch }: Props): JSX.Element => {
+  const intl = useIntl();
+
   return (
     <section className={schools.container}>
       <h2 className="visually-hidden">Spell Schools</h2>
       <div className="container">
         <div>
-          <p className={home.sectionHeader}>Find a spell you'd like to cast</p>
+          <p className={home.sectionHeader}>
+            <FormattedMessage id="headerMain" />
+          </p>
           <Search
-            placeholder="Search 'Fireball'"
+            placeholder={intl.formatMessage({ id: 'mainSearchPlaceholder' })}
             size="large"
             enterButton
             className={schools.search}
@@ -37,18 +42,13 @@ export const HomeSchools = ({ onSearch }: Props) => {
           />
         </div>
         <ul className={schools.list}>
-          {' '}
           <li>
             <Link to="/spells/illusion">
               <Card
                 className={schools.illusion}
-                cover={
-                  <EyeOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<EyeOutlined className={schools.icon} />}
               >
-                Illusion
+                <FormattedMessage id="ILLUSION" />
               </Card>
             </Link>
           </li>
@@ -56,13 +56,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/conjuration">
               <Card
                 className={schools.conjuration}
-                cover={
-                  <EnvironmentOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<EnvironmentOutlined className={schools.icon} />}
               >
-                Conjuration
+                <FormattedMessage id="CONJURATION" />
               </Card>
             </Link>
           </li>
@@ -70,13 +66,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/necromancy">
               <Card
                 className={schools.necromancy}
-                cover={
-                  <StopOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<StopOutlined className={schools.icon} />}
               >
-                Necromancy
+                <FormattedMessage id="NECROMANCY" />
               </Card>
             </Link>
           </li>{' '}
@@ -84,13 +76,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/divination">
               <Card
                 className={schools.divination}
-                cover={
-                  <ThunderboltOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<ThunderboltOutlined className={schools.icon} />}
               >
-                Divination
+                <FormattedMessage id="DIVINATION" />
               </Card>
             </Link>
           </li>
@@ -98,13 +86,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/evocation">
               <Card
                 className={schools.evocation}
-                cover={
-                  <FireOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<FireOutlined className={schools.icon} />}
               >
-                Evocation
+                <FormattedMessage id="EVOCATION" />
               </Card>
             </Link>
           </li>
@@ -112,13 +96,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/enchantment">
               <Card
                 className={schools.enchantment}
-                cover={
-                  <StarOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<StarOutlined className={schools.icon} />}
               >
-                Enchantment
+                <FormattedMessage id="ENCHANTMENT" />
               </Card>
             </Link>
           </li>
@@ -126,13 +106,9 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/abjuration">
               <Card
                 className={schools.abjuration}
-                cover={
-                  <SafetyOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<SafetyOutlined className={schools.icon} />}
               >
-                Abjuration
+                <FormattedMessage id="ABJURATION" />
               </Card>
             </Link>
           </li>
@@ -140,18 +116,14 @@ export const HomeSchools = ({ onSearch }: Props) => {
             <Link to="/spells/transmutation">
               <Card
                 className={schools.transmutation}
-                cover={
-                  <BlockOutlined
-                    style={{ fontSize: '64px', paddingTop: '2rem' }}
-                  />
-                }
+                cover={<BlockOutlined className={schools.icon} />}
               >
-                Transmutation
+                <FormattedMessage id="TRANSMUTATION" />
               </Card>
             </Link>
           </li>
         </ul>
       </div>
     </section>
-  )
-}
+  );
+};

@@ -1,10 +1,13 @@
-import { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost';
 
 export const SPELL = gql`
   query Spell($name: String!) {
     spell(name: $name) {
       id
-      name
+      name {
+        en
+        ru
+      }
       level
       school
       castingTime
@@ -12,10 +15,7 @@ export const SPELL = gql`
         value
         unit
       }
-      duration {
-        value
-        unit
-      }
+      duration
       isConcentration
       isRitual
       components {
@@ -23,14 +23,26 @@ export const SPELL = gql`
         somatic
         material
       }
-      materials
-      description
+      materials {
+        en
+        ru
+      }
+      description {
+        en
+        ru
+      }
       source
       tags
       classes
       conditions
-      atHigherLevels
-      atHigherSlots
+      atHigherLevels {
+        en
+        ru
+      }
+      atHigherSlots {
+        en
+        ru
+      }
       damageDice {
         dice
         quantity
@@ -46,4 +58,4 @@ export const SPELL = gql`
       saveRequired
     }
   }
-`
+`;

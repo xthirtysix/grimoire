@@ -1,21 +1,24 @@
-import React from 'react'
-import { Descriptions, Tag } from 'antd'
-import DOMPurify from 'dompurify'
+import React from 'react';
+import { Descriptions, Tag } from 'antd';
+import DOMPurify from 'dompurify';
+import { FormattedMessage } from 'react-intl';
 //Data
-import { Spell as SpellData } from '../../../lib/graphql/queries/Spell/__generated__/Spell'
-import { castingTimeToDisplayed } from '../../maps'
+import { Spell as SpellData } from '../../../lib/graphql/queries/Spell/__generated__/Spell';
 //Styles
-import s from './styles/Spell.module.scss'
+import s from './styles/Spell.module.scss';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-const { Item } = Descriptions
+const { Item } = Descriptions;
 
 interface Props {
-  spell: SpellData['spell']
+  spell: SpellData['spell'];
 }
 
-export const Spell = ({ spell }: Props) => {
+export const Spell = ({ spell }: Props): JSX.Element => {
+  const isTranslated = useSelector((state: RootStateOrAny) => state.isTranslated);
+
   if (!spell) {
-    return <h3>Spell could not be found</h3>
+    return <h3>Spell could not be found</h3>;
   }
 
   const {
@@ -35,114 +38,147 @@ export const Spell = ({ spell }: Props) => {
     saveRequired,
     school,
     tags,
-  } = spell
+  } = spell;
 
   const concentrationCell = isConcentration ? (
-    <Item label="Concentration">Required</Item>
-  ) : null
+    <Item label={<FormattedMessage id="spellConcentration" />}>
+      <FormattedMessage id="spellRequired" />
+    </Item>
+  ) : null;
 
-  const ritualCell = isRitual ? <Item label="Ritual">Required</Item> : null
+  const ritualCell = isRitual ? (
+    <Item label={<FormattedMessage id="spellRitual" />}>
+      <FormattedMessage id="spellRequired" />
+    </Item>
+  ) : null;
 
   const schoolCell = school ? (
-    <Item label="School">
-      {school.charAt(0) + school.slice(1).toLowerCase()}
+    <Item label={<FormattedMessage id="spellSchool" />}>
+      <FormattedMessage id={school} />
     </Item>
-  ) : null
+  ) : null;
 
   const castingTimeCell = castingTime ? (
-    <Item label="Casting time">{castingTimeToDisplayed.get(castingTime)}</Item>
-  ) : null
+    <Item label={<FormattedMessage id="spellCastingTime" />}>
+      <FormattedMessage id={castingTime} />
+    </Item>
+  ) : null;
 
   const classesInfo = classes ? (
     <div>
-      <b>Classes: </b>
+      <b>
+        <FormattedMessage id="spellClasses" />:{' '}
+      </b>
       {classes.map((cls) => {
-        return <Tag key={cls}>{cls.charAt(0) + cls.slice(1).toLowerCase()}</Tag>
+        return (
+          <Tag key={cls}>
+            <FormattedMessage id={cls} />
+          </Tag>
+        );
       })}
     </div>
-  ) : null
+  ) : null;
 
   const atHigherLevelsInfo = atHigherLevels ? (
     <p>
-      <b>At higher levels:</b> {atHigherLevels}
+      <b>
+        <FormattedMessage id="spellAtHigherLevels" />:
+      </b>
+      &nbsp;
+      {isTranslated ? atHigherLevels.ru : atHigherLevels.en}
     </p>
-  ) : null
+  ) : null;
   const atHigherSlotsInfo = atHigherSlots ? (
     <p>
-      <b>Using higher spell slots:</b> {atHigherSlots}
+      <b>
+        <FormattedMessage id="spellAtHigherSlots" />:
+      </b>
+      &nbsp;
+      {isTranslated ? atHigherSlots.ru : atHigherSlots.en}
     </p>
-  ) : null
+  ) : null;
 
   const tagsInfo = tags ? (
     <div>
-      <b>Tags: </b>
+      <b>
+        <FormattedMessage id="spellTags" />:{' '}
+      </b>
       {tags.map((tag) => {
-        return <Tag key={tag}>{tag.charAt(0) + tag.slice(1).toLowerCase()}</Tag>
+        return (
+          <Tag key={tag}>
+            <FormattedMessage id={tag} />
+          </Tag>
+        );
       })}
     </div>
-  ) : null
+  ) : null;
 
   const saveThrowCell = saveRequired ? (
-    <Item label="Saving throw">
-      {saveRequired.charAt(0) + saveRequired.slice(1).toLowerCase()}
+    <Item label={<FormattedMessage id="spellSavingThrow" />}>
+      <FormattedMessage id={saveRequired} />
     </Item>
-  ) : null
+  ) : null;
 
   const durationCell = duration ? (
-    <Item label="Duration">
-      {duration.value
-        ? `${duration.value} ${
-            duration.unit.charAt(0).toUpperCase() + duration.unit.slice(1)
-          }`
-        : duration.unit.charAt(0).toUpperCase() + duration.unit.slice(1)}
+    <Item label={<FormattedMessage id="spellDuration" />}>
+      <FormattedMessage id={duration} />
     </Item>
-  ) : null
+  ) : null;
 
   const rangeCell = spell ? (
-    <Item label="Range">
-      {range.value ? `${range.value} ${range.unit}` : range.unit}
+    <Item label={<FormattedMessage id="spellRange" />}>
+      {range.value ? `${range.value} ` : null}
+      <FormattedMessage id={range.unit} />
     </Item>
-  ) : null
+  ) : null;
 
   const componentsCell = components ? (
-    <Item label="Components">
-      {`${components.verbal ? 'V' : ''}
-      ${components.somatic ? 'S' : ''}
-      ${components.material ? 'M' : ''}`}
+    <Item label={<FormattedMessage id="spellComponents" />}>
+      {`
+        ${components.verbal ? (isTranslated ? 'В' : 'V') : ''}
+        ${components.somatic ? (isTranslated ? 'C' : 'S') : ''}
+        ${components.material ? (isTranslated ? 'М' : 'M') : ''}
+      `}
     </Item>
-  ) : null
+  ) : null;
 
   const damageCells =
     damageDice && damageType ? (
       <>
-        <Item label="Basic damage">
+        <Item label={<FormattedMessage id="spellBasicDamage" />}>
           {damageDice.quantity}
-          {damageDice.dice.toLowerCase()}
+          <FormattedMessage id={damageDice.dice} />
         </Item>
-        <Item label="Damage type">
-          {damageType.charAt(0) + damageType.slice(1).toLowerCase()}
+        <Item label={<FormattedMessage id="spellDamageType" />}>
+          <FormattedMessage id={damageType} />
         </Item>
       </>
-    ) : null
+    ) : null;
 
   const levelScaleCell = damageScale ? (
-    <Item label="At higher levels">
+    <Item label={<FormattedMessage id="spellAtHigherLevels" />}>
       {damageScale.map((value) => {
         return (
           <React.Fragment key={value?.level}>
-            <span>{`${value?.level}th level: ${
-              value?.dice.quantity
-            }${value?.dice.dice.toLowerCase()}`}</span>
-            <br></br>
+            <span>
+              {value?.level}
+              <FormattedMessage id="nthLevel" />
+              :&nbsp;
+              {value?.dice.quantity}
+              <FormattedMessage id={value?.dice.dice} />
+            </span>
+            <br />
           </React.Fragment>
-        )
+        );
       })}
     </Item>
-  ) : null
+  ) : null;
 
   const materialsCell = materials ? (
-    <Item label="Materials">{materials}</Item>
-  ) : null
+    <Item label={<FormattedMessage id="spellMaterials" />}>
+      {isTranslated ? materials.ru : materials.en}
+    </Item>
+  ) : null;
 
   const spellDataTable = (
     <Descriptions bordered style={{ marginBottom: '1rem' }}>
@@ -158,15 +194,17 @@ export const Spell = ({ spell }: Props) => {
       {levelScaleCell}
       {materialsCell}
     </Descriptions>
-  )
+  );
 
   const spellDescription = (
     <div
       dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(spell.description),
+        __html: DOMPurify.sanitize(
+          isTranslated ? spell.description.ru : spell.description.en
+        ),
       }}
-    ></div>
-  )
+    />
+  );
 
   return (
     <>
@@ -179,5 +217,5 @@ export const Spell = ({ spell }: Props) => {
         {classesInfo}
       </div>
     </>
-  )
-}
+  );
+};

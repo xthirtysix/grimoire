@@ -1,12 +1,20 @@
-import { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost';
 
 export const SPELLS = gql`
-  query Spells($grimoireID: String, $filters: SpellsFilter, $sort: SpellsSort, $limit: Int) {
+  query Spells(
+    $grimoireID: String
+    $filters: SpellsFilter
+    $sort: SpellsSort
+    $limit: Int
+  ) {
     spells(grimoireID: $grimoireID, filters: $filters, sort: $sort, limit: $limit) {
       total
       result {
         id
-        name
+        name {
+          en
+          ru
+        }
         level
         school
         castingTime
@@ -14,10 +22,7 @@ export const SPELLS = gql`
           value
           unit
         }
-        duration {
-          value
-          unit
-        }
+        duration
         isConcentration
         isRitual
         components {
@@ -25,14 +30,26 @@ export const SPELLS = gql`
           somatic
           material
         }
-        materials
-        description
+        materials {
+          en
+          ru
+        }
+        description {
+          en
+          ru
+        }
         source
         tags
         classes
         conditions
-        atHigherLevels
-        atHigherSlots
+        atHigherLevels {
+          en
+          ru
+        }
+        atHigherSlots {
+          en
+          ru
+        }
         damageDice {
           dice
           quantity
@@ -49,4 +66,4 @@ export const SPELLS = gql`
       }
     }
   }
-`
+`;

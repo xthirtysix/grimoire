@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost';
 
 export const CREATE_GRIMOIRE = gql`
   mutation CreateGrimoire($input: CreateGrimoireInput!) {
@@ -7,4 +7,4 @@ export const CREATE_GRIMOIRE = gql`
       name
     }
   }
-`
+`;

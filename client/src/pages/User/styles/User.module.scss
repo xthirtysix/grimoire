@@ -9,8 +9,14 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  .header {
+    margin-bottom: 0;
+  }
 }
+
 
 .grimoiresSubheader {
   display: block;
