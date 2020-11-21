@@ -7,14 +7,14 @@ interface Messages {
 }
 
 export const mainHeader: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     mainSearchPlaceholder: 'Search "Fireball"',
     headerSpells: 'Spells',
     userMenuSignIn: 'Sign In',
     userMenuGrimoires: 'Grimoires',
     userMenuLogOut: 'Log Out',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     mainSearchPlaceholder: 'Искать "Огненный шар"',
     headerSpells: 'Заклинания',
     userMenuSignIn: 'Войти',

@@ -23,7 +23,10 @@ export const spellResolvers: IResolvers = {
       { db, req }: { db: Database; req: Request }
     ): Promise<Spell> => {
       try {
-        const spell = await db.spells.findOne({ name });
+        const spell = await db.spells.findOne({"$or": [
+          {"name.en": name},
+          {"name.ru": name}
+        ]});
         if (!spell) {
           throw new Error("spell can't be found");
         }

@@ -3,8 +3,8 @@ interface Locale {
 }
 
 export const LOCALES: Locale = {
-  ENGLISH: 'en',
-  RUSSIAN: 'ru',
+  EN: 'en',
+  RU: 'ru',
 };
 
 export const CASTING_TIMES = [

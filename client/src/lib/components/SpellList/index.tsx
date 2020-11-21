@@ -43,7 +43,9 @@ export const SpellList = ({
   onAddSpell,
   onRemoveSpell,
 }: Props): JSX.Element => {
-  const isTranslated = useSelector((state: RootStateOrAny) => state.isTranslated);
+  const lang = useSelector(
+    (state: RootStateOrAny): string => state.language
+  ).toLowerCase();
 
   const result = spells && spells.result ? spells.result : null;
 
@@ -96,9 +98,9 @@ export const SpellList = ({
     return components ? (
       <Tag className={s.tagComponents}>
         {`
-          ${components.verbal ? (isTranslated ? 'В' : 'V') : ''} 
-          ${components.somatic ? (isTranslated ? 'С' : 'S') : ''} 
-          ${components.material ? (isTranslated ? 'М' : 'M') : ''}
+          ${components.verbal ? (lang === 'ru' ? 'В' : 'V') : ''} 
+          ${components.somatic ? (lang === 'ru' ? 'С' : 'S') : ''} 
+          ${components.material ? (lang === 'ru' ? 'М' : 'M') : ''}
         `}
       </Tag>
     ) : null;
@@ -132,7 +134,7 @@ export const SpellList = ({
           header={
             <div className={s.spellHeader}>
               <Title level={4} className={s.spellName}>
-                {isTranslated ? spell.name.ru : spell.name.en}
+                {spell.name[lang as 'en' | 'ru']}
                 {spell.isConcentration ? (
                   <>
                     &nbsp;

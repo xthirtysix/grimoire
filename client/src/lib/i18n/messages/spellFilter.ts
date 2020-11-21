@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const spellFilter: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     schoolPlaceholder: 'Search "Conjuration"',
     castingTimePlaceholder: 'Search "1 action"',
     levelPlaceholder: 'Search "Cantrip" or "1st"',
@@ -22,7 +22,7 @@ export const spellFilter: Messages = {
     NAME_ASCENDING: 'Name A-Z',
     NAME_DESCENDING: 'Name Z-A',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     schoolPlaceholder: 'Ищите "Вызов"',
     castingTimePlaceholder: 'Ищите "1 действие"',
     levelPlaceholder: 'Ищите "Фокус" или "1ый"',

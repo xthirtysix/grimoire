@@ -105,7 +105,7 @@ export const typeDefs = gql`
     INVISIBLE
     PARALYZED
     PETRIFIED
-    POSISONED
+    POISONED
     PRONE
     RESTRAINED
     STUNNED
@@ -160,20 +160,27 @@ export const typeDefs = gql`
     total: Int!
     result: [Spell!]
   }
+  
+  type Bilingual {
+    en: String!
+    ru: String!
+  }
 
   type Spell {
     id: ID!
-    name: String!
+    name: Bilingual!
     level: Level!
     school: String!
     castingTime: CastingTime!
-    duration: Scalar!
+    #duration: Scalar!
+    duration: Duration!
     range: Scalar!
+    #range: Range!
     components: Components
     isConcentration: Boolean!
     isRitual: Boolean!
-    materials: String
-    description: String!
+    materials: Bilingual
+    description: Bilingual!
     conditions: [Conditions]
     damageDice: Dice
     damageScale: [DamageScale!]
@@ -181,8 +188,8 @@ export const typeDefs = gql`
     attackType: AttackType
     effectType: Conditions
     saveRequired: Stat
-    atHigherLevels: String
-    atHigherSlots: String
+    atHigherLevels: Bilingual
+    atHigherSlots: Bilingual
     tags: [SpellTag!]!
     classes: [ClassType!]!
     source: String!
@@ -212,6 +219,11 @@ export const typeDefs = gql`
     value: Int
     unit: String!
   }
+  
+  type Range {
+    value: Int
+    unit: RangeUnit!
+  }
 
   enum CastingTime {
     REACTION
@@ -225,7 +237,36 @@ export const typeDefs = gql`
     TWENTYFOUR_HOURS
     SPECIAL
   }
-
+  
+  enum Duration {
+    INSTANTANEOUS
+    ONE_ROUND
+    SIX_ROUNDS
+    ONE_MINUTE
+    TEN_MINUTES
+    ONE_HOUR
+    TWO_HOURS
+    EIGHT_HOURS
+    TWENTYFOUR_HOURS
+    ONE_DAY
+    SEVEN_DAYS
+    TEN_DAYS
+    THIRTY_DAYS
+    SPECIAL
+    UNTIL_DISPELLED
+    UNTIL_DISPELLED_OR_TRIGGERED
+  }
+  
+  enum RangeUnit {
+    SELF
+    TOUCH
+    FEET
+    MILE
+    MILES
+    SIGHT
+    UNLIMITED
+  }
+  
   enum AttackType {
     MELEE
     RANGED

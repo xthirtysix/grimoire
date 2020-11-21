@@ -41,26 +41,31 @@ export interface CharacterClass {
   level: number;
 }
 
+export interface Bilingual {
+  en: string;
+  ru: string;
+}
+
 // Spell
 export interface Spell {
   _id: ObjectId;
-  name: string;
+  name: Bilingual;
   level: string;
   school: string;
   castingTime: string;
-  duration: Scalar;
-  range: Scalar;
+  duration: string;
+  range: Range;
   isConcentration: boolean;
   isRitual: boolean;
   components: Components;
-  materials?: String;
-  description: String;
+  materials?: Bilingual;
+  description: Bilingual;
   source: string;
   tags: string[];
   classes: string[];
   conditions?: [string];
-  atHigherLevels?: string;
-  atHigherSlots?: string;
+  atHigherLevels?: Bilingual;
+  atHigherSlots?: Bilingual;
   damageDice?: Dice;
   damageScale?: DamageScale[];
   damageType?: string;
@@ -79,7 +84,7 @@ export interface DamageScale {
   dice: Dice;
 }
 
-export interface Scalar {
+export interface Range {
   value?: number;
   unit: string;
 }

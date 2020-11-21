@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const displayMessages: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     onLogout: 'Please come back again soon!',
     onLogoutError: 'Sorry! We were not able to log you out. Please try again later',
     grimoireDeleteMsg: 'Grimoire successfully removed',
@@ -16,7 +16,7 @@ export const displayMessages: Messages = {
     loginError: 'Sorry! We were not able to log you in. Please try again later',
     loginSuccess: "You've successfully logged in",
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     onLogout: 'Пожалуйста, возвращайтесь скорее!',
     onLogoutError: 'Извините! Выход оказался закрыт. Попробуйте позже',
     grimoireDeleteMsg: 'Гримуар удален',

@@ -7,12 +7,12 @@ interface Messages {
 }
 
 export const grimoirePage: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     spellsContained: 'Spells contained',
     grimoireEmpty: 'There are no Spells in your Grimoire yet...',
     addSpellsBtn: 'Add Spells',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     spellsContained: 'Заклинаний содержится',
     grimoireEmpty: 'В вашем Гримуаре пока нет заклинаний...',
     addSpellsBtn: 'Добавить заклинания',

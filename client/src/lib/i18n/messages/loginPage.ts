@@ -7,14 +7,14 @@ interface Messages {
 }
 
 export const loginPage: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     loginPageHeader: 'Welcome to Grimoire!',
     loginPageSubheader: 'Sign in with Google and create your own Grimoire!',
     loginPageGoogleBtn: 'Sign in with Google',
     loginNote:
       "Note: By signing in, you'll be redirected to the Google consent form to sign in with your Google account.",
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     loginPageHeader: 'Добро пожаловать в Grimoire!',
     loginPageSubheader: 'Войдите с Google и создайте собственный Гримуар!',
     loginPageGoogleBtn: 'Войти с Google',

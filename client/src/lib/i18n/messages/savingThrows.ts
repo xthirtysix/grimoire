@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const savingThrows: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     STRENGTH: 'Strength',
     CONSTITUTION: 'Constitution',
     DEXTERITY: 'Dexterity',
@@ -15,7 +15,7 @@ export const savingThrows: Messages = {
     WISDOM: 'Wisdom',
     CHARISMA: 'Charisma',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     STRENGTH: 'Сила',
     CONSTITUTION: 'Выносливость',
     DEXTERITY: 'Ловкость',

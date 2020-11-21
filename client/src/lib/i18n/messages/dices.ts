@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const dices: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     D4: 'd4',
     D6: 'd6',
     D8: 'd8',
@@ -16,7 +16,7 @@ export const dices: Messages = {
     D20: 'd20',
     D100: 'd100',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     D4: 'к4',
     D6: 'к6',
     D8: 'к8',
