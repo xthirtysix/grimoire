@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const schools: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     ABJURATION: 'Abjuration',
     CONJURATION: 'Conjuration',
     DIVINATION: 'Divination',
@@ -25,7 +25,7 @@ export const schools: Messages = {
     NECROMANCY_SHORTHAND: 'Necr',
     TRANSMUTATION_SHORTHAND: 'Trans',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     ABJURATION: 'Ограждение',
     CONJURATION: 'Вызов',
     DIVINATION: 'Прорицание',

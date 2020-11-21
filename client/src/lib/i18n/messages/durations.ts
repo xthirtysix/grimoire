@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const durations: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     INSTANTANEOUS: 'Instantaneous',
     ONE_ROUND: '1 Round',
     SIX_ROUNDS: '6 Rounds',
@@ -39,7 +39,7 @@ export const durations: Messages = {
     UNTIL_DISPELLED_SHORTHAND: 'UD',
     UNTIL_DISPELLED_OR_TRIGGERED_SHORTHAND: 'UD/T',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     INSTANTANEOUS: 'Мгновенно',
     ONE_ROUND: '1 Раунд',
     SIX_ROUNDS: '6 Часов',

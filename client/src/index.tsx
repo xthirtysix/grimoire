@@ -17,6 +17,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider, RootStateOrAny, useSelector } from 'react-redux';
 import { IntlProvider } from 'react-intl';
+import { displayErrorMessage } from './lib/utils';
 //Data
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, useMutation } from 'react-apollo';
@@ -26,15 +27,12 @@ import {
   LogInVariables,
 } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
 import { Viewer } from './lib/types';
-import { rootReducer } from './redux/rootReducer';
 import { messages } from './lib/i18n';
+import { LOCALES } from './lib/constants';
 //Styles
 import './index.scss';
 import 'antd/dist/antd.css';
-import { displayErrorMessage } from './lib/utils';
-import { LOCALES } from './lib/constants';
-
-const store = createStore(rootReducer);
+import { store } from './redux/store';
 
 const client = new ApolloClient({
   uri: '/api',
@@ -75,7 +73,7 @@ const App = () => {
 
   const logInRef = useRef(logIn);
 
-  const isTranslated = useSelector((state: RootStateOrAny) => state.isTranslated);
+  const lang = useSelector((state: RootStateOrAny) => state.language);
 
   useEffect(() => {
     logInRef.current();
@@ -100,10 +98,10 @@ const App = () => {
 
   return (
     <IntlProvider
-      locale={isTranslated ? LOCALES.RUSSIAN : LOCALES.ENGLISH}
+      locale={LOCALES[lang]}
       textComponent={Fragment}
-      defaultLocale={LOCALES.RUSSIAN}
-      messages={messages[isTranslated ? LOCALES.RUSSIAN : LOCALES.ENGLISH]}
+      defaultLocale={LOCALES.RU}
+      messages={messages[LOCALES[lang]]}
     >
       <Router>
         <>

@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const createGrimoirePage: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     createGrimoireHeader: "Welcome, spellcaster! Let's create your own Grimoire!",
     createGrimoireFormDescription:
       "In this form we'll collect some information, to fill title page of the Grimoire.",
@@ -24,7 +24,7 @@ export const createGrimoirePage: Messages = {
     levelTooHigh:
       'Your characters total level is {totalLevel}, which may not be allowed for a general game',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     createGrimoireHeader:
       'Приветствую, заклинатель! Самое время создать собственный Гримуар!',
     createGrimoireFormDescription:

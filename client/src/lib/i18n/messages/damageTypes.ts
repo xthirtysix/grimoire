@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const damageTypes: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     ACID: 'Acid',
     BLUDGEONING: 'Bludgeoning',
     COLD: 'Cold',
@@ -28,7 +28,7 @@ export const damageTypes: Messages = {
     NATURAL: 'Natural',
     MELEE_WEAPON: 'Melee weapon',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     ACID: 'Кислота',
     BLUDGEONING: 'Дробящий',
     COLD: 'Холод',

@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const grimoiresPage: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     myGrimoires: 'My grimoires',
     newGrimoireBtn: 'New grimoire',
     grimoiresCreated: 'Grimoires created',
@@ -17,7 +17,7 @@ export const grimoiresPage: Messages = {
     grimoiresSpinner: 'Blowing off the dust...',
     grimoiresEmpty: 'There are no Grimoires in your library yet',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     myGrimoires: 'Мои гримуары',
     newGrimoireBtn: 'Новый гримуар',
     grimoiresCreated: 'Гримуаров создано',

@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const tags: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     BANISHMENT: 'Banishment',
     BUFF: 'Buff',
     CHARMED: 'Charmed',
@@ -35,7 +35,7 @@ export const tags: Messages = {
     UTILITY: 'Utility',
     WARDING: 'Warding',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     BANISHMENT: 'Изгнание',
     BUFF: 'Бафф',
     CHARMED: 'Очарование',

@@ -5,11 +5,13 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { MenuItems } from './components';
 import { displayErrorMessage } from '../../lib/utils';
 import { useIntl } from 'react-intl';
+import { useLocale } from '../../lib/hooks/useLocale';
+import { useDispatch } from 'react-redux';
+import { LANGUAGE, store } from '../../redux/store';
 //Data
 import { Viewer } from '../../lib/types';
 //Styles
 import s from './styles/AppHeader.module.scss';
-import { useDispatch } from 'react-redux';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -25,6 +27,8 @@ export const AppHeader = withRouter(
     const intl = useIntl();
 
     const dispatch = useDispatch();
+
+    useLocale();
 
     useEffect(() => {
       const { pathname } = location;
@@ -77,9 +81,11 @@ export const AppHeader = withRouter(
               className={s.search}
             />
             <Switch
+              className={s.switch}
               checkedChildren="En"
               unCheckedChildren="Ru"
-              onChange={() => dispatch({ type: 'SWITCH_LOCALE' })}
+              defaultChecked={store.getState().language === LANGUAGE.RU}
+              onChange={() => dispatch({ type: 'SWITCH_LANGUAGE' })}
             />
             <div className={s.list}>
               <MenuItems viewer={viewer} setViewer={setViewer} />

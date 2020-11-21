@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const rangeUnits: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     SELF: 'Self',
     TOUCH: 'Touch',
     FEET: 'feet',
@@ -23,7 +23,7 @@ export const rangeUnits: Messages = {
     SIGHT_SHORTHAND: 'Sight',
     UNLIMITED_SHORTHAND: 'unlim',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     SELF: 'На себя',
     TOUCH: 'Касание',
     FEET: 'фт',

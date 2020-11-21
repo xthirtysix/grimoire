@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const spellData: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     spellRequired: 'Required',
     spellConcentration: 'Concentration',
     spellRitual: 'Ritual',
@@ -41,7 +41,7 @@ export const spellData: Messages = {
     LEVEL_8: '8th',
     LEVEL_9: '9th',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     spellRequired: 'Требуется',
     spellConcentration: 'Концентрация',
     spellRitual: 'Ритуал',

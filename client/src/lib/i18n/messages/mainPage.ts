@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const mainPage: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     headerMain: `Find a spell you'd like to cast`,
     allSpellsHeader: 'Not sure which spell to choose?',
     allSpellsSubheader: 'Here you go!',
@@ -21,7 +21,7 @@ export const mainPage: Messages = {
     whyRegisterParagraphTwoLink: 'dive deeper',
     spellsHeader: 'Sample grimoire',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     headerMain: `Найдите нужное заклинание`,
     allSpellsHeader: 'Не уверены какое заклинание выбрать?',
     allSpellsSubheader: 'Вам сюда!',

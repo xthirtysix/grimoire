@@ -7,16 +7,14 @@ export const authorize = async (
   req: Request
 ): Promise<User | null> => {
   const token = req.get("X-CSRF-TOKEN");
-  const viewer = await db.users.findOne({
+  return await db.users.findOne({
     _id: req.signedCookies.viewer,
     token,
   });
-
-  return viewer;
 };
 
 interface Query {
-  [key: string]: {[key: string]: any}
+  [key: string]: {[key: string]: {$in: string}}
 }
 
 export const createFilterQuery = (filter: SpellsFilter): Query => {
@@ -39,8 +37,7 @@ export const orderCastingTimeQuery = {
     castingTime: 1,
     "range.value": 1,
     "range.unit": 1,
-    "duration.value": 1,
-    "duration.unit": 1,
+    duration: 1,
     "components.verbal": 1,
     "components.somatic": 1,
     "components.material": 1,
@@ -63,7 +60,7 @@ export const orderCastingTimeQuery = {
     source: 1,
     order: {
       $cond: {
-        if: { $eq: ["$castingTime", "RECTION"] },
+        if: { $eq: ["$castingTime", "REACTION"] },
         then: 0,
         else: {
           $cond: {

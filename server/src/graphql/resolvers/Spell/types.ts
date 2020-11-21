@@ -1,4 +1,4 @@
-import { Spell } from "../../../lib/types";
+import {Spell} from "../../../lib/types";
 
 export interface SpellArgs {
   name: string;

@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const classes: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     BARD: 'Bard',
     BARBARIAN: 'Barbarian',
     CLERIC: 'Cleric',
@@ -21,7 +21,7 @@ export const classes: Messages = {
     WARLOCK: 'Warlock',
     WIZARD: 'Wizard',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     BARD: 'Бард',
     BARBARIAN: 'Варвар',
     CLERIC: 'Жрец',

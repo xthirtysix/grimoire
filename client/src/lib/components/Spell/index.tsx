@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const Spell = ({ spell }: Props): JSX.Element => {
-  const isTranslated = useSelector((state: RootStateOrAny) => state.isTranslated);
+  const lang = useSelector((state: RootStateOrAny) => state.language).toLowerCase();
 
   if (!spell) {
     return <h3>Spell could not be found</h3>;
@@ -84,8 +84,7 @@ export const Spell = ({ spell }: Props): JSX.Element => {
       <b>
         <FormattedMessage id="spellAtHigherLevels" />:
       </b>
-      &nbsp;
-      {isTranslated ? atHigherLevels.ru : atHigherLevels.en}
+      &nbsp; {atHigherLevels[lang as 'en' | 'ru']}
     </p>
   ) : null;
   const atHigherSlotsInfo = atHigherSlots ? (
@@ -93,8 +92,7 @@ export const Spell = ({ spell }: Props): JSX.Element => {
       <b>
         <FormattedMessage id="spellAtHigherSlots" />:
       </b>
-      &nbsp;
-      {isTranslated ? atHigherSlots.ru : atHigherSlots.en}
+      &nbsp; {atHigherSlots[lang as 'en' | 'ru']}
     </p>
   ) : null;
 
@@ -135,9 +133,9 @@ export const Spell = ({ spell }: Props): JSX.Element => {
   const componentsCell = components ? (
     <Item label={<FormattedMessage id="spellComponents" />}>
       {`
-        ${components.verbal ? (isTranslated ? 'В' : 'V') : ''}
-        ${components.somatic ? (isTranslated ? 'C' : 'S') : ''}
-        ${components.material ? (isTranslated ? 'М' : 'M') : ''}
+        ${components.verbal ? (lang === 'ru' ? 'В' : 'V') : ''}
+        ${components.somatic ? (lang === 'ru' ? 'C' : 'S') : ''}
+        ${components.material ? (lang === 'ru' ? 'М' : 'M') : ''}
       `}
     </Item>
   ) : null;
@@ -176,7 +174,7 @@ export const Spell = ({ spell }: Props): JSX.Element => {
 
   const materialsCell = materials ? (
     <Item label={<FormattedMessage id="spellMaterials" />}>
-      {isTranslated ? materials.ru : materials.en}
+      {materials[lang as 'en' | 'ru']}
     </Item>
   ) : null;
 
@@ -196,12 +194,11 @@ export const Spell = ({ spell }: Props): JSX.Element => {
     </Descriptions>
   );
 
+  // noinspection JSRemoveUnnecessaryParentheses
   const spellDescription = (
     <div
       dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(
-          isTranslated ? spell.description.ru : spell.description.en
-        ),
+        __html: DOMPurify.sanitize(spell.description[lang as 'en' | 'ru']),
       }}
     />
   );

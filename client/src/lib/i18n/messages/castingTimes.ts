@@ -7,7 +7,7 @@ interface Messages {
 }
 
 export const castingTimes: Messages = {
-  [LOCALES.ENGLISH]: {
+  [LOCALES.EN]: {
     ACTION: '1 Action',
     BONUS_ACTION: 'Bonus Action',
     EIGHT_HOURS: '8 Hours',
@@ -29,7 +29,7 @@ export const castingTimes: Messages = {
     TWELVE_HOURS_SHORTHAND: '12h',
     TWENTYFOUR_HOURS_SHORTHAND: '24h',
   },
-  [LOCALES.RUSSIAN]: {
+  [LOCALES.RU]: {
     ACTION: '1 Действие',
     BONUS_ACTION: 'Бонусное действие',
     EIGHT_HOURS: '8 Часов',

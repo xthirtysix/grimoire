@@ -27,7 +27,6 @@ import { Viewer } from '../../lib/types';
 import s from './styles/CreateGrimoire.module.scss';
 // Constants
 import { CLASSES } from '../../lib/constants';
-import { Store } from 'redux';
 
 const { Item, List } = Form;
 const { Title, Text } = Typography;
