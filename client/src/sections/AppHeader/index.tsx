@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Affix, Input, Layout, Switch } from 'antd';
+import { Affix, AutoComplete, Input, Layout, Switch } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { MenuItems } from './components';
-import { displayErrorMessage } from '../../lib/utils';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useLocale } from '../../lib/hooks/useLocale';
-import { useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { useQuery } from 'react-apollo';
 import { LANGUAGE, store } from '../../redux/store';
+import { displayErrorMessage } from '../../lib/utils';
 //Data
 import { Viewer } from '../../lib/types';
+import { SpellNames as SpellsData } from '../../lib/graphql/queries/SpellNames/__generated__/SpellNames';
+import { SPELL_NAMES } from '../../lib/graphql/queries';
 //Styles
 import s from './styles/AppHeader.module.scss';
 
 const { Header } = Layout;
-const { Search } = Input;
 
 interface Props {
   viewer: Viewer;
@@ -24,9 +26,13 @@ interface Props {
 export const AppHeader = withRouter(
   ({ viewer, setViewer, history, location }: Props & RouteComponentProps) => {
     const [search, setSearch] = useState('');
-    const intl = useIntl();
+    const [options, setOptions] = useState<{ value: string; label: JSX.Element }[]>([]);
 
+    const intl = useIntl();
+    const lang = useSelector((state: RootStateOrAny) => state.language).toLowerCase();
     const dispatch = useDispatch();
+
+    const { data } = useQuery<SpellsData>(SPELL_NAMES, {});
 
     useLocale();
 
@@ -63,6 +69,39 @@ export const AppHeader = withRouter(
       }
     };
 
+    const onChange = (value: string) => {
+      setSearch(value);
+
+      if (data?.spells?.result) {
+        const options = [];
+        for (let i = 0; i < data.spells.result.length; i++) {
+          if (
+            data.spells.result[i].name.en.toLowerCase().includes(value.toLowerCase()) ||
+            data.spells.result[i].name.ru.toLowerCase().includes(value.toLowerCase())
+          ) {
+            options.push({
+              value: data.spells.result[i].name[lang as 'en' | 'ru'],
+              label: (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <span>{data.spells.result[i].name[lang as 'en' | 'ru']}</span>
+                  <span style={{ color: 'lightgray', fontSize: '0.8rem' }}>
+                    <FormattedMessage id={data.spells.result[i].level} />
+                  </span>
+                </div>
+              ),
+            });
+          }
+        }
+        setOptions(options);
+      }
+    };
+
     return (
       <Header className={s.header}>
         <Affix offsetTop={0} style={{ zIndex: 100, width: '100%' }}>
@@ -71,15 +110,21 @@ export const AppHeader = withRouter(
               <BookOutlined />
               <span>Grimoire</span>
             </Link>
-            <Search
-              placeholder={intl.formatMessage({ id: 'mainSearchPlaceholder' })}
-              size="middle"
-              enterButton
-              onChange={(evt) => setSearch(evt.target.value)}
+            <AutoComplete
+              options={options}
+              onBlur={() => setOptions([])}
+              onChange={onChange}
+              onSelect={onSearch}
               value={search}
-              onSearch={onSearch}
               className={s.search}
-            />
+            >
+              <Input.Search
+                size="middle"
+                placeholder={intl.formatMessage({ id: 'mainSearchPlaceholder' })}
+                onSearch={onSearch}
+                enterButton
+              />
+            </AutoComplete>
             <Switch
               className={s.switch}
               checkedChildren="En"

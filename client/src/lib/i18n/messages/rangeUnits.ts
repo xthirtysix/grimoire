@@ -15,7 +15,7 @@ export const rangeUnits: Messages = {
     MILES: 'miles',
     SIGHT: 'Sight',
     UNLIMITED: 'Unlimited',
-    SELF_SHORTHAND: 'Slf',
+    SELF_SHORTHAND: 'Self',
     TOUCH_SHORTHAND: 'Tch',
     FEET_SHORTHAND: 'ft',
     MILE_SHORTHAND: 'mi',
