@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SpellsFilter, SpellsSort, Level, CastingTime, Duration, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "../../../globalTypes";
+import { SpellsFilter, SpellsSort, Level, CastingTime, Duration, SpellTag, ClassType, Conditions, DiceType, DamageType, Stat } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Spells
