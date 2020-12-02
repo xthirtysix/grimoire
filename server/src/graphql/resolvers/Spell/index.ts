@@ -1,13 +1,9 @@
-import { IResolvers } from "apollo-server-express";
-import { ObjectId } from "mongodb";
-import { Request } from "express";
-import { Spell, Database } from "../../../lib/types";
-import {
-  authorize,
-  createFilterQuery,
-  orderCastingTimeQuery,
-} from "../../../lib/utils";
-import { SpellArgs, SpellsArgs, SpellsData, SpellsSort } from "./types";
+import { IResolvers } from 'apollo-server-express';
+import { ObjectId } from 'mongodb';
+import { Request } from 'express';
+import { Spell, Database } from '../../../lib/types';
+import { authorize, createFilterQuery, orderCastingTimeQuery } from '../../../lib/utils';
+import { SpellArgs, SpellsArgs, SpellsData, SpellsSort } from './types';
 
 interface Query {
   [key: string]: {
@@ -23,10 +19,12 @@ export const spellResolvers: IResolvers = {
       { db, req }: { db: Database; req: Request }
     ): Promise<Spell> => {
       try {
-        const spell = await db.spells.findOne({"$or": [
-          {"name.en": name},
-          {"name.ru": name}
-        ]});
+        const spell = await db.spells.findOne({
+          $or: [
+            { 'name.en': { $regex: name, $options: 'i' } },
+            { 'name.ru': { $regex: name, $options: 'i' } },
+          ],
+        });
         if (!spell) {
           throw new Error("spell can't be found");
         }
@@ -100,10 +98,7 @@ export const spellResolvers: IResolvers = {
         cursor = db.spells.aggregate(formAggregationQuery());
 
         if (limit) {
-          cursor = db.spells.aggregate([
-            { $sample: { size: limit } },
-            sortQuery,
-          ]);
+          cursor = db.spells.aggregate([{ $sample: { size: limit } }, sortQuery]);
           data.total = limit;
         }
 
