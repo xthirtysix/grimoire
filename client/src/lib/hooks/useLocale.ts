@@ -8,5 +8,5 @@ export const useLocale = (): void => {
     const value = loadState();
 
     dispatch({ type: value?.language ?? `SET_${value?.language}` });
-  }, []);
+  }, [dispatch]);
 };

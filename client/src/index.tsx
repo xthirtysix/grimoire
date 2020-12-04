@@ -14,7 +14,6 @@ import {
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
 import { Provider as ReduxProvider, RootStateOrAny, useSelector } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import { displayErrorMessage } from './lib/utils';
