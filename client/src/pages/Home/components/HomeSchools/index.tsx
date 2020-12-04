@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Input } from 'antd';
+import { SpellSearch } from '../../../../lib/components/SpellSearch';
+import { Card } from 'antd';
 import {
   BlockOutlined,
   EnvironmentOutlined,
@@ -11,20 +12,12 @@ import {
   ThunderboltOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 //Styles
 import schools from './styles/HomeSchools.module.scss';
 import home from '../../styles/Home.module.scss';
 
-const { Search } = Input;
-
-interface Props {
-  onSearch: (value: string) => void;
-}
-
-export const HomeSchools = ({ onSearch }: Props): JSX.Element => {
-  const intl = useIntl();
-
+export const HomeSchools = (): JSX.Element => {
   return (
     <section className={schools.container}>
       <h2 className="visually-hidden">Spell Schools</h2>
@@ -33,13 +26,7 @@ export const HomeSchools = ({ onSearch }: Props): JSX.Element => {
           <p className={home.sectionHeader}>
             <FormattedMessage id="headerMain" />
           </p>
-          <Search
-            placeholder={intl.formatMessage({ id: 'mainSearchPlaceholder' })}
-            size="large"
-            enterButton
-            className={schools.search}
-            onSearch={onSearch}
-          />
+          <SpellSearch size="large" style={schools.search} />
         </div>
         <ul className={schools.list}>
           <li>

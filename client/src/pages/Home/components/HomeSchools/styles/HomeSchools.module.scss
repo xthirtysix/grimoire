@@ -1,7 +1,10 @@
 .search {
   width: 100%;
   max-width: 500px;
-  margin-bottom: 2rem;
+
+  .container & {
+    margin-bottom: 2rem;
+  }
 
   input {
     border-top-left-radius: 5px;
